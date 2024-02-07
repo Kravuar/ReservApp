@@ -8,7 +8,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Business {
-    private final long id;
+    private final Long id;
     private String name;
     private String email;
+    private boolean emailVerified;
 }

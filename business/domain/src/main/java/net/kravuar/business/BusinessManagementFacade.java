@@ -1,11 +1,11 @@
 package net.kravuar.business;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.business.domain.Business;
+import net.kravuar.business.domain.commands.BusinessChangeEmailCommand;
+import net.kravuar.business.domain.commands.BusinessChangeNameCommand;
 import net.kravuar.business.domain.commands.BusinessCreationCommand;
-import net.kravuar.business.domain.commands.BusinessEditNameCommand;
-import net.kravuar.business.domain.commands.BusinessEmailChangeCommand;
+import net.kravuar.business.domain.commands.BusinessEmailVerificationCommand;
 import net.kravuar.business.domain.exceptions.MessageSendingException;
 import net.kravuar.business.ports.in.BusinessManagementUseCase;
 import net.kravuar.business.ports.out.BusinessPersistencePort;
@@ -17,7 +17,7 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
     private final EmailVerificationPort emailVerificationPort;
 
     @Override
-    public Business create(@Valid BusinessCreationCommand command) throws MessageSendingException {
+    public Business create(BusinessCreationCommand command) throws MessageSendingException {
         emailVerificationPort.sendVerificationMessage(command.email());
         return businessPersistencePort.save(Business.builder()
                 .name(command.name())
@@ -27,17 +27,29 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
     }
 
     @Override
-    public void editName(@Valid BusinessEditNameCommand command) {
+    public void changeName(BusinessChangeNameCommand command) {
         Business business = businessPersistencePort.findById(command.businessId());
         business.setName(command.newName());
         businessPersistencePort.save(business);
     }
 
     @Override
-    public void changeEmail(@Valid BusinessEmailChangeCommand command) throws MessageSendingException {
+    public void changeEmail(BusinessChangeEmailCommand command) throws MessageSendingException {
         Business business = businessPersistencePort.findById(command.businessId());
         business.setEmail(command.newEmail());
+        business.setEmailVerified(false);
         emailVerificationPort.sendVerificationMessage(command.newEmail());
         businessPersistencePort.save(business);
+    }
+
+    @Override
+    public boolean verifyEmail(BusinessEmailVerificationCommand command) {
+        Business business = businessPersistencePort.findById(command.businessId());
+        boolean verified = emailVerificationPort.verify(business.getEmail(), command.verificationCode());
+        if (verified) {
+            business.setEmailVerified(true);
+            businessPersistencePort.save(business);
+        }
+        return verified;
     }
 }
