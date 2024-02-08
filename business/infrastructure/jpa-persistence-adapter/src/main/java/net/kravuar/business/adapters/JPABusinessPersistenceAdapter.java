@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class MySQLBusinessPersistenceAdapter implements BusinessPersistencePort {
+public class JPABusinessPersistenceAdapter implements BusinessPersistencePort {
     private final BusinessMapper businessMapper;
     private final BusinessRepository businessRepository;
 
