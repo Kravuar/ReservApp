@@ -2,7 +2,7 @@ spring:
   docker:
     compose:
       enabled: true
-      file: ./docker-compose.yml
+      file: docker-compose.yml
   jpa:
     show-sql: true
     hibernate:
@@ -14,4 +14,4 @@ spring:
   sql:
     init:
       mode: always
-      data-locations: classpath:./data.sql
+      data-locations: classpath:data.sql

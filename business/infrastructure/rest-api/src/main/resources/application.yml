@@ -1,0 +1,9 @@
+server:
+  http2:
+    enabled: true
+  servlet:
+    context-path: /api/business
+
+springdoc:
+  api-docs:
+    path: /api-docs
