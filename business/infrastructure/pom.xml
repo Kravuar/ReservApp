@@ -18,7 +18,8 @@
     <modules>
         <module>jpa-persistence-adapter</module>
         <module>fake-email-verification-adapter</module>
-        <module>rest-api</module>
+        <module>webmvc-rest-api</module>
+        <module>smpt-email-verification-adapter</module>
     </modules>
 
     <dependencies>

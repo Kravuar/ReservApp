@@ -1,17 +1,14 @@
-package net.kravuar.business.adapters;
+package net.kravuar.business.persistence;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.business.domain.Business;
 import net.kravuar.business.domain.exceptions.BusinessNotFoundException;
-import net.kravuar.business.model.BusinessModel;
-import net.kravuar.business.model.mappers.BusinessMapper;
 import net.kravuar.business.ports.out.BusinessPersistencePort;
-import net.kravuar.business.repositories.BusinessRepository;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class JPABusinessPersistenceAdapter implements BusinessPersistencePort {
+class JPABusinessPersistenceAdapter implements BusinessPersistencePort {
     private final BusinessMapper businessMapper;
     private final BusinessRepository businessRepository;
 

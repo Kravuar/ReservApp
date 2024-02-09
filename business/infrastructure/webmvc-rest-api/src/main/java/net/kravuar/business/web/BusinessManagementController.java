@@ -1,4 +1,4 @@
-package net.kravuar.business.rest;
+package net.kravuar.business.web;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.business.domain.Business;
@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/management")
 @RequiredArgsConstructor
-public class BusinessManagementController {
-    // TODO: annoying CouldNotAutowire, but its not an app
+class BusinessManagementController {
     private final BusinessManagementUseCase businessManagement;
 
     // TODO: do i need dto's?

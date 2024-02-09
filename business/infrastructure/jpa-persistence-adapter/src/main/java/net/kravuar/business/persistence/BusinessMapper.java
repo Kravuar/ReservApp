@@ -1,11 +1,10 @@
-package net.kravuar.business.model.mappers;
+package net.kravuar.business.persistence;
 
 import net.kravuar.business.domain.Business;
-import net.kravuar.business.model.BusinessModel;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface BusinessMapper {
+interface BusinessMapper {
     BusinessModel toModel(Business business);
     Business toDomain(BusinessModel businessModel);
 }

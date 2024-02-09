@@ -1,4 +1,4 @@
-package net.kravuar.business.model;
+package net.kravuar.business.persistence;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
-public class BusinessModel {
+class BusinessModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id private final Long id;
 
