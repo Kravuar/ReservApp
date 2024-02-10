@@ -23,7 +23,7 @@ public class SMTPEmailVerificationAdapter implements EmailVerificationPort {
     private final String mailFrom;
 
     @Override
-    public void sendVerificationMessage(String email) throws MessageSendingException {
+    public void sendVerificationEmail(String email) throws MessageSendingException {
         SimpleMailMessage verificationMail = new SimpleMailMessage();
         Token token = getCode(email);
         String link = String.format("{}?{}={}", getUrl(), codeParam, token.getValue());

@@ -16,5 +16,4 @@ class BusinessModel {
 
     @Column private String name;
     @Column private String email;
-    @Column private boolean emailVerified;
 }

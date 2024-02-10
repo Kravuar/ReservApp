@@ -1,8 +1,8 @@
 package net.kravuar.business.domain.commands;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 
 public record BusinessEmailVerificationCommand(
-        long businessId,
-        @NotBlank String verificationCode
+        @Email(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$") String email
 ) {}

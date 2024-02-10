@@ -8,10 +8,10 @@ public interface EmailVerificationPort {
      * @param email the email to send the message to
      * @throws MessageSendingException if the message failed to be sent to the provided email
      */
-    void sendVerificationMessage(String email) throws MessageSendingException;
+    void sendVerificationEmail(String email) throws MessageSendingException;
 
     /**
-     * Verifies email against provided verification code (sent by the {@code sendVerificationMessage}).
+     * Verifies email against provided verification code (sent by the {@link EmailVerificationPort#sendVerificationEmail}).
      *
      * @param email email to verify
      * @param verificationCode code to verify against

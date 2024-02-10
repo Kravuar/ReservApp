@@ -1,4 +1,4 @@
-package net.kravuar.business.config;
+package net.kravuar.business.config.businessManagement;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.business.BusinessManagementFacade;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-class UseCasesConfig {
+class Config {
     private final BusinessPersistencePort businessPersistencePort;
     private final EmailVerificationPort emailVerificationPort;
 

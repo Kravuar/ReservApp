@@ -2,6 +2,6 @@ email:
   url-code-param-name: code
   subject: "ReservApp Email Verification"
   template: |
-    Please click <a href="{link}">HERE</a> to finish ReservApp registration
-    Link will be available until {expiration}
+    Your ReservApp registration code: {code}
+    Code will be valid until {expiration}
 
