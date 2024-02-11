@@ -1,0 +1,16 @@
+INSERT INTO business (name, email)
+VALUES ('ABC Company', 'abc@example.com'),
+       ('XYZ Corporation', 'xyz@example.com'),
+       ('123 Enterprises', '123@example.com'),
+       ('Alpha Industries', 'alpha@example.com'),
+       ('Beta Corporation', 'beta@example.com'),
+       ('Gamma Co.', 'gamma@example.com'),
+       ('Delta Enterprises', 'delta@example.com'),
+       ('Omega Ltd.', 'omega@example.com'),
+       ('Sigma Corp', 'sigma@example.com'),
+       ('Zeta Corporation', 'zeta@example.com'),
+       ('Epsilon Enterprises', 'epsilon@example.com'),
+       ('Theta Co.', 'theta@example.com'),
+       ('Nu Industries', 'nu@example.com'),
+       ('Iota Corporation', 'iota@example.com'),
+       ('Lambda Ltd.', 'lambda@example.com');

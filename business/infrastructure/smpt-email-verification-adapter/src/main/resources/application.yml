@@ -1,7 +1,8 @@
 email:
   url-code-param-name: code
   subject: "ReservApp Email Verification"
-  template: |
-    Your ReservApp registration code: {code}
-    Code will be valid until {expiration}
+  template: | # TODO: named template placeholders
+    Your **ReservApp** registration code: 
+    # {0} 
+    Code will be valid until {1}
 

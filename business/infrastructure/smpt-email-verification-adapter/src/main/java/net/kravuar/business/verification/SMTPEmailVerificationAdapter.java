@@ -19,20 +19,18 @@ public class SMTPEmailVerificationAdapter implements EmailVerificationPort {
     private final String template;
     @Value("${email.url-code-param-name}")
     private final String codeParam;
-    @Value("${spring.mail.username}")
-    private final String mailFrom;
 
     @Override
-    public void sendVerificationEmail(String email) throws MessageSendingException {
+    public void sendVerificationCode(String email) throws MessageSendingException {
         SimpleMailMessage verificationMail = new SimpleMailMessage();
         Token token = getCode(email);
         String link = String.format("{}?{}={}", getUrl(), codeParam, token.getValue());
+        /* TODO: Named template formatting */
         verificationMail.setText(MessageFormat.format(
                 template,
                 link,
                 token.getExpiration()
         ));
-        verificationMail.setFrom(mailFrom);
         verificationMail.setTo(email);
         verificationMail.setSubject(subject);
 

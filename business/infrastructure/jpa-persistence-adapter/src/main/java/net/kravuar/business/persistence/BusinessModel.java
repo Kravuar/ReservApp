@@ -8,11 +8,11 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor(force = true)
 class BusinessModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id private final Long id;
+    @Id private Long id;
 
     @Column private String name;
     @Column private String email;

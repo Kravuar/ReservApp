@@ -2,8 +2,9 @@ package net.kravuar.business.ports.in;
 
 import jakarta.validation.Valid;
 import net.kravuar.business.domain.Business;
-import net.kravuar.business.domain.commands.*;
-import net.kravuar.business.domain.exceptions.*;
+import net.kravuar.business.domain.commands.BusinessChangeEmailCommand;
+import net.kravuar.business.domain.commands.BusinessChangeNameCommand;
+import net.kravuar.business.domain.exceptions.BusinessNotFoundException;
 
 public interface BusinessManagementUseCase {
     // TODO: Encapsulate the regex of @Email annotation in custom annotation

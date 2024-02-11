@@ -39,13 +39,13 @@ class BusinessCreationFacadeTest {
     void givenCorrectCommand_WhenVerifyEmail_ThenVerificationMessageSent() throws MessageSendingException {
         // given
         BusinessEmailVerificationCommand command = new BusinessEmailVerificationCommand("be@bebe.be");
-        doNothing().when(emailVerificationPort).sendVerificationEmail(anyString());
+        doNothing().when(emailVerificationPort).sendVerificationCode(anyString());
 
         // when
         businessCreationFacade.sendVerification(command);
 
         // then
-        verify(emailVerificationPort, times(1)).sendVerificationEmail(eq(command.email()));
+        verify(emailVerificationPort, times(1)).sendVerificationCode(eq(command.email()));
     }
 
     @Test

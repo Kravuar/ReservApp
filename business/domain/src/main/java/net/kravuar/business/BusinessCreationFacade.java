@@ -2,8 +2,8 @@ package net.kravuar.business;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.business.domain.Business;
-import net.kravuar.business.domain.commands.BusinessEmailVerificationCommand;
 import net.kravuar.business.domain.commands.BusinessCreationCommand;
+import net.kravuar.business.domain.commands.BusinessEmailVerificationCommand;
 import net.kravuar.business.domain.exceptions.BusinessIncorrectEmailVerificationCodeException;
 import net.kravuar.business.domain.exceptions.BusinessWithEmailAlreadyExistsException;
 import net.kravuar.business.domain.exceptions.MessageSendingException;
@@ -21,7 +21,7 @@ public class BusinessCreationFacade implements BusinessCreationUseCase {
         if (businessPersistencePort.existsByEmail(command.email()))
             throw new BusinessWithEmailAlreadyExistsException(command.email());
 
-        emailVerificationPort.sendVerificationEmail(command.email());
+        emailVerificationPort.sendVerificationCode(command.email());
     }
 
     @Override

@@ -4,14 +4,14 @@ import net.kravuar.business.domain.exceptions.MessageSendingException;
 
 public interface EmailVerificationPort {
     /**
-     * Sends email verification message.
-     * @param email the email to send the message to
-     * @throws MessageSendingException if the message failed to be sent to the provided email
+     * Sends email verification code.
+     * @param email the email to send the code to
+     * @throws MessageSendingException if the code failed to be sent to the provided email
      */
-    void sendVerificationEmail(String email) throws MessageSendingException;
+    void sendVerificationCode(String email) throws MessageSendingException;
 
     /**
-     * Verifies email against provided verification code (sent by the {@link EmailVerificationPort#sendVerificationEmail}).
+     * Verifies email against provided verification code (sent by the {@link EmailVerificationPort#sendVerificationCode}).
      *
      * @param email email to verify
      * @param verificationCode code to verify against

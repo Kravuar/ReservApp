@@ -1,0 +1,38 @@
+version: '3'
+services:
+  reservapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DB_URL: jdbc:mysql://mysql:3306/reservapp-db
+        DB_USERNAME: root
+        DB_PASSWORD: reservappdbpass
+
+#        TODO: Configure SMTP
+#        MAIL_HOST:
+#        MAIL_PORT:
+#        MAIL_USERNAME:
+#        MAIL_PASSWORD:
+    ports:
+      - "8080" # Accessible from outside (no external port assigned yet)
+    networks:
+      - app-db-network
+
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: reservappdbpass
+      MYSQL_DATABASE: reservapp-db
+    volumes:
+      - db:/var/lib/mysql
+    expose:
+      - 3306
+    networks:
+      - app-db-network
+
+volumes:
+  db:
+
+networks:
+  app-db-network:

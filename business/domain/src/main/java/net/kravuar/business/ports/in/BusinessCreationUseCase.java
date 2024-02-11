@@ -2,8 +2,10 @@ package net.kravuar.business.ports.in;
 
 import jakarta.validation.Valid;
 import net.kravuar.business.domain.Business;
-import net.kravuar.business.domain.commands.*;
-import net.kravuar.business.domain.exceptions.*;
+import net.kravuar.business.domain.commands.BusinessCreationCommand;
+import net.kravuar.business.domain.commands.BusinessEmailVerificationCommand;
+import net.kravuar.business.domain.exceptions.BusinessWithEmailAlreadyExistsException;
+import net.kravuar.business.domain.exceptions.MessageSendingException;
 
 public interface BusinessCreationUseCase {
     // TODO: Encapsulate the regex of @Email annotation in custom annotation

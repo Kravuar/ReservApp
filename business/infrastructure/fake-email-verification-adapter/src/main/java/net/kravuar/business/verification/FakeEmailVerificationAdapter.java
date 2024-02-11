@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 class FakeEmailVerificationAdapter implements EmailVerificationPort {
 
     @Override
-    public void sendVerificationEmail(String email) {
+    public void sendVerificationCode(String email) {
         // Ignore
         System.out.println("verification " + email);
     }

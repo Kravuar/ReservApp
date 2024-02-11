@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    active: @spring.profiles.active@
+
+server:
+  http2:
+    enabled: true
+  servlet:
+    context-path: /api-v1

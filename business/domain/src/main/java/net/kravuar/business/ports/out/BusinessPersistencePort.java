@@ -3,8 +3,6 @@ package net.kravuar.business.ports.out;
 import net.kravuar.business.domain.Business;
 import net.kravuar.business.domain.exceptions.BusinessNotFoundException;
 
-import java.time.Duration;
-
 public interface BusinessPersistencePort {
     /**
      * Find business by businessId.
