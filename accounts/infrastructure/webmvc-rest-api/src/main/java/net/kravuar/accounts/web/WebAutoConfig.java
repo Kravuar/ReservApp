@@ -1,8 +1,8 @@
-package net.kravuar.business.web;
+package net.kravuar.accounts.web;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Import;
 
 @AutoConfiguration
-@Import({BusinessCreationController.class, BusinessManagementController.class})
+@Import(AccountAuthenticationController.class)
 class WebAutoConfig {}

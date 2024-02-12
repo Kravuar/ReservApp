@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
 @AutoConfiguration(before = JpaRepositoriesAutoConfiguration.class)
 @ConditionalOnMissingBean(BusinessPersistencePort.class)
 @Import({JPARegistrar.class, JPABusinessPersistenceAdapter.class})
-public class JPAAutoConfig {
+class JPAAutoConfig {
 
     @Bean
     BusinessMapper businessMapper() {

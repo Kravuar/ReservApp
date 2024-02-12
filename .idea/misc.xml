@@ -11,6 +11,7 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/business/infrastructure/h2-persistence-adapter/pom.xml" />
+        <option value="$PROJECT_DIR$/commons/reservapp-security-core/pom.xml" />
         <option value="$PROJECT_DIR$/domain/pom.xml" />
         <option value="$PROJECT_DIR$/infrastructure/pom.xml" />
       </set>

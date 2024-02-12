@@ -11,7 +11,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import java.text.MessageFormat;
 
 @RequiredArgsConstructor
-public class SMTPEmailVerificationAdapter implements EmailVerificationPort {
+class SMTPEmailVerificationAdapter implements EmailVerificationPort {
     private final JavaMailSender mailSender;
     @Value("${email.subject}")
     private final String subject;

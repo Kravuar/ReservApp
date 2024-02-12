@@ -13,6 +13,8 @@
     <modules>
         <module>business</module>
         <module>app</module>
+        <module>commons</module>
+        <module>accounts</module>
     </modules>
 
     <properties>

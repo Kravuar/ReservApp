@@ -8,5 +8,4 @@ import org.springframework.context.annotation.Import;
 @AutoConfiguration
 @ConditionalOnMissingBean(EmailVerificationPort.class)
 @Import(SMTPEmailVerificationAdapter.class)
-public class SMTPAutoConfig {
-}
+class SMTPAutoConfig {}

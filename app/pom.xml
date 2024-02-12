@@ -11,8 +11,20 @@
 
     <artifactId>app</artifactId>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- internal -->
+        <dependency>
+            <groupId>net.kravuar.commons</groupId>
+            <artifactId>infrastructure-security-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
         <!-- business -->
         <dependency>
@@ -28,6 +40,15 @@
         <!-- business -->
 
         <!-- external -->
+        <dependency>
+            <groupId>com.github.Kravuar</groupId>
+            <artifactId>jwt-auth-spring-boot-starter</artifactId>
+            <version>v0.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
