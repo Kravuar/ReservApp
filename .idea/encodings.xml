@@ -1,12 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/accounts/accounts-starter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/accounts/accounts-starter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/accounts/domain/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/accounts/domain/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/accounts/infrastructure/bcrypt-password-encoder-adapter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/accounts/infrastructure/bcrypt-password-encoder-adapter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/accounts/infrastructure/bcrypt-password-encoder/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/accounts/infrastructure/bcrypt-password-encoder/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/accounts/infrastructure/digest-code-generator-adapter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/accounts/infrastructure/digest-code-generator-adapter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/accounts/infrastructure/fake-email-sending-adapter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/accounts/infrastructure/fake-email-sending-adapter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/accounts/infrastructure/jpa-persistence-adapter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/accounts/infrastructure/jpa-persistence-adapter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/accounts/infrastructure/smtp-email-sending-adapter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/accounts/infrastructure/smtp-email-sending-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/accounts/infrastructure/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/accounts/infrastructure/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/accounts/infrastructure/webmvc-rest-api/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/accounts/infrastructure/webmvc-rest-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/accounts/infrastructure/webmvc-rest-api-adapter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/accounts/infrastructure/webmvc-rest-api-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/accounts/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/accounts/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java" charset="UTF-8" />
@@ -19,18 +33,25 @@
     <file url="file://$PROJECT_DIR$/business/infrastructure/fake-email-verification-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/business/infrastructure/h2-persistence-adapter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/business/infrastructure/h2-persistence-adapter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/business/infrastructure/jpa-account-checking-adapter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/business/infrastructure/jpa-account-checking-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/business/infrastructure/jpa-persistence-adapter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/business/infrastructure/jpa-persistence-adapter/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/business/infrastructure/smpt-email-verification-adapter/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/business/infrastructure/smpt-email-verification-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/business/infrastructure/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/business/infrastructure/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/business/infrastructure/webmvc-rest-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/business/infrastructure/web-client-account-checking-adapter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/business/infrastructure/web-client-account-checking-adapter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/business/infrastructure/webmvc-rest-api-adapter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/business/infrastructure/webmvc-rest-api-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/business/infrastructure/webmvc-rest-api/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/business/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/business/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/context/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/context/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/infrastructure-security-core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/infrastructure-security-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/infrastructure-security-jwt/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/infrastructure-security-jwt/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/reservapp-security-core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/reservapp-security-core/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/security/src/main/java" charset="UTF-8" />

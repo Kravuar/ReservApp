@@ -7,3 +7,5 @@ server:
     enabled: true
   servlet:
     context-path: /api-v1
+
+#  TODO: config hibernate to use existing schema (do not update)

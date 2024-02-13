@@ -11,39 +11,60 @@
 
     <artifactId>app</artifactId>
 
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <!-- internal -->
         <dependency>
             <groupId>net.kravuar.commons</groupId>
-            <artifactId>infrastructure-security-core</artifactId>
+            <artifactId>infrastructure-security-jwt</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <!-- business -->
         <dependency>
-            <groupId>net.kravuar.business</groupId>
-            <artifactId>business-starter</artifactId>
+            <groupId>net.kravuar.business.infrastructure</groupId>
+            <artifactId>jpa-persistence-adapter</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>net.kravuar.business.infrastructure</groupId>
+            <artifactId>jpa-account-checking-adapter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kravuar.business.infrastructure</groupId>
+            <artifactId>webmvc-rest-api-adapter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- business -->
+
+        <!-- accounts -->
+        <dependency>
+            <groupId>net.kravuar.accounts.infrastructure</groupId>
+            <artifactId>jpa-persistence-adapter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kravuar.accounts.infrastructure</groupId>
+            <artifactId>bcrypt-password-encoder-adapter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kravuar.accounts.infrastructure</groupId>
+            <artifactId>digest-code-generator-adapter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kravuar.accounts.infrastructure</groupId>
+            <artifactId>webmvc-rest-api-adapter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- accounts -->
+
+        <!-- external -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
-        </dependency>
-        <!-- business -->
-
-        <!-- external -->
-        <dependency>
-            <groupId>com.github.Kravuar</groupId>
-            <artifactId>jwt-auth-spring-boot-starter</artifactId>
-            <version>v0.0.5</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -67,6 +88,11 @@
             </properties>
             <dependencies>
                 <!-- internal -->
+                <dependency>
+                    <groupId>net.kravuar.accounts.infrastructure</groupId>
+                    <artifactId>smtp-email-sending-adapter</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                </dependency>
 
                 <!-- external -->
             </dependencies>
@@ -82,21 +108,11 @@
             </properties>
             <dependencies>
                 <!-- internal -->
-
-                <!-- business -->
                 <dependency>
-                    <groupId>net.kravuar.business</groupId>
-                    <artifactId>business-starter</artifactId>
+                    <groupId>net.kravuar.accounts.infrastructure</groupId>
+                    <artifactId>fake-email-sending-adapter</artifactId>
                     <version>1.0-SNAPSHOT</version>
-                    <exclusions>
-                        <!-- for dev we'll use a fake one -->
-                        <exclusion>
-                            <groupId>net.kravuar.business.infrastructure</groupId>
-                            <artifactId>smpt-email-verification-adapter</artifactId>
-                        </exclusion>
-                    </exclusions>
                 </dependency>
-                <!-- business -->
 
                 <!-- external -->
                 <dependency>
