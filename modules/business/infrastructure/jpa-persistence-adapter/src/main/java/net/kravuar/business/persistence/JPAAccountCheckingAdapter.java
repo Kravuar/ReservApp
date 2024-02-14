@@ -1,5 +1,6 @@
 package net.kravuar.business.persistence;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.business.ports.out.AccountCheckingPort;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -16,7 +17,7 @@ class JPAAccountCheckingAdapter implements AccountCheckingPort {
         return owner.isPresent() && owner.get().isEmailVerified();
     }
 
-    @KafkaListener(id = "business-update-sync", topics = "${business.updates.email-update-topic}")
+    @KafkaListener(id = "account-email-change-sync", topics = "${business.updates.email-update-topic}")
     public void onEmailUpdate(EmailUpdateDTO update) {
         ownerRepository.save(new OwnerModel(
                         update.accountId,
@@ -25,6 +26,20 @@ class JPAAccountCheckingAdapter implements AccountCheckingPort {
         );
     }
 
+    @KafkaListener(id = "new-account-change-sync", topics = "${business.updates.account-create-topic}")
+    public void onNewAccount(NewAccountDTO update) {
+        ownerRepository.save(new OwnerModel(
+                        update.accountId,
+                        update.emailVerified
+                )
+        );
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
     record EmailUpdateDTO(long accountId, boolean verified) {
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    record NewAccountDTO(long accountId, boolean emailVerified) {
     }
 }

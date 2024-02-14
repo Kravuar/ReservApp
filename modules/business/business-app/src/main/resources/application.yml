@@ -13,6 +13,7 @@ spring:
 business:
   updates:
     email-update-topic: ${EMAIL-UPDATE-TOPIC:account-email-update-topic}
+    account-create-topic: ${ACCOUNT-CREATE-TOPIC:account-create-topic}
 
 server:
   http2:

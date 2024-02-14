@@ -2,6 +2,7 @@ package net.kravuar.accounts.config;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.accounts.domain.Account;
+import net.kravuar.accounts.domain.exceptions.AccountNotFoundException;
 import net.kravuar.accounts.ports.in.AccountRetrievalUseCase;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +17,14 @@ class AccountDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account = retrievalUseCase.findByUsername(username);
-        return User
-                .withUsername(account.getUsername())
-                .password(account.getPasswordEncrypted())
-                .build();
+        try {
+            Account account = retrievalUseCase.findByUsername(username);
+            return User
+                    .withUsername(account.getUsername())
+                    .password(account.getPasswordEncrypted())
+                    .build();
+        } catch (AccountNotFoundException e) {
+            throw new UsernameNotFoundException(e.getMessage());
+        }
     }
 }

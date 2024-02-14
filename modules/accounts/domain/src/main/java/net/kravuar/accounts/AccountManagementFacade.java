@@ -26,7 +26,7 @@ public class AccountManagementFacade implements AccountManagementUseCase {
                 .emailVerified(false)
                 .passwordEncrypted(passwordEncoderPort.encode(command.password()))
                 .build());
-        notificationPort.onAccountCreation(created.getId(), created.getUsername(), created.getEmail());
+        notificationPort.onAccountCreation(created.getId(), created.getUsername(), created.getEmail(), false);
         return created;
     }
 

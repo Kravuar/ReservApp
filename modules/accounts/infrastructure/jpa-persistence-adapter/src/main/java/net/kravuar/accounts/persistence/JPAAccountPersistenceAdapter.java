@@ -22,6 +22,14 @@ class JPAAccountPersistenceAdapter implements AccountPersistencePort {
     }
 
     @Override
+    public Account findByUsername(String username) {
+        return accountRepository
+                .findByUsername(username)
+                .map(accountMapper::toDomain)
+                .orElseThrow(AccountNotFoundException::new);
+    }
+
+    @Override
     public Account save(Account account) throws UsernameAlreadyTakenException {
         return accountMapper.toDomain(accountRepository
                 .save(accountMapper.toModel(account))
