@@ -1,19 +1,17 @@
 version: '3'
 services:
   reservapp:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        DB_URL: jdbc:mysql://mysql:3306/reservapp-db
-        DB_USERNAME: root
-        DB_PASSWORD: reservappdbpass
-
-#        TODO: Configure SMTP
-#        MAIL_HOST:
-#        MAIL_PORT:
-#        MAIL_USERNAME:
-#        MAIL_PASSWORD:
+    build: ./Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/reservapp-db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: reservappdbpass
+#      SPRING_MAIL_HOST:
+#      SPRING_MAIL_PORT:
+#      SPRING_MAIL_USERNAME:
+#      SPRING_MAIL_PASSWORD:
+#      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH:
+#      SPRING_MAIL_PROPERTIES_MAIL_STARTTLS:
     ports:
       - "8080" # Accessible from outside (no external port assigned yet)
     networks:

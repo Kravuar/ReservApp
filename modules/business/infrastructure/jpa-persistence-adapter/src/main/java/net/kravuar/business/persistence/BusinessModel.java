@@ -14,6 +14,9 @@ class BusinessModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id private Long id;
 
+    @ManyToOne
+    private OwnerModel ownerModel;
+
     @Column private String name;
-    @Column private String email;
+    @Column boolean active;
 }

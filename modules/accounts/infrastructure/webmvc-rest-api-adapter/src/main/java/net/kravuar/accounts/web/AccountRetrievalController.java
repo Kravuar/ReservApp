@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 class AccountRetrievalController {
     private final AccountRetrievalUseCase retrieval;
-    private final AccountMapper mapper;
+    private final AccountDTOMapper mapper;
 
     @GetMapping("/by-id/{id}")
     AccountDTO findById(@PathVariable long id) {

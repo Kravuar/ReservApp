@@ -3,8 +3,8 @@ services:
   mysql:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: business-pass
-      MYSQL_DATABASE: business
+      MYSQL_ROOT_PASSWORD: reservapppass
+      MYSQL_DATABASE: reservapp
     volumes:
       - db:/var/lib/mysql
     ports:

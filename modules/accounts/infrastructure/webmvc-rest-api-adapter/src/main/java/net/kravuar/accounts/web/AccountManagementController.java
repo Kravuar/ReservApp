@@ -22,7 +22,7 @@ import static net.kravuar.accounts.web.Util.onAuth;
 class AccountManagementController {
     private final AccountManagementUseCase management;
     private final AuthenticationHandler authenticationHandler;
-    private final AccountMapper mapper;
+    private final AccountDTOMapper mapper;
 
     @GetMapping("/create")
     AccountDTO create(@RequestBody AccountCreationCommand command, HttpServletRequest request, HttpServletResponse response) {

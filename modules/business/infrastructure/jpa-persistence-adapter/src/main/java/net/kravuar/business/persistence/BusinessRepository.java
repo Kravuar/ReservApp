@@ -7,6 +7,5 @@ import java.util.Optional;
 
 @Repository
 interface BusinessRepository extends JpaRepository<BusinessModel, Long> {
-    Optional<BusinessModel> findByEmail(String email);
-    boolean existsByEmail(String email);
+    boolean existsByName(String name);
 }

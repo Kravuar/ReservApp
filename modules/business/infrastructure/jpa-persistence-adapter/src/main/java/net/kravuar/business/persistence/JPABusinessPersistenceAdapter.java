@@ -20,15 +20,8 @@ class JPABusinessPersistenceAdapter implements BusinessPersistencePort {
     }
 
     @Override
-    public Business findByEmail(String email) {
-        return businessRepository.findByEmail(email)
-                .map(businessMapper::toDomain)
-                .orElseThrow(BusinessNotFoundException::new);
-    }
-
-    @Override
-    public boolean existsByEmail(String email) {
-        return businessRepository.existsByEmail(email);
+    public boolean existsByName(String name) {
+        return businessRepository.existsByName(name);
     }
 
     @Override

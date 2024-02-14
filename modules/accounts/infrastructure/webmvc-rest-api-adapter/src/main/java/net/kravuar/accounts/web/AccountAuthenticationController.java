@@ -22,7 +22,7 @@ import static net.kravuar.accounts.web.Util.onAuth;
 class AccountAuthenticationController {
     private final AccountAuthenticationUseCase authentication;
     private final AuthenticationHandler authenticationHandler;
-    private final AccountMapper mapper;
+    private final AccountDTOMapper mapper;
 
     @GetMapping("/sign-in/username")
     AccountDTO signInUsername(@RequestBody AccountSignInByUsernameCommand command, HttpServletRequest request, HttpServletResponse response) {

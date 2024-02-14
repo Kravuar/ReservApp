@@ -19,6 +19,7 @@
         <option value="$PROJECT_DIR$/commons/reservapp-security-core/pom.xml" />
         <option value="$PROJECT_DIR$/domain/pom.xml" />
         <option value="$PROJECT_DIR$/infrastructure/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/business/infrastructure/jpa-account-checking-adapter/pom.xml" />
       </set>
     </option>
     <option name="workspaceImportForciblyTurnedOn" value="true" />
