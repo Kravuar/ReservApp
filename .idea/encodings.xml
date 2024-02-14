@@ -29,10 +29,12 @@
     <file url="file://$PROJECT_DIR$/modules/accounts/accounts-starter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/domain/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/domain/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/bcrypt-password-encoder-adapter/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/bcrypt-password-encoder-adapter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/authorization-server-config/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/authorization-server-config/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/bcrypt-password-encoder/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/bcrypt-password-encoder/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/delegating-password-encoder-adapter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/delegating-password-encoder-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/digest-code-generator-adapter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/digest-code-generator-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/fake-email-sending-adapter/src/main/java" charset="UTF-8" />
@@ -51,8 +53,6 @@
     <file url="file://$PROJECT_DIR$/modules/accounts/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/untitled/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/untitled/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/modules/authorization-server/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/modules/authorization-server/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/business/business-app/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/business/business-app/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/business/business-starter/src/main/java" charset="UTF-8" />
