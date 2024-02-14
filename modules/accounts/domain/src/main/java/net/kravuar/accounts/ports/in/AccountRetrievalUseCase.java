@@ -12,4 +12,13 @@ public interface AccountRetrievalUseCase {
      * @throws AccountNotFoundException if the account wasn't found
      */
     Account findById(long id);
+
+    /**
+     * Find account by username.
+     *
+     * @param username the username of the account to find
+     * @return the account associated with the provided username
+     * @throws AccountNotFoundException if the account wasn't found
+     */
+    Account findByUsername(String username);
 }

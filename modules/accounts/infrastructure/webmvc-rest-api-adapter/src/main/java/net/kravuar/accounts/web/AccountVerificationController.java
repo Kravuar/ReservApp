@@ -5,9 +5,9 @@ import net.kravuar.accounts.domain.commands.AccountEmailVerificationCommand;
 import net.kravuar.accounts.domain.commands.AccountSendEmailVerificationCommand;
 import net.kravuar.accounts.domain.exceptions.MessageSendingException;
 import net.kravuar.accounts.ports.in.AccountVerificationUseCase;
-import net.kravuar.security.IdUserDetails;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,17 +21,17 @@ class AccountVerificationController {
     private final AccountVerificationUseCase verification;
 
     @PostMapping("/send-verification")
-    void sendEmailVerificationMessage(@AuthenticationPrincipal IdUserDetails userDetails) throws MessageSendingException {
+    void sendEmailVerificationMessage(@AuthenticationPrincipal Jwt jwt) throws MessageSendingException {
         var command = new AccountSendEmailVerificationCommand(
-                userDetails.getId()
+                jwt.getSubject()
         );
         verification.sendEmailVerificationMessage(command);
     }
 
     @PostMapping("/verify-email")
-    boolean verifyEmail(@AuthenticationPrincipal IdUserDetails userDetails, @RequestBody String code) {
+    boolean verifyEmail(@AuthenticationPrincipal Jwt jwt, @RequestBody String code) {
         var command = new AccountEmailVerificationCommand(
-                userDetails.getId(),
+                jwt.getSubject(),
                 code
         );
         return verification.verifyEmail(command);

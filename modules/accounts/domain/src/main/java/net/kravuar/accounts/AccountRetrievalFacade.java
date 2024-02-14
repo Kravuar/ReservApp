@@ -15,4 +15,9 @@ public class AccountRetrievalFacade implements AccountRetrievalUseCase {
     public Account findById(long id) {
         return persistencePort.findById(id);
     }
+
+    @Override
+    public Account findByUsername(String username) {
+        return persistencePort.findByUsername(username);
+    }
 }

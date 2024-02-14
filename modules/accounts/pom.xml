@@ -16,5 +16,7 @@
     <modules>
         <module>domain</module>
         <module>infrastructure</module>
+        <module>accounts-app</module>
+        <module>infrastructure/kafka-notifier-adapter</module>
     </modules>
 </project>

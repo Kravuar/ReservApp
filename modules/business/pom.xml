@@ -17,5 +17,6 @@
     <modules>
         <module>domain</module>
         <module>infrastructure</module>
+        <module>business-app</module>
     </modules>
 </project>

@@ -11,9 +11,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>app</module>
         <module>commons</module>
         <module>modules</module>
+        <module>modules/authorization-server</module>
     </modules>
 
     <properties>
@@ -22,6 +22,8 @@
         <maven.compiler.version>3.12.1</maven.compiler.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <spring.boot.version>3.2.2</spring.boot.version>
+        <spring.boot.cloud.version>2023.0.0</spring.boot.cloud.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
     </properties>
 
@@ -30,7 +32,14 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>3.2.2</version>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.boot.cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

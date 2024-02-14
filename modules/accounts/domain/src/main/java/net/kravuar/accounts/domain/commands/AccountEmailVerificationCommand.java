@@ -3,6 +3,6 @@ package net.kravuar.accounts.domain.commands;
 import jakarta.validation.constraints.NotBlank;
 
 public record AccountEmailVerificationCommand(
-        long accountId,
+        String username,
         @NotBlank String verificationCode
 ) {}

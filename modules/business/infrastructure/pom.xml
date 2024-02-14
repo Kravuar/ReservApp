@@ -18,7 +18,6 @@
     <modules>
         <module>jpa-persistence-adapter</module>
         <module>webmvc-rest-api-adapter</module>
-        <module>jpa-account-checking-adapter</module>
     </modules>
 
     <dependencies>

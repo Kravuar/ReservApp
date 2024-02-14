@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    active: @spring.profiles.active@
+  kafka:
+    producer:
+      bootstrap-servers: ${KAFKA-SERVER:localhost:9092}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080 # TODO: Hardcoded
+
+account:
+  notification:
+    email-update-topic: ${EMAIL-UPDATE-TOPIC:account-email-update-topic}
+
+server:
+  http2:
+    enabled: true
+  servlet:
+    context-path: /accounts/api-v1
+  port: 8082 # TODO: Hardcoded

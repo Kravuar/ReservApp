@@ -18,7 +18,7 @@
     <modules>
         <module>webmvc-rest-api-adapter</module>
         <module>jpa-persistence-adapter</module>
-        <module>bcrypt-password-encoder-adapter</module>
+        <module>delegating-password-encoder-adapter</module>
         <module>digest-code-generator-adapter</module>
         <module>fake-email-sending-adapter</module>
         <module>smtp-email-sending-adapter</module>

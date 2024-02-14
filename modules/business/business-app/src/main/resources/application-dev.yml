@@ -1,0 +1,18 @@
+spring:
+  docker:
+    compose:
+      enabled: true
+      file: classpath:/dev/docker-compose.yml
+      lifecycle-management: start_only
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:/dev/data.sql

@@ -12,13 +12,17 @@
       <set>
         <option value="$PROJECT_DIR$/accounts/accounts-starter/pom.xml" />
         <option value="$PROJECT_DIR$/accounts/infrastructure/bcrypt-password-encoder/pom.xml" />
+        <option value="$PROJECT_DIR$/app/pom.xml" />
         <option value="$PROJECT_DIR$/business/business-starter/pom.xml" />
         <option value="$PROJECT_DIR$/business/infrastructure/fake-email-verification-adapter/pom.xml" />
         <option value="$PROJECT_DIR$/business/infrastructure/h2-persistence-adapter/pom.xml" />
         <option value="$PROJECT_DIR$/business/infrastructure/web-client-account-checking-adapter/pom.xml" />
+        <option value="$PROJECT_DIR$/commons/infrastructure-security-core/pom.xml" />
+        <option value="$PROJECT_DIR$/commons/infrastructure-security-jwt/pom.xml" />
         <option value="$PROJECT_DIR$/commons/reservapp-security-core/pom.xml" />
         <option value="$PROJECT_DIR$/domain/pom.xml" />
         <option value="$PROJECT_DIR$/infrastructure/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/accounts/untitled/pom.xml" />
         <option value="$PROJECT_DIR$/modules/business/infrastructure/jpa-account-checking-adapter/pom.xml" />
       </set>
     </option>

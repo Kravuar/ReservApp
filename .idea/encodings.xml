@@ -23,6 +23,8 @@
     <file url="file://$PROJECT_DIR$/domain/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/infrastructure/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/infrastructure/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/accounts/accounts-app/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/accounts/accounts-app/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/accounts-starter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/accounts-starter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/domain/src/main/java" charset="UTF-8" />
@@ -37,13 +39,22 @@
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/fake-email-sending-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/jpa-persistence-adapter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/jpa-persistence-adapter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/kafka-notifier-adapter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/kafka-notifier-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/smtp-email-sending-adapter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/smtp-email-sending-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/webmvc-rest-api-adapter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/webmvc-rest-api-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/accounts/untitled/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/accounts/untitled/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/authorization-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/authorization-server/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/business/business-app/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/business/business-app/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/business/business-starter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/business/business-starter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/business/domain/src/main/java" charset="UTF-8" />
@@ -62,6 +73,8 @@
     <file url="file://$PROJECT_DIR$/modules/business/infrastructure/webmvc-rest-api/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/business/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/business/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/gateway/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />

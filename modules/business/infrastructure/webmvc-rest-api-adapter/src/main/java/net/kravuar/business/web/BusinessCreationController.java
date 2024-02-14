@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import net.kravuar.business.domain.Business;
 import net.kravuar.business.domain.commands.BusinessCreationCommand;
 import net.kravuar.business.ports.in.BusinessCreationUseCase;
-import net.kravuar.security.IdUserDetails;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +22,9 @@ class BusinessCreationController {
 
     @PostMapping("/create")
     @PreAuthorize("isAuthenticated()")
-    public Business create(@AuthenticationPrincipal IdUserDetails principal, @RequestBody String name) {
+    public Business create(@AuthenticationPrincipal Jwt jwt, @RequestBody String name) {
         var command = new BusinessCreationCommand(
-                principal.getId(),
+                jwt.getClaim("id"),
                 name
         );
         return businessCreation.create(command);

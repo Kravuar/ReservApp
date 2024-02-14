@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/account/retrieval")
-//@CrossOrigin(origins = "only the server can access it") TODO: idk how to do that
 @RequiredArgsConstructor
 class AccountRetrievalController {
     private final AccountRetrievalUseCase retrieval;

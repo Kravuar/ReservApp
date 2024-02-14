@@ -25,31 +25,6 @@ public interface AccountPersistencePort {
     Account findByUsername(String username);
 
     /**
-     * Find account by email.
-     *
-     * @param email email of the account to find
-     * @return {@link Account} associated the with provided email
-     * @throws AccountNotFoundException if account wasn't found
-     */
-    Account findByEmail(String email);
-
-    /**
-     * Check whether account exists by username.
-     *
-     * @param username the username to check
-     * @return {@code true} if exists, {@code false} otherwise
-     */
-    boolean existsByUsername(String username);
-
-    /**
-     * Check whether account exists by email.
-     *
-     * @param email the email to check
-     * @return {@code true} if exists, {@code false} otherwise
-     */
-    boolean existsByEmail(String email);
-
-    /**
      * Save account.
      *
      * @param account the account to save
