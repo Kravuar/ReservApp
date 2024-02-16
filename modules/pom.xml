@@ -26,6 +26,4 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
-
-    <!-- TODO: make authorization server use id for users, add to jwt as id claim-->
 </project>

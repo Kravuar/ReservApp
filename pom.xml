@@ -13,7 +13,6 @@
     <modules>
         <module>commons</module>
         <module>modules</module>
-        <module>modules/authorization-server</module>
     </modules>
 
     <properties>

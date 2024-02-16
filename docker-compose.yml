@@ -1,0 +1,124 @@
+version: '4.27'
+services:
+  ##############################
+  ###     INFRASTRUCTURE     ###
+  ##############################
+  reservapp-gateway:
+    build:
+      context: ./
+      args:
+        MODULE_NAME: 'gateway'
+        BUILD_MODULE_RELATIVE_PATH: ''
+    ports:
+      - "8080:8080"
+    networks:
+      - infrastructure-network
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    expose:
+      - "2181"
+    networks:
+      - kafka-network
+      - infrastructure-network
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    expose:
+      - "9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    networks:
+      - kafka-network
+      - infrastructure-network
+
+
+  ##############################
+  ###        ACCOUNTS        ###
+  ##############################
+  reservapp-accounts:
+    depends_on:
+      - accounts-db
+      - kafka
+    build:
+      context: ./
+      args:
+        MODULE_NAME: 'accounts'
+        BUILD_MODULE_RELATIVE_PATH: 'accounts-app'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://accounts-db:3306/accounts-db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: accounts-pass
+      KAFKA-SERVER: http://kafka:9092
+      #SPRING_MAIL_HOST:
+      #SPRING_MAIL_PORT:
+      #SPRING_MAIL_USERNAME:
+      #SPRING_MAIL_PASSWORD:
+      #SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH:
+      #SPRING_MAIL_PROPERTIES_MAIL_STARTTLS:
+    networks:
+      - infrastructure-network
+      - accounts-network
+  accounts-db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: accounts-pass
+      MYSQL_DATABASE: accounts-db
+    volumes:
+      - accounts-db-data:/var/lib/mysql
+    networks:
+      - accounts-network
+
+
+  ##############################
+  ###        BUSINESS        ###
+  ##############################
+  reservapp-business:
+    depends_on:
+      - reservapp-accounts
+      - business-db
+      - kafka
+    build:
+      context: ./
+      args:
+        MODULE_NAME: 'business'
+        BUILD_MODULE_RELATIVE_PATH: 'business-app'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://business-db:3306/business-db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: business-pass
+      KAFKA-SERVER: http://kafka:9092
+    networks:
+      - infrastructure-network
+      - business-network
+  business-db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: business-pass
+      MYSQL_DATABASE: business-db
+    volumes:
+      - business-db-data:/var/lib/mysql
+    networks:
+      - business-network
+
+
+networks:
+  infrastructure-network:
+  accounts-network:
+  business-network:
+  kafka-network:
+
+volumes:
+  accounts-db-data:
+  business-db-data:

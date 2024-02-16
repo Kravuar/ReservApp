@@ -13,7 +13,7 @@
             <include>*:*:*SNAPSHOT</include>
         </into>
         <into layer="modules-dependencies">
-            <include>net.kravuar.accounts:*:*</include>
+            <include>net.kravuar.gateway:*:*</include>
         </into>
         <into layer="dependencies"/>
     </dependencies>
