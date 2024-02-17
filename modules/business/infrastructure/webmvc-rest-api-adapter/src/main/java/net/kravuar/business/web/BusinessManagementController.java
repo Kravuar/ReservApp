@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/business/management")
+@RequestMapping("/management")
 @RequiredArgsConstructor
 class BusinessManagementController {
     private final BusinessManagementUseCase businessManagement;

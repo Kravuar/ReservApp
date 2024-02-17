@@ -9,7 +9,7 @@ VALUES (1, true),
        (8, false),
        (9, false);
 
-INSERT INTO business (name, ownerId)
+INSERT INTO business (name, owner_id)
 VALUES ('ABC Company', 1),
        ('XYZ Corporation', 2),
        ('123 Enterprises', 3),

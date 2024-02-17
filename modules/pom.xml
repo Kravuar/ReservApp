@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>net.kravuar.modules</groupId>
-    <artifactId>root</artifactId>
+    <artifactId>modules-root</artifactId>
     <packaging>pom</packaging>
 
     <modules>

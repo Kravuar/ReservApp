@@ -19,14 +19,14 @@ public class GatewayServer {
         return rlb
                 .routes()
                 .route(rs -> rs
-                        .path("/**")
+                        .path("/accounts/**")
                         .filters(GatewayFilterSpec::tokenRelay)
-                        .uri("http://localhost:8082") // accounts
+                        .uri("http://accounts:8081") // accounts
                 )
                 .route(rs -> rs
-                        .path("/**")
+                        .path("/business/**")
                         .filters(GatewayFilterSpec::tokenRelay)
-                        .uri("http://localhost:8083") // business
+                        .uri("http://business:8082") // business
                 )
                 .build();
         // TODO: remove hardcoded

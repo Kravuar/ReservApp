@@ -8,13 +8,10 @@ import net.kravuar.accounts.ports.in.AccountVerificationUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/account/verification")
+@RequestMapping("/verification")
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
 class AccountVerificationController {
@@ -28,8 +25,8 @@ class AccountVerificationController {
         verification.sendEmailVerificationMessage(command);
     }
 
-    @PostMapping("/verify-email")
-    boolean verifyEmail(@AuthenticationPrincipal Jwt jwt, @RequestBody String code) {
+    @PostMapping("/verify-email/{code}")
+    boolean verifyEmail(@AuthenticationPrincipal Jwt jwt, @PathVariable("code") String code) {
         var command = new AccountEmailVerificationCommand(
                 jwt.getSubject(),
                 code

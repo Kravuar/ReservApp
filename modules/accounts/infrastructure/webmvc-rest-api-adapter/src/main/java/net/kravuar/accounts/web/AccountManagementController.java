@@ -12,13 +12,13 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/account/management")
+@RequestMapping("/management")
 @RequiredArgsConstructor
 class AccountManagementController {
     private final AccountManagementUseCase management;
     private final AccountDTOMapper mapper;
 
-    @GetMapping("/create")
+    @PostMapping("/create")
     AccountDTO create(@RequestBody AccountCreationCommand command) {
         Account account = management.createAccount(command);
         return mapper.toDto(account);

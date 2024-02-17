@@ -1,5 +1,5 @@
 # password is 'password'
-INSERT INTO account (username, email, 'email-verified', 'password-encrypted')
+INSERT INTO account (username, email, `email_verified`, `password_encrypted`)
 VALUES ('beb1', 'beb1@bebmail.ru', true, '{bcrypt}$2a$10$J2C5HX2/QTY4qVE0tKaStOSLJ8Tyet6v.MSJ5xhbgPDjJwIReJWXa'),
        ('beb2', 'beb2@bebmail.ru', true, '{bcrypt}$2a$10$J2C5HX2/QTY4qVE0tKaStOSLJ8Tyet6v.MSJ5xhbgPDjJwIReJWXa'),
        ('beb3', 'beb3@bebmail.ru', false, '{bcrypt}$2a$10$J2C5HX2/QTY4qVE0tKaStOSLJ8Tyet6v.MSJ5xhbgPDjJwIReJWXa'),

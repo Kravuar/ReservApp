@@ -3,24 +3,25 @@ services:
   ##############################
   ###     INFRASTRUCTURE     ###
   ##############################
-  reservapp-gateway:
+  gateway:
+    depends_on:
+      accounts:
+        condition: service_healthy
     build:
       context: ./
       args:
         MODULE_NAME: 'gateway'
-        BUILD_MODULE_RELATIVE_PATH: ''
+        BUILD_MODULE_PATH: 'gateway'
     ports:
       - "8080:8080"
     networks:
       - infrastructure-network
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
-    environment:
-      ZOOKEEPER_SERVER_ID: 1
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
     expose:
       - "2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
     networks:
       - kafka-network
       - infrastructure-network
@@ -32,10 +33,10 @@ services:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
@@ -47,20 +48,28 @@ services:
   ##############################
   ###        ACCOUNTS        ###
   ##############################
-  reservapp-accounts:
+  accounts:
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8090/actuator/health > /dev/null || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
     depends_on:
-      - accounts-db
       - kafka
+      - accounts-db
     build:
       context: ./
       args:
         MODULE_NAME: 'accounts'
-        BUILD_MODULE_RELATIVE_PATH: 'accounts-app'
+        BUILD_MODULE_PATH: 'accounts/accounts-app'
+    ports:
+      - "8081:8081"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://accounts-db:3306/accounts-db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: accounts-pass
-      KAFKA-SERVER: http://kafka:9092
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: http://kafka:9092
       #SPRING_MAIL_HOST:
       #SPRING_MAIL_PORT:
       #SPRING_MAIL_USERNAME:
@@ -84,21 +93,21 @@ services:
   ##############################
   ###        BUSINESS        ###
   ##############################
-  reservapp-business:
+  business:
     depends_on:
-      - reservapp-accounts
-      - business-db
       - kafka
+      - accounts
+      - business-db
     build:
       context: ./
       args:
         MODULE_NAME: 'business'
-        BUILD_MODULE_RELATIVE_PATH: 'business-app'
+        BUILD_MODULE_PATH: 'business/business-app'
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://business-db:3306/business-db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: business-pass
-      KAFKA-SERVER: http://kafka:9092
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: http://kafka:9092
     networks:
       - infrastructure-network
       - business-network

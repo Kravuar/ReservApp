@@ -9,13 +9,17 @@ ENV BUILD_MODULE_PATH=modules/$BUILD_MODULE_PATH
 WORKDIR /app
 COPY pom.xml .
 COPY commons ./commons
+COPY .mvn ./.mvn
+COPY mvnw ./mvnw
+COPY mvnw.cmd ./mvnw.cmd
 COPY modules/pom.xml ./modules/
 COPY modules/${MODULE_NAME} ./modules/${MODULE_NAME}
 
-RUN mv ./$BUILD_MODULE_PATH/target/*.jar ./app.jar
-RUN java -Djarmode=layertools -jar ./app.jar extract
+# This fails likely due to docker network issues (corrupted wrapper archive)
+RUN --mount=type=cache,target=/root/.m2 ./mvnw -f ./$BUILD_MODULE_PATH/pom.xml clean package -Dmaven.test.skip -X
+RUN mv ./$BUILD_MODULE_PATH/target/*.jar ./app/app.jar
+RUN java -Djarmode=layertools -jar ./app/app.jar extract
 
 FROM eclipse-temurin:21-jre-alpine
-RUN apk --no-cache add curl
 COPY --from=builder /app/dependencies/ /app/spring-boot-loader/ /app/modules-dependencies/ /app/snapshot-dependencies/ /app/application/ ./
 CMD ["java", "org.springframework.boot.loader.launch.JarLauncher"]

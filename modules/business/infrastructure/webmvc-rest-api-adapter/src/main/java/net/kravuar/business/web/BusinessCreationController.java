@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/business/creation")
+@RequestMapping("/creation")
 @RequiredArgsConstructor
 class BusinessCreationController {
     private final BusinessCreationUseCase businessCreation;

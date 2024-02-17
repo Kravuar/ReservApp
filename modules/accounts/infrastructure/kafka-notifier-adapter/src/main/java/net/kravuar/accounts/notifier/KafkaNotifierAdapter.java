@@ -1,4 +1,4 @@
-package net.kravuar.notifier;
+package net.kravuar.accounts.notifier;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.accounts.ports.out.NotificationPort;

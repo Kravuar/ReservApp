@@ -2,7 +2,7 @@ spring:
   docker:
     compose:
       enabled: true
-      file: classpath:/dev/docker-compose.yml
+      file: classpath:dev/docker-compose.yml
       lifecycle-management: start_only
   jpa:
     show-sql: true
@@ -14,5 +14,5 @@ spring:
     defer-datasource-initialization: true
   sql:
     init:
+      data-locations: classpath:data.sql
       mode: always
-      data-locations: classpath:/dev/data.sql
