@@ -24,7 +24,7 @@ class BusinessCreationController {
     @PreAuthorize("isAuthenticated()")
     public Business create(@AuthenticationPrincipal Jwt jwt, @RequestBody String name) {
         var command = new BusinessCreationCommand(
-                jwt.getClaim("id"),
+                jwt.getSubject(),
                 name
         );
         return businessCreation.create(command);
