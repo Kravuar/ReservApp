@@ -9,4 +9,5 @@
                 enabled: true 
     ```
    doesn't do anything by itself, even providing a csrf endpoint / cookieRepository configuration
-   fails as csrf filter does some incorrect encoding/decoding for tokens 
+   fails as csrf filter does some incorrect encoding/decoding for tokens
+5. Create guide for configuring okta.dev

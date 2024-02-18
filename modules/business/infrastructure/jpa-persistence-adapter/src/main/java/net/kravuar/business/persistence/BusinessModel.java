@@ -12,11 +12,13 @@ import lombok.*;
 @AllArgsConstructor
 class BusinessModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id private Long id;
+    @Id
+    private Long id;
 
-    @ManyToOne
-    private OwnerModel ownerModel;
-
-    @Column private String name;
-    @Column boolean active;
+    @Column(nullable = false)
+    private String ownerSub;
+    @Column
+    private String name;
+    @Column
+    boolean active;
 }

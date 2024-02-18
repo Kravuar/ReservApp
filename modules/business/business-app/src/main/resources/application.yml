@@ -1,19 +1,8 @@
 spring:
   profiles:
     active: @spring.profiles.active@
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://accounts:8081/accounts/api-v1 # TODO: Hardcoded
 
 server:
-  http2:
-    enabled: true
   servlet:
     context-path: /business/api-v1
-  port: 8082 # TODO: Hardcoded
-
-management:
-  server:
-    port: 8090
+  port: 8081 # TODO: Hardcoded

@@ -1,8 +1,7 @@
 package net.kravuar.accounts.web;
 
 record AccountDTO(
-        long id,
+        String sub,
         String username,
-        String email,
-        boolean emailVerified
+        String email
 ) {}

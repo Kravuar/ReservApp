@@ -9,6 +9,6 @@ import lombok.Setter;
 @Builder
 public class Business {
     private final Long id;
-    private final long ownerId;
+    private final String ownerSub;
     private String name;
 }

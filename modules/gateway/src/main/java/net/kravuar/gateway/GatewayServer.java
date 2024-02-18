@@ -3,7 +3,6 @@ package net.kravuar.gateway;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
-import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 
@@ -19,14 +18,12 @@ public class GatewayServer {
         return rlb
                 .routes()
                 .route(rs -> rs
-                        .path("/accounts/**")
-                        .filters(GatewayFilterSpec::tokenRelay)
-                        .uri("http://accounts:8081") // accounts
+                        .path("/business/**")
+                        .uri("http://business:8081")
                 )
                 .route(rs -> rs
-                        .path("/business/**")
-                        .filters(GatewayFilterSpec::tokenRelay)
-                        .uri("http://business:8082") // business
+                        .path("/accounts/**")
+                        .uri("http://accounts:8082")
                 )
                 .build();
         // TODO: remove hardcoded

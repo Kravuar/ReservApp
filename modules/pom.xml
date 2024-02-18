@@ -14,9 +14,9 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>gateway</module>
         <module>business</module>
         <module>accounts</module>
-        <module>gateway</module>
     </modules>
 
     <dependencies>

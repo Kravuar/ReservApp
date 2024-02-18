@@ -4,90 +4,43 @@ services:
   ###     INFRASTRUCTURE     ###
   ##############################
   gateway:
-    depends_on:
-      accounts:
-        condition: service_healthy
     build:
       context: ./
       args:
-        MODULE_NAME: 'gateway'
+        MODULE_PATH: 'gateway'
         BUILD_MODULE_PATH: 'gateway'
     ports:
       - "8080:8080"
     networks:
       - infrastructure-network
-  zookeeper:
-    image: confluentinc/cp-zookeeper:latest
-    expose:
-      - "2181"
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-    networks:
-      - kafka-network
-      - infrastructure-network
-  kafka:
-    image: confluentinc/cp-kafka:latest
-    expose:
-      - "9092"
-    depends_on:
-      - zookeeper
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_LISTENERS: PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-    networks:
-      - kafka-network
-      - infrastructure-network
+#  zookeeper:
+#    image: confluentinc/cp-zookeeper:latest
+#    expose:
+#      - "2181"
+#    environment:
+#      ZOOKEEPER_CLIENT_PORT: 2181
+#    networks:
+#      - kafka-network
+#      - infrastructure-network
+#  kafka:
+#    image: confluentinc/cp-kafka:latest
+#    expose:
+#      - "9092"
+#    depends_on:
+#      - zookeeper
+#    environment:
+#      KAFKA_BROKER_ID: 1
+#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+#      KAFKA_LISTENERS: PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+#      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+#    networks:
+#      - kafka-network
+#      - infrastructure-network
 
-
-  ##############################
-  ###        ACCOUNTS        ###
-  ##############################
-  accounts:
-    healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:8090/actuator/health > /dev/null || exit 1" ]
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 20s
-    depends_on:
-      - kafka
-      - accounts-db
-    build:
-      context: ./
-      args:
-        MODULE_NAME: 'accounts'
-        BUILD_MODULE_PATH: 'accounts/accounts-app'
-    ports:
-      - "8081:8081"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://accounts-db:3306/accounts-db
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: accounts-pass
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: http://kafka:9092
-      #SPRING_MAIL_HOST:
-      #SPRING_MAIL_PORT:
-      #SPRING_MAIL_USERNAME:
-      #SPRING_MAIL_PASSWORD:
-      #SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH:
-      #SPRING_MAIL_PROPERTIES_MAIL_STARTTLS:
-    networks:
-      - infrastructure-network
-      - accounts-network
-  accounts-db:
-    image: mysql:latest
-    environment:
-      MYSQL_ROOT_PASSWORD: accounts-pass
-      MYSQL_DATABASE: accounts-db
-    volumes:
-      - accounts-db-data:/var/lib/mysql
-    networks:
-      - accounts-network
 
 
   ##############################
@@ -95,19 +48,24 @@ services:
   ##############################
   business:
     depends_on:
-      - kafka
-      - accounts
+#      - kafka
       - business-db
     build:
       context: ./
       args:
-        MODULE_NAME: 'business'
+        MODULE_PATH: 'business'
         BUILD_MODULE_PATH: 'business/business-app'
+    expose:
+      - "8081"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://business-db:3306/business-db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: business-pass
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: http://kafka:9092
+      OKTA_OAUTH2_ISSUER: ${OKTA_OAUTH2_ISSUER}
+      OKTA_OAUTH2_CLIENTID: ${OKTA_OAUTH2_CLIENTID}
+      OKTA_OAUTH2_CLIENTSECRET: ${OKTA_OAUTH2_CLIENTSECRET}
+      OKTA_OAUTH2_SCOPES: ${OKTA_OAUTH2_SCOPES}
+#      SPRING_KAFKA_BOOTSTRAP_SERVERS: http://kafka:9092
     networks:
       - infrastructure-network
       - business-network
@@ -122,12 +80,30 @@ services:
       - business-network
 
 
+
+  ##############################
+  ###        ACCOUNTS        ###
+  ##############################
+  accounts:
+    build:
+      context: ./
+      args:
+        MODULE_PATH: 'accounts'
+        BUILD_MODULE_PATH: 'accounts/accounts-app'
+    environment:
+      OKTA_CLIENT_ORGURL: ${OKTA_CLIENT_ORGURL}
+      OKTA_CLIENT_TOKEN: ${OKTA_CLIENT_TOKEN}
+    expose:
+      - "8082"
+    networks:
+      - infrastructure-network
+
+
+
 networks:
   infrastructure-network:
-  accounts-network:
   business-network:
   kafka-network:
 
 volumes:
-  accounts-db-data:
   business-db-data:

@@ -16,5 +16,6 @@
 
     <modules>
         <module>context</module>
+        <module>resource-server</module>
     </modules>
 </project>

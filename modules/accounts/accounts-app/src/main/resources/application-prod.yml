@@ -1,9 +1,0 @@
-logging:
-  level:
-    org:
-      springframework: ERROR
-
-account:
-  notification:
-    email-update-topic: ${EMAIL-UPDATE-TOPIC:account-email-update-topic}
-    account-create-topic: ${ACCOUNT-CREATE-TOPIC:account-create-topic}

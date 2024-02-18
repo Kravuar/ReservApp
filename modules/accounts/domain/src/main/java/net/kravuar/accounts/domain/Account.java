@@ -8,9 +8,10 @@ import lombok.Setter;
 @Getter
 @Builder
 public class Account {
-    private final long id;
+    private final String sub;
     private String username;
+    private String firstName;
+    private String lastName;
     private String email;
-    private boolean emailVerified;
-    private String passwordEncrypted;
+    private String password;
 }

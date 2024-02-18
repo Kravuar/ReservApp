@@ -7,6 +7,7 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/app/pom.xml" />
         <option value="$PROJECT_DIR$/modules/accounts/infrastructure/fake-notifier-adapter/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/resource-servers/accounts/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
@@ -26,6 +27,13 @@
         <option value="$PROJECT_DIR$/modules/accounts/infrastructure/authorization-server-config/pom.xml" />
         <option value="$PROJECT_DIR$/modules/accounts/untitled/pom.xml" />
         <option value="$PROJECT_DIR$/modules/business/infrastructure/jpa-account-checking-adapter/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/resource-servers/accounts/infrastructure/delegating-password-encoder-adapter/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/resource-servers/accounts/infrastructure/digest-code-generator-adapter/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/resource-servers/accounts/infrastructure/fake-email-sending-adapter/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/resource-servers/accounts/infrastructure/kafka-notifier-adapter/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/resource-servers/accounts/infrastructure/okta-api-persistence-adapter/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/resource-servers/accounts/infrastructure/smtp-email-sending-adapter/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/resource-servers/pom.xml" />
       </set>
     </option>
   </component>

@@ -1,19 +1,5 @@
 package net.kravuar.business;
 
-import jakarta.validation.Validation;
-import jakarta.validation.ValidatorFactory;
-import jakarta.validation.executable.ExecutableValidator;
-import net.kravuar.business.domain.Business;
-import net.kravuar.business.domain.commands.BusinessChangeNameCommand;
-import net.kravuar.business.ports.out.BusinessPersistencePort;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
 class BusinessManagementFacadeTest {
 //    private BusinessPersistencePort businessPersistencePort;
 //    private EmailVerificationPort emailVerificationPort;

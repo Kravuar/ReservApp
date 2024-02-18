@@ -1,5 +1,0 @@
-email:
-  subject: "ReservApp NoREPLY"
-  template: | 
-    This is a NoReply message from ReservApp:
-    {0}

@@ -16,7 +16,7 @@ class BusinessManagementController {
 
     // Only if the requested business owner matches authentication
     @PostMapping("/change-name")
-    @PreAuthorize("isAuthenticated() && businessRetrievalFacade.findById(#command.businessId()).ownerId == authentication.principal.id")
+    @PreAuthorize("isAuthenticated() && businessRetrievalFacade.findById(#command.businessId()).ownerSub.equals(authentication.details.ownerSubject)")
     public void changeName(BusinessChangeNameCommand command) {
         businessManagement.changeName(command);
     }
