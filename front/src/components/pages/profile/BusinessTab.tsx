@@ -3,6 +3,76 @@ import { Box, Pagination } from "@mui/material";
 import { faker } from "@faker-js/faker";
 import BusinessCard, { BusinessData } from "../../parts/BusinessCard";
 
+import { useOktaAuth} from "@okta/okta-react";
+import axios from "axios";
+
+interface Business {
+  id: number,
+  name: string,
+  ownerSub: string
+}
+
+function Test() {
+  const { authState } = useOktaAuth();
+  const [authorizedEntities, setAuthorizedEntities] = useState<Business[]>([]);
+  const [nonAuthorizedEntities, setNonAuthorizedEntities] = useState<Business[]>([]);
+
+  useEffect(() => {
+    const fetchAuthorizedEntities = async () => {
+      try {
+        if (authState?.isAuthenticated && authState.accessToken) {
+          const response = await axios.get(`${process.env.REACT_APP_BACKEND}/business/api-v1/retrieval/my`, {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${authState.accessToken.accessToken}`
+            }
+          });
+          setAuthorizedEntities(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching authorized entities:', error);
+      }
+    };
+
+    const fetchNonAuthorizedEntities = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND}/business/api-v1/retrieval/active`, {withCredentials: true});
+        setNonAuthorizedEntities(response.data);
+      } catch (error) {
+        console.error('Error fetching non-authorized entities:', error);
+      }
+    };
+
+    if (authState?.isAuthenticated) {
+      fetchAuthorizedEntities();
+    }
+
+    fetchNonAuthorizedEntities();
+  }, [authState]);
+
+  return (
+    <div>
+      <h2>Authorized Entities</h2>
+      <ul>
+        {authorizedEntities.map(entity => (
+          <li key={entity.id}>
+            {`ID: ${entity.id}, Name: ${entity.name}, Owner Sub: ${entity.ownerSub}`}
+          </li>
+        ))}
+      </ul>
+
+      <h2>Non-Authorized Entities</h2>
+      <ul>
+        {nonAuthorizedEntities.map(entity => (
+          <li key={entity.id}>
+            {`ID: ${entity.id}, Name: ${entity.name}, Owner Sub: ${entity.ownerSub}`}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 interface BusinessListData {
   businesses: BusinessData[];
   totalPages: number;
@@ -70,11 +140,12 @@ export default function BusinessTab() {
           showLastButton
         />
       </Box>
+      <Test/>
       <Box sx={{ overflow: "auto" }}>
         {data?.businesses.map((business) => (
           <BusinessCard key={business.id} business={business} />
         ))}
-      </Box>
+      Test</Box>
       {data?.businesses.length !== undefined && data?.businesses.length > 3 && (
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Pagination

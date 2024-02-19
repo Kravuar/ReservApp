@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 class BusinessManagementController {
     private final BusinessManagementUseCase businessManagement;
 
-    // Only if the requested business owner matches authentication
     @PostMapping("/change-name")
     @PreAuthorize("isAuthenticated() && businessRetrievalFacade.findById(#command.businessId()).ownerSub.equals(authentication.details.ownerSubject)")
     public void changeName(BusinessChangeNameCommand command) {
