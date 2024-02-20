@@ -11,8 +11,3 @@ spring:
     init:
       mode: always
       data-locations: classpath:dev/data.sql
-logging:
-  level:
-    org:
-      springframework:
-        security: TRACE

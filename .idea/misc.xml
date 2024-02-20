@@ -22,6 +22,7 @@
         <option value="$PROJECT_DIR$/commons/infrastructure-security-core/pom.xml" />
         <option value="$PROJECT_DIR$/commons/infrastructure-security-jwt/pom.xml" />
         <option value="$PROJECT_DIR$/commons/reservapp-security-core/pom.xml" />
+        <option value="$PROJECT_DIR$/commons/resource-server/pom.xml" />
         <option value="$PROJECT_DIR$/domain/pom.xml" />
         <option value="$PROJECT_DIR$/infrastructure/pom.xml" />
         <option value="$PROJECT_DIR$/modules/accounts/infrastructure/authorization-server-config/pom.xml" />

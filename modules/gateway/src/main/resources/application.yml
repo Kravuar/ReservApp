@@ -2,3 +2,14 @@ server:
   port: 8080
   http2:
     enabled: true
+
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations: # TODO: Tune this
+          '[/**]':
+            allowed-origins: "*"
+            allowed-headers: "*"
+            allowed-methods: "*"
+        add-to-simple-url-handler-mapping: true

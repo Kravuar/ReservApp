@@ -22,7 +22,6 @@ function Test() {
       try {
         if (authState?.isAuthenticated && authState.accessToken) {
           const response = await axios.get(`${process.env.REACT_APP_BACKEND}/business/api-v1/retrieval/my`, {
-            withCredentials: true,
             headers: {
               Authorization: `Bearer ${authState.accessToken.accessToken}`
             }
@@ -36,7 +35,7 @@ function Test() {
 
     const fetchNonAuthorizedEntities = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND}/business/api-v1/retrieval/active`, {withCredentials: true});
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND}/business/api-v1/retrieval/active`);
         setNonAuthorizedEntities(response.data);
       } catch (error) {
         console.error('Error fetching non-authorized entities:', error);
@@ -71,7 +70,7 @@ function Test() {
       </ul>
     </div>
   );
-};
+}
 
 interface BusinessListData {
   businesses: BusinessData[];
