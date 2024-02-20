@@ -8,6 +8,9 @@
         <option value="$PROJECT_DIR$/app/pom.xml" />
         <option value="$PROJECT_DIR$/modules/accounts/infrastructure/fake-notifier-adapter/pom.xml" />
         <option value="$PROJECT_DIR$/modules/resource-servers/accounts/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/services/infrastructure/jpa-persistence-adapter/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/services/infrastructure/webmvc-rest-api-adapter/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/services/infrastructure/kafka-notification-adapter/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

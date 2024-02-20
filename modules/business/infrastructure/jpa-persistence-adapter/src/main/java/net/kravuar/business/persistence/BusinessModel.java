@@ -19,6 +19,6 @@ class BusinessModel {
     private String ownerSub;
     @Column(unique = true)
     private String name;
-    @Column
+    @Column(nullable = false)
     boolean active;
 }

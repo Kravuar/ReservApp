@@ -18,6 +18,7 @@
     <modules>
         <module>jpa-persistence-adapter</module>
         <module>webmvc-rest-api-adapter</module>
+        <module>kafka-notification-adapter</module>
     </modules>
 
     <dependencies>

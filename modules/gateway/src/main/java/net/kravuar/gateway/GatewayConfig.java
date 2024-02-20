@@ -22,6 +22,10 @@ class GatewayConfig {
                         .path("/accounts/**")
                         .uri("http://accounts:8082")
                 )
+                .route(rs -> rs
+                        .path("/services/**")
+                        .uri("http://services:8083")
+                )
                 .build();
         // TODO: remove hardcoded
     }

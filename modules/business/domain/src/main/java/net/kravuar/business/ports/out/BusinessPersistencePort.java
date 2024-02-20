@@ -2,7 +2,6 @@ package net.kravuar.business.ports.out;
 
 import net.kravuar.business.domain.Business;
 import net.kravuar.business.domain.exceptions.BusinessNameAlreadyTaken;
-import net.kravuar.business.domain.exceptions.BusinessNotFoundException;
 
 public interface BusinessPersistencePort {
     /**

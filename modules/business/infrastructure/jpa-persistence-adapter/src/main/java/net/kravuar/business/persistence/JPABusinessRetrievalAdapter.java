@@ -22,10 +22,11 @@ class JPABusinessRetrievalAdapter implements BusinessRetrievalPort {
     }
 
     @Override
-    public Business findBySub(String sub) {
-        return businessRepository.findByOwnerSub(sub)
+    public List<Business> findActiveBySub(String sub) {
+        return businessRepository.findByOwnerSubAndActiveIsTrue(sub)
+                .stream()
                 .map(businessMapper::toDomain)
-                .orElseThrow(BusinessNotFoundException::new);
+                .toList();
     }
 
     @Override

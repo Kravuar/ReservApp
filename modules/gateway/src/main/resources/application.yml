@@ -13,3 +13,6 @@ spring:
             allowed-headers: "*"
             allowed-methods: "*"
         add-to-simple-url-handler-mapping: true
+
+  mvc:
+    log-request-details: true

@@ -16,13 +16,12 @@ public interface BusinessRetrievalPort {
     Business findById(long id);
 
     /**
-     * Find business by owner sub.
+     * Find active businesses by owner.
      *
      * @param sub sub of the owner
-     * @return {@link Business} associated the with provided businessId
-     * @throws BusinessNotFoundException if the business wasn't found
+     * @return {@link List<Business>} active businesses associated the with provided owner
      */
-    Business findBySub(String sub);
+    List<Business> findActiveBySub(String sub);
 
     /**
      * Find all active.

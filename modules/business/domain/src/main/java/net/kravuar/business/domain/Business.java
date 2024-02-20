@@ -11,4 +11,5 @@ public class Business {
     private final Long id;
     private final String ownerSub;
     private String name;
+    private boolean active;
 }

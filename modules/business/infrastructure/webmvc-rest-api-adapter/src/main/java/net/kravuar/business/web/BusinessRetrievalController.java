@@ -21,22 +21,22 @@ class BusinessRetrievalController {
 
     @GetMapping("/my")
     @PreAuthorize("isAuthenticated()")
-    public Business byCurrentUser(@AuthenticationPrincipal OidcUser user) {
-        return businessRetrievalUseCase.findBySub(user.getSubject());
+    List<Business> byCurrentUser(@AuthenticationPrincipal OidcUser user) {
+        return businessRetrievalUseCase.findActiveBySub(user.getSubject());
     }
 
     @GetMapping("/byId/{id}")
-    public Business byId(@PathVariable("id") long id) {
+    Business byId(@PathVariable("id") long id) {
         return businessRetrievalUseCase.findById(id);
     }
 
     @GetMapping("/byOwner/{sub}")
-    public Business byOwner(@PathVariable("sub") String sub) {
-        return businessRetrievalUseCase.findBySub(sub);
+    List<Business> byOwner(@PathVariable("sub") String sub) {
+        return businessRetrievalUseCase.findActiveBySub(sub);
     }
 
     @GetMapping("/active")
-    public List<Business> active() {
+    List<Business> active() {
         return businessRetrievalUseCase.findAllActive();
     }
 }

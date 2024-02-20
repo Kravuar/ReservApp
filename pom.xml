@@ -13,6 +13,7 @@
     <modules>
         <module>commons</module>
         <module>modules</module>
+        <module>modules/services</module>
     </modules>
 
     <properties>
@@ -67,7 +68,7 @@
                             <path>
                                 <groupId>org.projectlombok</groupId>
                                 <artifactId>lombok</artifactId>
-                                <!-- For some reason it cant see the spring boot BOM's lombok version-->
+                                <!-- For some reason it cant see the spring boot BOM's lombok version -->
                                 <version>1.18.30</version>
                             </path>
                             <path>

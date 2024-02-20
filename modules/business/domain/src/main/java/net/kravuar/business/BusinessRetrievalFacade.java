@@ -12,7 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BusinessRetrievalFacade implements BusinessRetrievalUseCase {
     private final BusinessRetrievalPort businessRetrievalPort;
-    // TODO: Maybe include some criteria like stuff in domain
 
     @Override
     public Business findById(long id) {
@@ -20,8 +19,8 @@ public class BusinessRetrievalFacade implements BusinessRetrievalUseCase {
     }
 
     @Override
-    public Business findBySub(String sub) {
-        return businessRetrievalPort.findBySub(sub);
+    public List<Business> findActiveBySub(String sub) {
+        return businessRetrievalPort.findActiveBySub(sub);
     }
 
     @Override

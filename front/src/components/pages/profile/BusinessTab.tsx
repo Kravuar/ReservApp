@@ -1,44 +1,51 @@
 import React, { useEffect, useState } from "react";
-import { Box, Pagination } from "@mui/material";
+import { Box, Button, Pagination } from "@mui/material";
 import { faker } from "@faker-js/faker";
 import BusinessCard, { BusinessData } from "../../parts/BusinessCard";
 
-import { useOktaAuth} from "@okta/okta-react";
+import { useOktaAuth } from "@okta/okta-react";
 import axios from "axios";
 
 interface Business {
-  id: number,
-  name: string,
-  ownerSub: string
+  id: number;
+  name: string;
+  ownerSub: string;
 }
 
 function Test() {
   const { authState } = useOktaAuth();
   const [authorizedEntities, setAuthorizedEntities] = useState<Business[]>([]);
-  const [nonAuthorizedEntities, setNonAuthorizedEntities] = useState<Business[]>([]);
+  const [nonAuthorizedEntities, setNonAuthorizedEntities] = useState<
+    Business[]
+  >([]);
 
   useEffect(() => {
     const fetchAuthorizedEntities = async () => {
       try {
         if (authState?.isAuthenticated && authState.accessToken) {
-          const response = await axios.get(`${process.env.REACT_APP_BACKEND}/business/api-v1/retrieval/my`, {
-            headers: {
-              Authorization: `Bearer ${authState.accessToken.accessToken}`
+          const response = await axios.get(
+            `${process.env.REACT_APP_BACKEND}/business/api-v1/retrieval/my`,
+            {
+              headers: {
+                Authorization: `Bearer ${authState.accessToken.accessToken}`,
+              },
             }
-          });
+          );
           setAuthorizedEntities(response.data);
         }
       } catch (error) {
-        console.error('Error fetching authorized entities:', error);
+        console.error("Error fetching authorized entities:", error);
       }
     };
 
     const fetchNonAuthorizedEntities = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND}/business/api-v1/retrieval/active`);
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND}/business/api-v1/retrieval/active`
+        );
         setNonAuthorizedEntities(response.data);
       } catch (error) {
-        console.error('Error fetching non-authorized entities:', error);
+        console.error("Error fetching non-authorized entities:", error);
       }
     };
 
@@ -49,11 +56,27 @@ function Test() {
     fetchNonAuthorizedEntities();
   }, [authState]);
 
+  async function onPost() {
+    const response = await axios.post(
+      `${process.env.REACT_APP_BACKEND}/business/api-v1/management/create`,
+      {
+        name: "BEBROVOE INC",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+        },
+      }
+    );
+    console.log(response.data);
+  }
+
   return (
     <div>
       <h2>Authorized Entities</h2>
+      <Button onClick={onPost}>Post</Button>
       <ul>
-        {authorizedEntities.map(entity => (
+        {authorizedEntities.map((entity) => (
           <li key={entity.id}>
             {`ID: ${entity.id}, Name: ${entity.name}, Owner Sub: ${entity.ownerSub}`}
           </li>
@@ -62,7 +85,7 @@ function Test() {
 
       <h2>Non-Authorized Entities</h2>
       <ul>
-        {nonAuthorizedEntities.map(entity => (
+        {nonAuthorizedEntities.map((entity) => (
           <li key={entity.id}>
             {`ID: ${entity.id}, Name: ${entity.name}, Owner Sub: ${entity.ownerSub}`}
           </li>
@@ -139,12 +162,13 @@ export default function BusinessTab() {
           showLastButton
         />
       </Box>
-      <Test/>
+      <Test />
       <Box sx={{ overflow: "auto" }}>
         {data?.businesses.map((business) => (
           <BusinessCard key={business.id} business={business} />
         ))}
-      Test</Box>
+        Test
+      </Box>
       {data?.businesses.length !== undefined && data?.businesses.length > 3 && (
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Pagination

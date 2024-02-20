@@ -7,22 +7,21 @@ import java.util.List;
 
 public interface BusinessRetrievalUseCase {
     /**
-     * Find business by business ID.
+     * Find business by businessId.
      *
-     * @param id the id of the business to find
-     * @return the business associated with the provided ID
-     * @throws BusinessNotFoundException if the business wasn't found
+     * @param id businessId of the business to find
+     * @return {@link Business} associated the with provided businessId
+     * @throws BusinessNotFoundException if business wasn't found
      */
     Business findById(long id);
 
     /**
-     * Find business by owner sub.
+     * Find active businesses by owner sub.
      *
      * @param sub sub of the owner
-     * @return the business associated with the provided sub
-     * @throws BusinessNotFoundException if the business wasn't found
+     * @return {@link List<Business>} active businesses associated the with provided owner
      */
-    Business findBySub(String sub);
+    List<Business> findActiveBySub(String sub);
 
     /**
      * Find all active.
