@@ -1,0 +1,14 @@
+version: '4.27'
+services:
+  business-db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: business-pass
+      MYSQL_DATABASE: business-db
+    ports:
+      - "3306:3306"
+    volumes:
+      - business-db-data:/var/lib/mysql
+
+volumes:
+  business-db-data:

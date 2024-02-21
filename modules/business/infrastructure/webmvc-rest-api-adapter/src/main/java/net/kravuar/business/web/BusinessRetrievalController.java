@@ -5,7 +5,7 @@ import net.kravuar.business.domain.Business;
 import net.kravuar.business.ports.in.BusinessRetrievalUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +21,7 @@ class BusinessRetrievalController {
 
     @GetMapping("/my")
     @PreAuthorize("isAuthenticated()")
-    List<Business> byCurrentUser(@AuthenticationPrincipal OidcUser user) {
+    List<Business> byCurrentUser(@AuthenticationPrincipal Jwt user) {
         return businessRetrievalUseCase.findActiveBySub(user.getSubject());
     }
 

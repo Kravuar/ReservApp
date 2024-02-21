@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @ComponentScan(
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
         }
 )
 @ConfigurationPropertiesScan
-@Transactional
+@EnableTransactionManagement
 class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

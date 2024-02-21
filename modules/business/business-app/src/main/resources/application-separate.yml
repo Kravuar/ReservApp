@@ -1,4 +1,9 @@
 spring:
+  docker:
+    compose:
+      enabled: true
+      lifecycle-management: start_only
+      file: classpath:dev/docker-compose.yml
   jpa:
     show-sql: true
     hibernate:
@@ -18,3 +23,10 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://dev-56760559.okta.com/oauth2/default
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+        web: TRACE

@@ -8,7 +8,7 @@ import net.kravuar.business.domain.commands.BusinessCreationCommand;
 import net.kravuar.business.ports.in.BusinessManagementUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +19,7 @@ class BusinessManagementController {
 
     @PostMapping("/create")
     @PreAuthorize("isAuthenticated()")
-    Business create(@AuthenticationPrincipal OidcUser user, @RequestBody String name) {
+    Business create(@AuthenticationPrincipal Jwt user, @RequestBody String name) {
         var command = new BusinessCreationCommand(
                 user.getSubject(),
                 name
