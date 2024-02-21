@@ -23,13 +23,13 @@ class ServiceManagementController {
 
     @PostMapping("/change-name")
     @PreAuthorize("isAuthenticated() && @serviceRetrievalFacade.findById(#command.serviceId).business.ownerSub.equals(authentication.details.getSubject())")
-    public void changeName(ServiceChangeNameCommand command) {
+    public void changeName(@RequestBody ServiceChangeNameCommand command) {
         serviceManagement.changeName(command);
     }
 
     @PutMapping("/change-active")
     @PreAuthorize("isAuthenticated() && @serviceRetrievalFacade.findById(#command.serviceId).business.ownerSub.equals(authentication.details.getSubject())")
-    public void changeName(ServiceChangeActiveCommand command) {
+    public void changeName(@RequestBody ServiceChangeActiveCommand command) {
         serviceManagement.changeActive(command);
     }
 }

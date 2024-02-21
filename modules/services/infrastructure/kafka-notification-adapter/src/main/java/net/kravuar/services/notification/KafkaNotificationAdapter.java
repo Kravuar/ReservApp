@@ -1,6 +1,8 @@
 package net.kravuar.services.notification;
 
 import lombok.RequiredArgsConstructor;
+import net.kravuar.integration.services.ServiceActivityChangeDTO;
+import net.kravuar.integration.services.ServiceCreationDTO;
 import net.kravuar.services.domain.Service;
 import net.kravuar.services.ports.out.ServiceNotificationPort;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -15,8 +17,8 @@ class KafkaNotificationAdapter implements ServiceNotificationPort {
     @Override
     public void notifyNewService(Service service) {
         this.template.send(
-                kafkaProps.getServiceCreationTopic(),
-                new ServiceCreationMessage(
+                kafkaProps.getTopic(),
+                new ServiceCreationDTO(
                         service.getId(),
                         service.getBusiness().getId(),
                         service.isActive()
@@ -27,22 +29,11 @@ class KafkaNotificationAdapter implements ServiceNotificationPort {
     @Override
     public void notifyServiceActiveChanged(Service service) {
         this.template.send(
-                kafkaProps.getServiceActivityChangedTopic(),
-                new ServiceActivityChangedMessage(
+                kafkaProps.getTopic(),
+                new ServiceActivityChangeDTO(
                         service.getId(),
                         service.isActive()
                 )
         );
     }
-
-    record ServiceCreationMessage(
-            long id,
-            long serviceId,
-            boolean active
-    ) {}
-
-    record ServiceActivityChangedMessage(
-            long id,
-            boolean active
-    ) {}
 }

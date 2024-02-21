@@ -19,23 +19,23 @@ class BusinessManagementController {
 
     @PostMapping("/create")
     @PreAuthorize("isAuthenticated()")
-    Business create(@AuthenticationPrincipal Jwt user, @RequestBody String name) {
+    Business create(@AuthenticationPrincipal Jwt user, @RequestBody BusinessCreationDTO businessCreation) {
         var command = new BusinessCreationCommand(
                 user.getSubject(),
-                name
+                businessCreation.name()
         );
         return businessManagement.create(command);
     }
 
     @PostMapping("/change-name")
     @PreAuthorize("isAuthenticated() && @businessRetrievalFacade.findById(#command.businessId()).ownerSub.equals(authentication.details.getSubject())")
-    void changeName(BusinessChangeNameCommand command) {
+    void changeName(@RequestBody BusinessChangeNameCommand command) {
         businessManagement.changeName(command);
     }
 
     @PutMapping("/change-active")
     @PreAuthorize("isAuthenticated() && @businessRetrievalFacade.findById(#command.businessId()).ownerSub.equals(authentication.details.getSubject())")
-    void changeActive(BusinessChangeActiveCommand command) {
+    void changeActive(@RequestBody BusinessChangeActiveCommand command) {
         businessManagement.changeActive(command);
     }
 }

@@ -12,16 +12,8 @@ class KafkaConfig {
     private final KafkaProps kafkaProps;
 
     @Bean
-    public NewTopic businessCreationTopic() {
-        return TopicBuilder.name(kafkaProps.getBusinessCreationTopic())
-                .partitions(1)
-                .replicas(1)
-                .build();
-    }
-
-    @Bean
-    public NewTopic businessActivityChangedTopic() {
-        return TopicBuilder.name(kafkaProps.getBusinessActivityChangedTopic())
+    public NewTopic businessUpdateTopic() {
+        return TopicBuilder.name(kafkaProps.getTopic())
                 .partitions(1)
                 .replicas(1)
                 .build();

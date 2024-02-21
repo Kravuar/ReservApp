@@ -58,9 +58,9 @@ function Test() {
 
   async function onPost() {
     const response = await axios.post(
-      `${process.env.REACT_APP_BACKEND}/business/api-v1/management/create`,
+      `${process.env.REACT_APP_BACKEND}/business/api-v1/management/create`, 
       {
-        name: "BEBROVOE INC",
+        name: "BEBEBE INC"
       },
       {
         headers: {

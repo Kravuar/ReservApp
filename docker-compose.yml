@@ -63,8 +63,13 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://business-db:3306/business-db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: business-pass
+
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${OKTA_ISSUER_URI}
+
       SPRING_KAFKA_BOOTSTRAP_SERVERS: http://kafka:9092
+      SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: 'org.springframework.kafka.support.serializer.JsonSerializer'
+
+      BUSINESS_UPDATE_TOPIC: 'business_update_topic'
     networks:
       - infrastructure-network
       - business-network
@@ -116,13 +121,22 @@ services:
         MODULE_PATH: 'services'
         BUILD_MODULE_PATH: 'services/services-app'
     expose:
-      - "8081"
+      - "8083"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://services-db:3306/services-db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: services-pass
+
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${OKTA_ISSUER_URI}
+
       SPRING_KAFKA_BOOTSTRAP_SERVERS: http://kafka:9092
+      SPRING_KAFKA_CONSUMER_GROUP_ID: "services_group"
+      SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: 'org.springframework.kafka.support.serializer.JsonSerializer'
+      SPRING_KAFKA_CONSUMER_VALUE_DESERIALIZER: 'org.springframework.kafka.support.serializer.JsonDeserializer'
+      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_JSON_TRUSTED_PACKAGES: '*'
+
+      BUSINESS_UPDATE_TOPIC: 'business_update_topic'
+      SERVICE_UPDATE_TOPIC: 'service_update_topic'
     networks:
       - infrastructure-network
       - services-network

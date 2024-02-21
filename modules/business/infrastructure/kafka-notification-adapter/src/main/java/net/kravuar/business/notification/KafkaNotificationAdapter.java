@@ -3,6 +3,8 @@ package net.kravuar.business.notification;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.business.domain.Business;
 import net.kravuar.business.ports.out.BusinessNotificationPort;
+import net.kravuar.integration.business.BusinessActivityChangeDTO;
+import net.kravuar.integration.business.BusinessCreationDTO;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +17,8 @@ class KafkaNotificationAdapter implements BusinessNotificationPort {
     @Override
     public void notifyNewBusiness(Business business) {
         this.template.send(
-                kafkaProps.getBusinessCreationTopic(),
-                new BusinessCreationMessage(
+                kafkaProps.getTopic(),
+                new BusinessCreationDTO(
                         business.getId(),
                         business.getName(),
                         business.getOwnerSub(),
@@ -28,25 +30,11 @@ class KafkaNotificationAdapter implements BusinessNotificationPort {
     @Override
     public void notifyBusinessActiveChanged(Business business) {
         this.template.send(
-                kafkaProps.getBusinessActivityChangedTopic(),
-                new BusinessActivityChangedMessage(
+                kafkaProps.getTopic(),
+                new BusinessActivityChangeDTO(
                         business.getId(),
                         business.isActive()
                 )
         );
-    }
-
-    record BusinessCreationMessage(
-            long id,
-            String name,
-            String ownerSub,
-            boolean active
-    ) {
-    }
-
-    record BusinessActivityChangedMessage(
-            long id,
-            boolean active
-    ) {
     }
 }

@@ -16,6 +16,5 @@ RUN mv ./$BUILD_MODULE_PATH/target/*.jar ./app.jar
 RUN java -Djarmode=layertools -jar ./app.jar extract
 
 FROM eclipse-temurin:21-jre-alpine
-RUN apk --no-cache add curl
 COPY --from=builder /app/dependencies/ /app/spring-boot-loader/ /app/modules-dependencies/ /app/snapshot-dependencies/ /app/application/ ./
 CMD ["java", "org.springframework.boot.loader.launch.JarLauncher"]

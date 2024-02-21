@@ -17,6 +17,7 @@
         <module>gateway</module>
         <module>business</module>
         <module>accounts</module>
+        <module>services</module>
     </modules>
 
     <dependencies>

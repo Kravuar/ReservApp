@@ -26,6 +26,7 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
     @Override
     public Business create(BusinessCreationCommand command) {
         return businessPersistencePort.save(Business.builder()
+                .id(command.businessId())
                 .ownerSub(command.ownerSub())
                 .active(command.active())
                 .build()

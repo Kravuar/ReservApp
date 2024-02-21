@@ -14,3 +14,8 @@ VALUES (1, '1', true),
        (13, '4', true),
        (14, '4', true),
        (15, '2', false);
+
+INSERT INTO service (business_id, name, active)
+VALUES (1, "cog an bol torture", true),
+       (2, "bebr creation", true),
+       (3, "akwodawkd", false)
