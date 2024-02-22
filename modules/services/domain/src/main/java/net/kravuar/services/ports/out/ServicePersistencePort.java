@@ -10,7 +10,7 @@ public interface ServicePersistencePort {
      *
      * @param service service to save
      * @return saved {@link Service} object
-     * @throws BusinessNotFoundException if the business to associate with not found
+     * @throws BusinessNotFoundException if the business to associate with wasn't found
      * @throws ServiceNameAlreadyTaken if service name already taken
      */
     Service save(Service service);

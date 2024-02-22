@@ -10,7 +10,7 @@ public interface ServiceNotificationPort {
     void notifyNewService(Service service);
 
     /**
-     * Notify about service enabled/disabled.
+     * Notify about service active status change (enabled/disabled).
      */
     void notifyServiceActiveChanged(Service service);
 }
