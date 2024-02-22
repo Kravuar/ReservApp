@@ -9,7 +9,7 @@ public interface BusinessNotificationPort {
     void notifyNewBusiness(Business business);
 
     /**
-     * Notify about business enabled/disabled.
+     * Notify about business active status change (enabled/disabled).
      */
     void notifyBusinessActiveChanged(Business business);
 }

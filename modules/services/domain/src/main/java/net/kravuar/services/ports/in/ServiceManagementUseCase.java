@@ -16,7 +16,7 @@ public interface ServiceManagementUseCase {
      *
      * @param command the command containing information for service creation
      * @return Newly created {@link Service}
-     * @throws BusinessNotFoundException if business to associate service with not found
+     * @throws BusinessNotFoundException if business to associate service with wasn't found
      * @throws ServiceNameAlreadyTaken if service name already taken
      * @throws BusinessDisabledException if business is disabled
      */

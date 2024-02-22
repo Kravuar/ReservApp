@@ -20,3 +20,4 @@
      and delegates to correct `@KafkaHandler` (by parameter Type)
    
    No dependencies, no unnecessary fields, cool in general
+10. Move all consistency checks from persistence ports to domain facades
