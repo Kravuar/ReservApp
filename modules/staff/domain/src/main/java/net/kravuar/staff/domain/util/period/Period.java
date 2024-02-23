@@ -1,8 +1,8 @@
 package net.kravuar.staff.domain.util.period;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public interface Period {
-    LocalDateTime getStart();
-    LocalDateTime getEnd();
+    LocalTime getStart();
+    LocalTime getEnd();
 }
