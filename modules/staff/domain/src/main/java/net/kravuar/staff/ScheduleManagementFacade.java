@@ -3,10 +3,15 @@ package net.kravuar.staff;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
 import net.kravuar.staff.domain.DailySchedule;
+import net.kravuar.staff.domain.Service;
+import net.kravuar.staff.domain.Staff;
 import net.kravuar.staff.domain.WorkingHoursFragment;
 import net.kravuar.staff.domain.commands.ChangeDailyScheduleCommand;
 import net.kravuar.staff.ports.in.ScheduleManagementUseCase;
+import net.kravuar.staff.ports.out.ScheduleNotificationPort;
 import net.kravuar.staff.ports.out.SchedulePersistencePort;
+import net.kravuar.staff.ports.out.ServiceRetrievalPort;
+import net.kravuar.staff.ports.out.StaffRetrievalPort;
 
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -15,9 +20,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ScheduleManagementFacade implements ScheduleManagementUseCase {
     private final SchedulePersistencePort schedulePersistencePort;
+    private final ScheduleNotificationPort scheduleNotificationPort;
+    private final ServiceRetrievalPort serviceRetrievalPort;
+    private final StaffRetrievalPort staffRetrievalPort;
 
     @Override
     public void updateSchedule(ChangeDailyScheduleCommand command) {
+        Service service = serviceRetrievalPort.findById(command.getServiceId());
+        Staff staff = staffRetrievalPort.findStaffById(command.getStaffId());
         DailySchedule schedule = DailySchedule.builder()
                 .dayOfWeek(command.getDayOfWeek())
                 .validFrom(command.getValidFrom())
@@ -29,6 +39,7 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
                                 .build())
                         .collect(Collectors.toCollection(TreeSet::new))
                 ).build();
-        schedulePersistencePort.saveStaffScheduleChange(schedule);
+        schedulePersistencePort.saveStaffScheduleChange(service, staff, schedule);
+        scheduleNotificationPort.notifyScheduleChange(schedule);
     }
 }

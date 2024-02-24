@@ -9,7 +9,6 @@ import java.util.NavigableSet;
 
 @Data
 public class ChangeDailyScheduleCommand {
-    private final long id;
     private final long serviceId;
     private final long staffId;
     private final DayOfWeek dayOfWeek;

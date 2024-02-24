@@ -8,6 +8,7 @@ import net.kravuar.staff.domain.util.hours.WorkingHoursNotIntersecting;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 
@@ -15,12 +16,14 @@ import java.util.TreeSet;
 @Builder
 @WorkingHoursNotIntersecting
 public class DailySchedule {
+    private Long id;
     @NotNull
     private final DayOfWeek dayOfWeek;
     @Builder.Default
     @NotNull
     @FutureOrPresent
     private final LocalDate validFrom = LocalDate.now();
+    private final LocalDateTime disabledAt = LocalDateTime.now();
     @Builder.Default
     @NotNull
     private final NavigableSet<@NotNull WorkingHoursFragment> workingHours = new TreeSet<>();

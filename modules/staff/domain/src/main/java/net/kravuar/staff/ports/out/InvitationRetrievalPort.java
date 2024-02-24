@@ -7,14 +7,22 @@ import java.util.List;
 
 public interface InvitationRetrievalPort {
     /**
-     * Find staff invitation by subject and business id.
+     * Find staff invitation by id.
      *
-     * @param sub subject of the staff invitations
-     * @param businessId ID of the business
+     * @param invitationId ID of the invitation to find
      * @return {@link StaffInvitation} staff invitation associated with the provided sub and business ID
      * @throws InvitationNotFoundException if invitation wasn't found
      */
-    StaffInvitation findStaffInvitationByBusiness(String sub, long businessId);
+    StaffInvitation findStaffInvitationByBusiness(long invitationId);
+
+    /**
+     * Check whether invitation exists.
+     *
+     * @param sub subject of the staff invitations
+     * @param businessId ID of the business
+     * @return {@code true} if exists, {@code false} otherwise
+     */
+    boolean existsByBusiness(String sub, long businessId);
 
     /**
      * Find staff invitations by subject.

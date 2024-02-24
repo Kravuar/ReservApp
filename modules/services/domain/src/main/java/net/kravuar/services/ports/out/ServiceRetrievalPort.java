@@ -17,6 +17,14 @@ public interface ServiceRetrievalPort {
     Service findById(long id);
 
     /**
+     * Check whether service exists by name.
+     *
+     * @param name name to check
+     * @return {@code true} if exists, {@code false} otherwise
+     */
+    boolean existsByName(String name);
+
+    /**
      * Find all active services by associated business.
      *
      * @param businessId id of the associated business
