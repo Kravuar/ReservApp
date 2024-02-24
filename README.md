@@ -1,5 +1,5 @@
 ## Global TODOs
-1. @Valid annotations are ignored, as they aren't in the web layer
+1. Fixed domain validation, but need to remove same validation bpp configuration from all services
 2. Docker build fails due to corrupted wrapper being passed to container on build
 3. ```yaml
     springdoc:

@@ -1,9 +1,12 @@
 package net.kravuar.services.ports.out;
 
+import jakarta.validation.Valid;
+import net.kravuar.context.AppValidated;
 import net.kravuar.services.domain.Service;
 import net.kravuar.services.domain.exceptions.BusinessNotFoundException;
 import net.kravuar.services.domain.exceptions.ServiceNameAlreadyTaken;
 
+@AppValidated
 public interface ServicePersistencePort {
     /**
      * Save service.
@@ -13,5 +16,5 @@ public interface ServicePersistencePort {
      * @throws BusinessNotFoundException if the business to associate with wasn't found
      * @throws ServiceNameAlreadyTaken if service name already taken
      */
-    Service save(Service service);
+    Service save(@Valid Service service);
 }

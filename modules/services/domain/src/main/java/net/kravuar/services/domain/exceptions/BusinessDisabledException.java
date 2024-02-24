@@ -1,6 +1,6 @@
 package net.kravuar.services.domain.exceptions;
 
-public class BusinessDisabledException extends RuntimeException {
+public class BusinessDisabledException extends ServiceException {
     public BusinessDisabledException() {
         super("Business is disabled");
     }

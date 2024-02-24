@@ -12,10 +12,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({ FIELD, PARAMETER, TYPE_USE })
 @Retention(RUNTIME)
-@Constraint(validatedBy = StartEndDatetimeValidator.class)
+@Constraint(validatedBy = StartEndValidator.class)
 @Documented
-public @interface StartBeforeEndDatetime {
-    String message() default "Start must be before end datetime";
+public @interface StartBeforeEnd {
+    String message() default "Start must be before end";
 
     Class<?>[] groups() default {};
 

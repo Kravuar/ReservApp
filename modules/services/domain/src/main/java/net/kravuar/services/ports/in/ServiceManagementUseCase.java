@@ -1,6 +1,5 @@
 package net.kravuar.services.ports.in;
 
-import jakarta.validation.Valid;
 import net.kravuar.services.domain.Service;
 import net.kravuar.services.domain.commands.ServiceChangeActiveCommand;
 import net.kravuar.services.domain.commands.ServiceChangeNameCommand;
@@ -20,7 +19,7 @@ public interface ServiceManagementUseCase {
      * @throws ServiceNameAlreadyTaken if service name already taken
      * @throws BusinessDisabledException if business is disabled
      */
-    Service create(@Valid ServiceCreationCommand command);
+    Service create(ServiceCreationCommand command);
 
     /**
      * Changes the name of a {@link Service}.
@@ -29,7 +28,7 @@ public interface ServiceManagementUseCase {
      * @throws ServiceNotFoundException if service wasn't found
      * @throws ServiceNameAlreadyTaken if service name already taken
      */
-    void changeName(@Valid ServiceChangeNameCommand command);
+    void changeName(ServiceChangeNameCommand command);
 
     /**
      * Enables/disables a {@link Service}.
@@ -38,5 +37,5 @@ public interface ServiceManagementUseCase {
      * @throws ServiceNotFoundException if service wasn't found
      * @throws IllegalStateException if service's business is disabled
      */
-    void changeActive(@Valid ServiceChangeActiveCommand command);
+    void changeActive(ServiceChangeActiveCommand command);
 }

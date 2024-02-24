@@ -1,20 +1,21 @@
 package net.kravuar.staff.domain;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.DayOfWeek;
 import java.util.EnumMap;
 import java.util.Map;
 
-@Setter
 @Getter
 @Builder
 public class StaffSchedule {
     private final Long id;
+    @NotNull
     private final Service service;
+    @NotNull
     private final Staff staff;
     @Builder.Default
-    private final Map<DayOfWeek, DailySchedule> schedule = new EnumMap<>(DayOfWeek.class);
+    private final Map<DayOfWeek, @NotNull DailySchedule> schedule = new EnumMap<>(DayOfWeek.class);
 }

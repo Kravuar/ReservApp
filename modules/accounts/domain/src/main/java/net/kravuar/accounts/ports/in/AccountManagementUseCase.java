@@ -1,6 +1,5 @@
 package net.kravuar.accounts.ports.in;
 
-import jakarta.validation.Valid;
 import net.kravuar.accounts.domain.Account;
 import net.kravuar.accounts.domain.commands.AccountCreationCommand;
 import net.kravuar.accounts.domain.exceptions.EmailAlreadyTakenException;
@@ -15,5 +14,5 @@ public interface AccountManagementUseCase {
      * @throws UsernameAlreadyTakenException if an account with the provided username already exists
      * @throws EmailAlreadyTakenException if an account with the provided email already exists
      */
-    Account createAccount(@Valid AccountCreationCommand command);
+    Account createAccount(AccountCreationCommand command);
 }

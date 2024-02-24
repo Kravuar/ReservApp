@@ -1,13 +1,15 @@
 package net.kravuar.staff.ports.out;
 
-import net.kravuar.staff.domain.StaffSchedule;
+import jakarta.validation.Valid;
+import net.kravuar.context.AppValidated;
+import net.kravuar.staff.domain.DailySchedule;
 
+@AppValidated
 public interface SchedulePersistencePort {
     /**
      * Save schedule change.
      *
      * @param schedule new schedule object to save
-     * @return saved {@link StaffSchedule} object
      */
-    StaffSchedule saveStaffInvitation(StaffSchedule schedule);
+    void saveStaffScheduleChange(@Valid DailySchedule schedule);
 }

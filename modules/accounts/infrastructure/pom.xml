@@ -17,7 +17,7 @@
 
     <modules>
         <module>webmvc-rest-api-adapter</module>
-        <module>okta-client-persistence-adapter</module>
+        <module>okta-client-adapter</module>
     </modules>
 
     <dependencies>

@@ -1,6 +1,5 @@
 package net.kravuar.business.ports.in;
 
-import jakarta.validation.Valid;
 import net.kravuar.business.domain.Business;
 import net.kravuar.business.domain.commands.BusinessChangeActiveCommand;
 import net.kravuar.business.domain.commands.BusinessChangeNameCommand;
@@ -16,7 +15,7 @@ public interface BusinessManagementUseCase {
      * @return Newly created {@link Business}
      * @throws BusinessNameAlreadyTaken if business name already taken
      */
-    Business create(@Valid BusinessCreationCommand command);
+    Business create(BusinessCreationCommand command);
 
     /**
      * Changes the name of a {@link Business}.
@@ -25,7 +24,7 @@ public interface BusinessManagementUseCase {
      * @throws BusinessNotFoundException if business wasn't found
      * @throws BusinessNameAlreadyTaken if business name already taken
      */
-    void changeName(@Valid BusinessChangeNameCommand command);
+    void changeName(BusinessChangeNameCommand command);
 
     /**
      * Enables/disables a {@link Business}.
@@ -33,5 +32,5 @@ public interface BusinessManagementUseCase {
      * @param command the command containing information for enabling/disabling business
      * @throws BusinessNotFoundException if business wasn't found
      */
-    void changeActive(@Valid BusinessChangeActiveCommand command);
+    void changeActive(BusinessChangeActiveCommand command);
 }
