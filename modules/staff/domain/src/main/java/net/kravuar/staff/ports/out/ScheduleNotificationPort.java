@@ -8,5 +8,5 @@ public interface ScheduleNotificationPort {
      *
      * @param schedule new schedule
      */
-    void notifyNewStaff(DailySchedule schedule);
+    void notifyScheduleChange(DailySchedule schedule);
 }

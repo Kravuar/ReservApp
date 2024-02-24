@@ -5,6 +5,7 @@ import net.kravuar.business.domain.Business;
 import net.kravuar.business.domain.commands.BusinessChangeActiveCommand;
 import net.kravuar.business.domain.commands.BusinessChangeNameCommand;
 import net.kravuar.business.domain.commands.BusinessCreationCommand;
+import net.kravuar.business.domain.exceptions.BusinessNameAlreadyTaken;
 import net.kravuar.business.ports.in.BusinessManagementUseCase;
 import net.kravuar.business.ports.out.BusinessNotificationPort;
 import net.kravuar.business.ports.out.BusinessPersistencePort;
@@ -19,7 +20,9 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
     private final BusinessNotificationPort businessNotificationPort;
 
     @Override
-    public Business create(BusinessCreationCommand command) {
+    public synchronized Business create(BusinessCreationCommand command) {
+        if (businessRetrievalPort.existsByName(command.name()))
+            throw new BusinessNameAlreadyTaken();
         Business newBusiness = Business.builder()
                 .ownerSub(command.ownerSub())
                 .name(command.name())

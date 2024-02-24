@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class StaffInvitation {
+    private final Long id;
     @NotNull
     @NotBlank
     private final String sub;
@@ -21,9 +22,9 @@ public class StaffInvitation {
     private final LocalDateTime createdAt;
     @NotNull
     @Builder.Default
-    private Result result = Result.WAITING;
+    private Status status = Status.WAITING;
 
-    public enum Result {
+    public enum Status {
         ACCEPTED,
         DECLINED,
         WAITING

@@ -16,6 +16,15 @@ public interface StaffRetrievalPort {
     Staff findStaffById(long id);
 
     /**
+     * Check whether staff is currently working at
+     *
+     * @param serviceId ID of the staff member to find
+     * @return {@code true} if has
+     * @throws StaffNotFoundException if staff member wasn't found
+     */
+    boolean isWorkingAt(long serviceId);
+
+    /**
      * Find all staff members by business.
      *
      * @param businessId ID of the business

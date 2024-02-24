@@ -22,6 +22,11 @@ class JPAServiceRetrievalAdapter implements ServiceRetrievalPort {
     }
 
     @Override
+    public boolean existsByName(String name) {
+        return servicesRepository.existsByName(name);
+    }
+
+    @Override
     public List<Service> findAllActiveByBusiness(long businessId) {
         return servicesRepository
                 .findByBusinessIdAndActiveIsTrue(businessId).stream()

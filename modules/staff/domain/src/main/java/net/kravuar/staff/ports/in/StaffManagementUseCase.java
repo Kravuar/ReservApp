@@ -1,6 +1,7 @@
 package net.kravuar.staff.ports.in;
 
 import net.kravuar.staff.domain.Staff;
+import net.kravuar.staff.domain.StaffInvitation;
 import net.kravuar.staff.domain.commands.StaffAnswerInvitationCommand;
 import net.kravuar.staff.domain.commands.StaffDescriptionUpdateCommand;
 import net.kravuar.staff.domain.commands.StaffInvitationCommand;
@@ -12,19 +13,20 @@ public interface StaffManagementUseCase {
      * Sends invitation to business if not already invited.
      *
      * @param command the command containing information for {@link Staff} invitation
-     * @return {@code false} if already invited, {@code true} otherwise
+     * @return {@link StaffInvitation} created invitation
      * @throws BusinessNotFoundException if business to associate Staff with wasn't found
      * @throws BusinessDisabledException if business is disabled
      * @throws AccountNotFoundException if account to invite wasn't found
      * @throws IllegalStateException if there's an active invitation
      */
-    boolean sendInvitation(StaffInvitationCommand command);
+    StaffInvitation sendInvitation(StaffInvitationCommand command);
 
     /**
      * Answer on invitation to business.
      *
      * @param command the command containing information for answering {@link Staff} invitation
      * @throws InvitationNotFoundException if invitation wasn't found
+     * @throws InvitationInvalidStatusException if invitation cannot be answered, due to invalid status
      */
     void answerInvitation(StaffAnswerInvitationCommand command);
 

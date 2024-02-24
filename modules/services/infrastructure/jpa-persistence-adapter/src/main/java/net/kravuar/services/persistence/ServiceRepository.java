@@ -10,4 +10,5 @@ interface ServiceRepository extends JpaRepository<ServiceModel, Long> {
     List<ServiceModel> findByBusinessIdAndActiveIsTrue(long businessId);
     List<ServiceModel> findAllByBusinessId(long businessId);
     List<ServiceModel> findAllByActiveIsTrue();
+    boolean existsByName(String name);
 }

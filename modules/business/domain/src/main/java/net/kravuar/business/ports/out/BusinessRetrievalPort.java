@@ -16,6 +16,14 @@ public interface BusinessRetrievalPort {
     Business findById(long id);
 
     /**
+     * Check whether business exists by name.
+     *
+     * @param name name to check
+     * @return {@code true} if exists, {@code false} otherwise
+     */
+    boolean existsByName(String name);
+
+    /**
      * Find active businesses by owner.
      *
      * @param sub sub of the owner
