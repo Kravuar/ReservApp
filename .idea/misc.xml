@@ -11,6 +11,7 @@
         <option value="$PROJECT_DIR$/modules/services/infrastructure/jpa-persistence-adapter/pom.xml" />
         <option value="$PROJECT_DIR$/modules/services/infrastructure/webmvc-rest-api-adapter/pom.xml" />
         <option value="$PROJECT_DIR$/modules/services/infrastructure/kafka-notification-adapter/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/business/infrastructure/local-lock-adapter/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
@@ -40,7 +41,6 @@
         <option value="$PROJECT_DIR$/modules/resource-servers/pom.xml" />
       </set>
     </option>
-    <option name="workspaceImportForciblyTurnedOn" value="true" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="openjdk-21" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />

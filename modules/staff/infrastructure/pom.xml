@@ -15,6 +15,10 @@
 
     <packaging>pom</packaging>
 
+    <modules>
+        <module>local-lock-adapter</module>
+    </modules>
+
     <dependencies>
         <dependency>
             <groupId>net.kravuar.staff</groupId>
