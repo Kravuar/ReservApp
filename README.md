@@ -21,3 +21,4 @@
    No dependencies, no unnecessary fields, cool in general
 9. Move all consistency checks from persistence ports to domain facades
 10. Use Redisson for multi-instance lock consistency
+11. Remove duplication in application properties?

@@ -20,7 +20,6 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 )
 @ConfigurationPropertiesScan
 @EnableTransactionManagement
-@EnableKafka
 class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

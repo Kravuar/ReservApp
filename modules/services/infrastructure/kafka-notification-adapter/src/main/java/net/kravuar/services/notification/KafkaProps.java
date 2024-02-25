@@ -6,5 +6,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("service.update")
 @Data
 class KafkaProps {
-    private String topic;
+    private String serviceUpdateTopic;
 }

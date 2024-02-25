@@ -110,6 +110,8 @@
     <file url="file://$PROJECT_DIR$/modules/services/infrastructure/kafka-notification-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/services/infrastructure/local-lock-adapter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/services/infrastructure/local-lock-adapter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/services/infrastructure/noop-notification-adapter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/services/infrastructure/noop-notification-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/services/infrastructure/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/services/infrastructure/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/services/infrastructure/webmvc-rest-api-adapter/src/main/java" charset="UTF-8" />
@@ -124,6 +126,10 @@
     <file url="file://$PROJECT_DIR$/modules/staff/domain/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/jpa-persistence-adapter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/jpa-persistence-adapter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/kafka-in-adapter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/kafka-in-adapter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/kafka-notification-adapter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/kafka-notification-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/local-lock-adapter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/local-lock-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/src/main/java" charset="UTF-8" />

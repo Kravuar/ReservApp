@@ -13,8 +13,10 @@ spring:
       data-locations: classpath:dev/data.sql
   mvc:
     log-request-details: true
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: https://dev-56760559.okta.com/oauth2/default
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+        web: TRACE

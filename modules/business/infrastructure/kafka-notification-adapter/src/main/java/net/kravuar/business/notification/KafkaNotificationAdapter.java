@@ -17,7 +17,7 @@ class KafkaNotificationAdapter implements BusinessNotificationPort {
     @Override
     public void notifyNewBusiness(Business business) {
         this.template.send(
-                kafkaProps.getTopic(),
+                kafkaProps.getBusinessUpdateTopic(),
                 new BusinessCreationDTO(
                         business.getId(),
                         business.getName(),
@@ -30,7 +30,7 @@ class KafkaNotificationAdapter implements BusinessNotificationPort {
     @Override
     public void notifyBusinessActiveChanged(Business business) {
         this.template.send(
-                kafkaProps.getTopic(),
+                kafkaProps.getBusinessUpdateTopic(),
                 new BusinessActivityChangeDTO(
                         business.getId(),
                         business.isActive()

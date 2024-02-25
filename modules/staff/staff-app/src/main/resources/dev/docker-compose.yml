@@ -1,0 +1,14 @@
+version: '4.27'
+services:
+  business-db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: staff-pass
+      MYSQL_DATABASE: staff-db
+    ports:
+      - "3306:3306"
+    volumes:
+      - staff-db-data:/var/lib/mysql
+
+volumes:
+  staff-db-data:

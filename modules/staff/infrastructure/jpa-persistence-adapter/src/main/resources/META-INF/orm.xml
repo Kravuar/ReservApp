@@ -8,7 +8,7 @@
     <description>Mapping for domain Business and Service</description>
 
     <entity class="net.kravuar.staff.domain.StaffInvitation" access="FIELD">
-        <table name="staff"/>
+        <table name="staff_invitation"/>
         <attributes>
             <id name="id">
                 <generated-value strategy="IDENTITY"/>

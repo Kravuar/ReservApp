@@ -8,7 +8,7 @@ import net.kravuar.staff.domain.Staff;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.NavigableSet;
+import java.util.List;
 
 @Entity
 @Table(name = "schedule")
@@ -38,5 +38,5 @@ class ScheduleModel {
     private LocalDateTime disabledAt;
 
     @ElementCollection
-    private NavigableSet<WorkingHoursFragmentEmbeddable> workingHours;
+    private List<WorkingHoursFragmentEmbeddable> workingHours;
 }

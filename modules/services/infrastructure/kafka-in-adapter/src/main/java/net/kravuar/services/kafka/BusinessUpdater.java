@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@KafkaListener(id = "businessUpdates", topics = "${business.update.topic}")
+@KafkaListener(id = "servicesBusinessUpdater", topics = "${business.update.topic}")
 public class BusinessUpdater {
     private final LocalBusinessManagementUseCase localBusinessManagementUseCase;
 

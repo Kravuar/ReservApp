@@ -18,6 +18,8 @@
     <modules>
         <module>local-lock-adapter</module>
         <module>jpa-persistence-adapter</module>
+        <module>kafka-in-adapter</module>
+        <module>kafka-notification-adapter</module>
     </modules>
 
     <dependencies>

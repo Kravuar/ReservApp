@@ -7,9 +7,6 @@ import net.kravuar.staff.domain.Staff;
 import net.kravuar.staff.ports.out.SchedulePersistencePort;
 import org.springframework.stereotype.Component;
 
-import java.util.TreeSet;
-import java.util.stream.Collectors;
-
 @Component
 @RequiredArgsConstructor
 class JPASchedulePersistenceAdapter implements SchedulePersistencePort {
@@ -26,7 +23,7 @@ class JPASchedulePersistenceAdapter implements SchedulePersistencePort {
                 .disabledAt(schedule.getDisabledAt())
                 .workingHours(schedule.getWorkingHours().stream()
                         .map(workingHoursMapper::toModel)
-                        .collect(Collectors.toCollection(TreeSet::new))
+                        .toList()
                 )
                 .build();
         scheduleRepository.save(scheduleModel);
