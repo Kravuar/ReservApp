@@ -1,11 +1,11 @@
-package net.kravuar.services.ports.in;
+package net.kravuar.staff.ports.in;
 
-import net.kravuar.services.domain.Business;
-import net.kravuar.services.domain.commands.BusinessChangeActiveCommand;
-import net.kravuar.services.domain.commands.BusinessCreationCommand;
-import net.kravuar.services.domain.exceptions.BusinessNotFoundException;
+import net.kravuar.staff.domain.Business;
+import net.kravuar.staff.domain.commands.BusinessChangeActiveCommand;
+import net.kravuar.staff.domain.commands.BusinessCreationCommand;
+import net.kravuar.staff.domain.exceptions.BusinessNotFoundException;
 
-public interface BusinessManagementUseCase {
+public interface LocalBusinessManagementUseCase {
     /**
      * Creates a {@link Business}.
      *

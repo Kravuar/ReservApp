@@ -72,6 +72,11 @@
                     <artifactId>kafka-notification-adapter</artifactId>
                     <version>1.0-SNAPSHOT</version>
                 </dependency>
+                <dependency>
+                    <groupId>net.kravuar.business.infrastructure</groupId>
+                    <artifactId>local-lock-adapter</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                </dependency>
 
                 <!-- external -->
             </dependencies>

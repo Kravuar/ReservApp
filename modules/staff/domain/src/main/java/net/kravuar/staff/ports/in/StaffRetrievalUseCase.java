@@ -1,11 +1,8 @@
 package net.kravuar.staff.ports.in;
 
-import jakarta.validation.Valid;
 import net.kravuar.staff.domain.Staff;
-import net.kravuar.staff.domain.commands.StaffAnswerInvitationCommand;
-import net.kravuar.staff.domain.commands.StaffInvitationCommand;
-import net.kravuar.staff.domain.commands.StaffRemovalCommand;
-import net.kravuar.staff.domain.exceptions.*;
+import net.kravuar.staff.domain.StaffInvitation;
+import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
 
 import java.util.List;
 
@@ -26,4 +23,20 @@ public interface StaffRetrievalUseCase {
      * @return {@link List<Staff>} all staff members associated with the provided business ID
      */
     List<Staff> findAllStaffByBusiness(long businessId);
+
+    /**
+     * Find staff invitations by subject.
+     *
+     * @param sub subject of the staff invitations
+     * @return {@link List< StaffInvitation >} staff invitations associated with the provided subject
+     */
+    List<StaffInvitation> findStaffInvitationBySubject(String sub);
+
+    /**
+     * Find staff invitations by business.
+     *
+     * @param businessId ID of the business
+     * @return {@link List<StaffInvitation>} staff invitations associated with the provided business ID
+     */
+    List<StaffInvitation> findStaffInvitationsByBusiness(long businessId);
 }

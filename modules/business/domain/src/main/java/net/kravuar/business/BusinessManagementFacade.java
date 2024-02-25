@@ -7,6 +7,7 @@ import net.kravuar.business.domain.commands.BusinessChangeNameCommand;
 import net.kravuar.business.domain.commands.BusinessCreationCommand;
 import net.kravuar.business.domain.exceptions.BusinessNameAlreadyTaken;
 import net.kravuar.business.ports.in.BusinessManagementUseCase;
+import net.kravuar.business.ports.out.BusinessLockPort;
 import net.kravuar.business.ports.out.BusinessNotificationPort;
 import net.kravuar.business.ports.out.BusinessPersistencePort;
 import net.kravuar.business.ports.out.BusinessRetrievalPort;
@@ -18,33 +19,56 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
     private final BusinessPersistencePort businessPersistencePort;
     private final BusinessRetrievalPort businessRetrievalPort;
     private final BusinessNotificationPort businessNotificationPort;
+    private final BusinessLockPort businessLockPort;
 
     @Override
-    public synchronized Business create(BusinessCreationCommand command) {
-        if (businessRetrievalPort.existsByName(command.name()))
-            throw new BusinessNameAlreadyTaken();
-        Business newBusiness = Business.builder()
-                .ownerSub(command.ownerSub())
-                .name(command.name())
-                .active(true)
-                .build();
-        newBusiness = businessPersistencePort.save(newBusiness);
-        businessNotificationPort.notifyNewBusiness(newBusiness);
-        return newBusiness;
+    public Business create(BusinessCreationCommand command) {
+        try {
+            businessLockPort.lock(command.name(), true);
+
+            if (businessRetrievalPort.existsByName(command.name()))
+                throw new BusinessNameAlreadyTaken();
+            Business newBusiness = Business.builder()
+                    .ownerSub(command.ownerSub())
+                    .name(command.name())
+                    .active(true)
+                    .build();
+            newBusiness = businessPersistencePort.save(newBusiness);
+            businessNotificationPort.notifyNewBusiness(newBusiness);
+            return newBusiness;
+        } finally {
+            businessLockPort.lock(command.name(), false);
+        }
     }
 
     @Override
     public void changeName(BusinessChangeNameCommand command) {
-        Business business = businessRetrievalPort.findById(command.businessId());
-        business.setName(command.newName());
-        businessPersistencePort.save(business);
+        try {
+            businessLockPort.lock(command.businessId(), true);
+            businessLockPort.lock(command.newName(), true);
+
+            if (businessRetrievalPort.existsByName(command.newName()))
+                throw new BusinessNameAlreadyTaken();
+            Business business = businessRetrievalPort.findById(command.businessId());
+            business.setName(command.newName());
+            businessPersistencePort.save(business);
+        } finally {
+            businessLockPort.lock(command.newName(), false);
+            businessLockPort.lock(command.businessId(), false);
+        }
     }
 
     @Override
     public void changeActive(BusinessChangeActiveCommand command) {
-        Business business = businessRetrievalPort.findById(command.businessId());
-        business.setActive(command.active());
-        businessPersistencePort.save(business);
-        businessNotificationPort.notifyBusinessActiveChanged(business);
+        try {
+            businessLockPort.lock(command.businessId(), true);
+
+            Business business = businessRetrievalPort.findById(command.businessId());
+            business.setActive(command.active());
+            businessPersistencePort.save(business);
+            businessNotificationPort.notifyBusinessActiveChanged(business);
+        } finally {
+            businessLockPort.lock(command.businessId(), false);
+        }
     }
 }

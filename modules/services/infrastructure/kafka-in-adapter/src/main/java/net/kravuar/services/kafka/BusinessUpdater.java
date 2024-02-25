@@ -5,7 +5,7 @@ import net.kravuar.integration.business.BusinessActivityChangeDTO;
 import net.kravuar.integration.business.BusinessCreationDTO;
 import net.kravuar.services.domain.commands.BusinessChangeActiveCommand;
 import net.kravuar.services.domain.commands.BusinessCreationCommand;
-import net.kravuar.services.ports.in.BusinessManagementUseCase;
+import net.kravuar.services.ports.in.LocalBusinessManagementUseCase;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @KafkaListener(id = "businessUpdates", topics = "${business.update.topic}")
 public class BusinessUpdater {
-    private final BusinessManagementUseCase businessManagementUseCase;
+    private final LocalBusinessManagementUseCase localBusinessManagementUseCase;
 
     @KafkaHandler
     void onBusinessCreated(BusinessCreationDTO creationDTO) {
-        businessManagementUseCase.create(new BusinessCreationCommand(
+        localBusinessManagementUseCase.create(new BusinessCreationCommand(
                         creationDTO.id(),
                         creationDTO.ownerSub(),
                         creationDTO.active()
@@ -28,7 +28,7 @@ public class BusinessUpdater {
 
     @KafkaHandler
     void onBusinessCreated(BusinessActivityChangeDTO changeDTO) {
-        businessManagementUseCase.changeActive(new BusinessChangeActiveCommand(
+        localBusinessManagementUseCase.changeActive(new BusinessChangeActiveCommand(
                 changeDTO.id(),
                 changeDTO.active()
         ));
