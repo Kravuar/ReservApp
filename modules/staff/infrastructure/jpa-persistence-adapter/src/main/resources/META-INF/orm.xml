@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
+                 http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd"
+                 version="2.2">
+
+    <description>Mapping for domain Business and Service</description>
+
+    <entity class="net.kravuar.staff.domain.StaffInvitation" access="FIELD">
+        <table name="staff"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="sub">
+                <column nullable="false"/>
+            </basic>
+            <basic name="createdAt">
+                <column nullable="false"/>
+            </basic>
+            <basic name="status">
+                <enumerated>ORDINAL</enumerated>
+            </basic>
+            <many-to-one name="business" fetch="LAZY">
+                <join-column name="businessId"/>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </many-to-one>
+        </attributes>
+    </entity>
+
+    <entity class="net.kravuar.staff.domain.Staff" access="FIELD">
+        <table name="staff"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="sub">
+                <column nullable="false"/>
+            </basic>
+            <basic name="active">
+                <column nullable="false"/>
+            </basic>
+            <many-to-one name="business" fetch="LAZY">
+                <join-column name="businessId"/>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </many-to-one>
+        </attributes>
+    </entity>
+
+    <entity class="net.kravuar.staff.domain.Business" access="FIELD">
+        <table name="business"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="ownerSub">
+                <column nullable="false"/>
+            </basic>
+            <basic name="active">
+                <column nullable="false"/>
+            </basic>
+        </attributes>
+    </entity>
+
+    <entity class="net.kravuar.staff.domain.Service" access="FIELD">
+        <table name="service"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="active">
+                <column nullable="false"/>
+            </basic>
+            <many-to-one name="business" fetch="LAZY">
+                <join-column name="businessId"/>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </many-to-one>
+        </attributes>
+    </entity>
+</entity-mappings>

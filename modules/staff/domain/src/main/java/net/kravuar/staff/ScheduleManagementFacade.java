@@ -26,7 +26,7 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
     public void updateSchedule(ChangeDailyScheduleCommand command) {
         try {
             Service service = serviceRetrievalPort.findById(command.getServiceId());
-            Staff staff = staffRetrievalPort.findStaffById(command.getStaffId());
+            Staff staff = staffRetrievalPort.findById(command.getStaffId());
 
             scheduleLockPort.lock(command.getServiceId(), command.getStaffId(), true);
 

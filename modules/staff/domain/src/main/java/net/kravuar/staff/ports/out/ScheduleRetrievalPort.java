@@ -1,8 +1,8 @@
 package net.kravuar.staff.ports.out;
 
 import net.kravuar.staff.domain.DailySchedule;
+import net.kravuar.staff.domain.Service;
 import net.kravuar.staff.domain.Staff;
-import net.kravuar.staff.domain.exceptions.ServiceNotFoundException;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -12,21 +12,19 @@ public interface ScheduleRetrievalPort {
     /**
      * Retrieve all daily schedule's (with changes) for a specific service, staff, and starting date.
      *
-     * @param serviceId the service for which schedules are retrieved
-     * @param staffId the staff member for which schedules are retrieved
+     * @param service      the service for which schedules are retrieved
+     * @param staff        the staff member for which schedules are retrieved
      * @param startingFrom the starting date from which schedules are retrieved
      * @return sorted collection of daily schedule changes
-     * @throws ServiceNotFoundException if the service wasn't found
      */
-    SortedSet<DailySchedule> findDailyScheduleChanges(long serviceId, long staffId, LocalDate startingFrom);
+    SortedSet<DailySchedule> findDailyScheduleChanges(Service service, Staff staff, LocalDate startingFrom);
 
     /**
      * Retrieve all daily schedule's (with changes) for all staff members of a service by starting date.
      *
-     * @param serviceId the service for which schedules are retrieved
+     * @param service the service for which schedules are retrieved
      * @param startingFrom the starting date from which schedules are retrieved
      * @return map of staff to sorted daily schedule changes
-     * @throws ServiceNotFoundException if the service wasn't found
      */
-    Map<Staff, SortedSet<DailySchedule>> findDailyScheduleChangesByDateAndService(long serviceId, LocalDate startingFrom);
+    Map<Staff, SortedSet<DailySchedule>> findDailyScheduleChangesByDateAndService(Service service, LocalDate startingFrom);
 }

@@ -11,21 +11,23 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 class JPABusinessRetrievalAdapter implements BusinessRetrievalPort {
-    private final BusinessMapper businessMapper;
     private final BusinessRepository businessRepository;
 
     @Override
     public Business findById(long id) {
         return businessRepository.findById(id)
-                .map(businessMapper::toDomain)
                 .orElseThrow(BusinessNotFoundException::new);
+    }
+
+    @Override
+    public boolean existsByName(String name) {
+        return businessRepository.existsByName(name);
     }
 
     @Override
     public List<Business> findActiveBySub(String sub) {
         return businessRepository.findByOwnerSubAndActiveIsTrue(sub)
                 .stream()
-                .map(businessMapper::toDomain)
                 .toList();
     }
 
@@ -33,7 +35,6 @@ class JPABusinessRetrievalAdapter implements BusinessRetrievalPort {
     public List<Business> findAllActive() {
         return businessRepository.findAllByActiveIsTrue()
                 .stream()
-                .map(businessMapper::toDomain)
                 .toList();
     }
 }

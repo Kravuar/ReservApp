@@ -1,7 +1,7 @@
 package net.kravuar.services.ports.out;
 
+import net.kravuar.services.domain.Business;
 import net.kravuar.services.domain.Service;
-import net.kravuar.services.domain.exceptions.BusinessNotFoundException;
 import net.kravuar.services.domain.exceptions.ServiceNotFoundException;
 
 import java.util.List;
@@ -27,20 +27,18 @@ public interface ServiceRetrievalPort {
     /**
      * Find all active services by associated business.
      *
-     * @param businessId id of the associated business
+     * @param business the business
      * @return {@link List<Service>} of active services associated the with provided {@code businessId}
-     * @throws BusinessNotFoundException if the business wasn't found
      */
-    List<Service> findAllActiveByBusiness(long businessId);
+    List<Service> findAllActiveByBusiness(Business business);
 
     /**
      * Find all services by associated business.
      *
-     * @param businessId id of the associated business
+     * @param business the business
      * @return {@link List<Service>} of services associated the with provided {@code businessId}
-     * @throws BusinessNotFoundException if the business wasn't found
      */
-    List<Service> findAllByBusiness(long businessId);
+    List<Service> findAllByBusiness(Business business);
 
     /**
      * Find all active services.

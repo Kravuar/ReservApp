@@ -2,6 +2,7 @@ package net.kravuar.staff.ports.in;
 
 import net.kravuar.staff.domain.Staff;
 import net.kravuar.staff.domain.StaffInvitation;
+import net.kravuar.staff.domain.exceptions.BusinessNotFoundException;
 import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
 
 import java.util.List;
@@ -28,7 +29,8 @@ public interface StaffRetrievalUseCase {
      * Find staff invitations by subject.
      *
      * @param sub subject of the staff invitations
-     * @return {@link List< StaffInvitation >} staff invitations associated with the provided subject
+     * @return {@link List<StaffInvitation>} staff invitations associated with the provided subject
+     * @throws BusinessNotFoundException if business wasn't found
      */
     List<StaffInvitation> findStaffInvitationBySubject(String sub);
 
@@ -37,6 +39,7 @@ public interface StaffRetrievalUseCase {
      *
      * @param businessId ID of the business
      * @return {@link List<StaffInvitation>} staff invitations associated with the provided business ID
+     * @throws BusinessNotFoundException if business wasn't found
      */
     List<StaffInvitation> findStaffInvitationsByBusiness(long businessId);
 }

@@ -3,7 +3,7 @@ package net.kravuar.staff.domain.commands;
 import java.time.LocalDate;
 
 public record StaffScheduleRetrievalCommand(
-        long stuffId,
+        long staffId,
         long serviceId,
         LocalDate startDate
 ) {}

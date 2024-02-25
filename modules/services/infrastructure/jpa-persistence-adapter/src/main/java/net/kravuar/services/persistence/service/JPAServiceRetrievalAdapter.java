@@ -1,6 +1,7 @@
-package net.kravuar.services.persistence;
+package net.kravuar.services.persistence.service;
 
 import lombok.RequiredArgsConstructor;
+import net.kravuar.services.domain.Business;
 import net.kravuar.services.domain.Service;
 import net.kravuar.services.domain.exceptions.ServiceNotFoundException;
 import net.kravuar.services.ports.out.ServiceRetrievalPort;
@@ -11,13 +12,11 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 class JPAServiceRetrievalAdapter implements ServiceRetrievalPort {
-    private final ServiceMapper servicesMapper;
     private final ServiceRepository servicesRepository;
 
     @Override
     public Service findById(long id) {
         return servicesRepository.findById(id)
-                .map(servicesMapper::toDomain)
                 .orElseThrow(ServiceNotFoundException::new);
     }
 
@@ -27,18 +26,16 @@ class JPAServiceRetrievalAdapter implements ServiceRetrievalPort {
     }
 
     @Override
-    public List<Service> findAllActiveByBusiness(long businessId) {
+    public List<Service> findAllActiveByBusiness(Business business) {
         return servicesRepository
-                .findByBusinessIdAndActiveIsTrue(businessId).stream()
-                .map(servicesMapper::toDomain)
+                .findByBusinessAndActiveIsTrue(business).stream()
                 .toList();
     }
 
     @Override
-    public List<Service> findAllByBusiness(long businessId) {
+    public List<Service> findAllByBusiness(Business business) {
         return servicesRepository
-                .findAllByBusinessId(businessId).stream()
-                .map(servicesMapper::toDomain)
+                .findAllByBusiness(business).stream()
                 .toList();
     }
 
@@ -46,7 +43,6 @@ class JPAServiceRetrievalAdapter implements ServiceRetrievalPort {
     public List<Service> findAllActive() {
         return servicesRepository
                 .findAllByActiveIsTrue().stream()
-                .map(servicesMapper::toDomain)
                 .toList();
     }
 }

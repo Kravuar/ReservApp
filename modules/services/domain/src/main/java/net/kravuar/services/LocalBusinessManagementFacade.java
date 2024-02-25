@@ -42,7 +42,7 @@ public class LocalBusinessManagementFacade implements LocalBusinessManagementUse
             Business existing = businessRetrievalPort.findById(command.businessId());
             existing.setActive(command.active());
 
-            List<Service> associated = serviceRetrievalPort.findAllByBusiness(command.businessId());
+            List<Service> associated = serviceRetrievalPort.findAllByBusiness(existing);
             try {
                 associated.forEach(service -> {
                     serviceLockPort.lock(service.getId(), true);

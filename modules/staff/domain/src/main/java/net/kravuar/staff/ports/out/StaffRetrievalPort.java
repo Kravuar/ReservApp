@@ -1,5 +1,6 @@
 package net.kravuar.staff.ports.out;
 
+import net.kravuar.staff.domain.Business;
 import net.kravuar.staff.domain.Staff;
 import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
 
@@ -13,13 +14,13 @@ public interface StaffRetrievalPort {
      * @return {@link Staff} object associated with the provided ID
      * @throws StaffNotFoundException if staff member wasn't found
      */
-    Staff findStaffById(long id);
+    Staff findById(long id);
 
     /**
      * Find all staff members by business.
      *
-     * @param businessId ID of the business
+     * @param business the business
      * @return {@link List<Staff>} all staff members associated with the provided business ID
      */
-    List<Staff> findAllStaffByBusiness(long businessId);
+    List<Staff> findAllStaffByBusiness(Business business);
 }

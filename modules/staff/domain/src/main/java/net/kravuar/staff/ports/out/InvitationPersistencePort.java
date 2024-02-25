@@ -12,5 +12,5 @@ public interface InvitationPersistencePort {
      * @param invitation StaffInvitation entity to save
      * @return saved {@link StaffInvitation} object
      */
-    StaffInvitation saveStaffInvitation(@Valid StaffInvitation invitation);
+    StaffInvitation save(@Valid StaffInvitation invitation);
 }

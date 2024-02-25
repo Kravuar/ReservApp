@@ -33,14 +33,15 @@ public class StaffManagementFacade implements StaffManagementUseCase {
         try {
             staffLockPort.lock(command.businessId(), command.sub(), true);
 
-            if (invitationRetrievalPort.existsByBusiness(command.sub(), command.businessId()))
-                throw new IllegalStateException("Invitation already exists");
             Business business = businessRetrievalPort.findById(command.businessId());
+
+            if (invitationRetrievalPort.existsByBusinessAndSub(business, command.sub()))
+                throw new IllegalStateException("Invitation already exists");
             if (!business.isActive())
                 throw new BusinessDisabledException();
             if (!accountExistenceCheckPort.exists(command.sub()))
                 throw new AccountNotFoundException();
-            return invitationPersistencePort.saveStaffInvitation(
+            return invitationPersistencePort.save(
                     StaffInvitation.builder()
                             .business(business)
                             .sub(command.sub())
@@ -54,7 +55,7 @@ public class StaffManagementFacade implements StaffManagementUseCase {
     @Override
     @Transactional
     public void answerInvitation(StaffAnswerInvitationCommand command) {
-        StaffInvitation invitation = invitationRetrievalPort.findStaffInvitationByBusiness(
+        StaffInvitation invitation = invitationRetrievalPort.findById(
                 command.invitationId()
         );
 
@@ -69,14 +70,14 @@ public class StaffManagementFacade implements StaffManagementUseCase {
                             ? StaffInvitation.Status.ACCEPTED
                             : StaffInvitation.Status.DECLINED
             );
-            invitationPersistencePort.saveStaffInvitation(invitation);
+            invitationPersistencePort.save(invitation);
             if (command.accept()) {
                 Staff newStaff = Staff.builder()
                         .business(invitation.getBusiness())
                         .sub(invitation.getSub())
                         .active(true)
                         .build();
-                staffPersistencePort.saveStaff(newStaff);
+                staffPersistencePort.save(newStaff);
                 staffNotificationPort.notifyNewStaff(newStaff);
             }
         } finally {
@@ -89,9 +90,9 @@ public class StaffManagementFacade implements StaffManagementUseCase {
         try {
             staffLockPort.lock(command.staffId(), true);
 
-            Staff staff = staffRetrievalPort.findStaffById(command.staffId());
+            Staff staff = staffRetrievalPort.findById(command.staffId());
             staff.setDescription(command.description());
-            staffPersistencePort.saveStaff(staff);
+            staffPersistencePort.save(staff);
         } finally {
             staffLockPort.lock(command.staffId(), false);
         }
@@ -102,9 +103,9 @@ public class StaffManagementFacade implements StaffManagementUseCase {
         try {
             staffLockPort.lock(command.staffId(), true);
 
-            Staff staff = staffRetrievalPort.findStaffById(command.staffId());
+            Staff staff = staffRetrievalPort.findById(command.staffId());
             staff.setActive(false);
-            staffPersistencePort.saveStaff(staff);
+            staffPersistencePort.save(staff);
         } finally {
             staffLockPort.lock(command.staffId(), false);
         }
