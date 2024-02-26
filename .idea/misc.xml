@@ -12,6 +12,7 @@
         <option value="$PROJECT_DIR$/modules/services/infrastructure/webmvc-rest-api-adapter/pom.xml" />
         <option value="$PROJECT_DIR$/modules/services/infrastructure/kafka-notification-adapter/pom.xml" />
         <option value="$PROJECT_DIR$/modules/business/infrastructure/local-lock-adapter/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/services/infrastructure/kafka-in-adapter/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

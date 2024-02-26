@@ -61,11 +61,23 @@
 
         <profile>
             <id>dev</id>
+            <properties>
+                <spring.profiles.active>dev</spring.profiles.active>
+            </properties>
+            <dependencies>
+                <!-- internal -->
+
+                <!-- external -->
+            </dependencies>
+        </profile>
+
+        <profile>
+            <id>separate</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <spring.profiles.active>dev</spring.profiles.active>
+                <spring.profiles.active>separate</spring.profiles.active>
             </properties>
             <dependencies>
                 <!-- internal -->
