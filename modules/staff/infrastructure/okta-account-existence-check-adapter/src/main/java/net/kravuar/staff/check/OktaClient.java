@@ -7,6 +7,8 @@ import com.okta.sdk.resource.client.ApiException;
 import net.kravuar.context.AppComponent;
 import net.kravuar.staff.ports.out.AccountExistenceCheckPort;
 
+import javax.net.ssl.HttpsURLConnection;
+
 @AppComponent
 class OktaClient implements AccountExistenceCheckPort {
     private final UserApi client;
@@ -25,8 +27,10 @@ class OktaClient implements AccountExistenceCheckPort {
         try {
             client.getUser(sub);
             return true;
-        } catch (ApiException ignored) {
-            return false;
+        } catch (ApiException exception) {
+            if (exception.getCode() == HttpsURLConnection.HTTP_NOT_FOUND)
+                return false;
+            throw exception;
         }
     }
 }
