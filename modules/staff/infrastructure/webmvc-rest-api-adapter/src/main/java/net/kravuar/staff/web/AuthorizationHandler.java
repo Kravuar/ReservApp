@@ -2,6 +2,7 @@ package net.kravuar.staff.web;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.staff.ports.in.BusinessRetrievalUseCase;
+import net.kravuar.staff.ports.in.ServiceRetrievalUseCase;
 import net.kravuar.staff.ports.in.StaffRetrievalUseCase;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AuthorizationHandler {
     private final BusinessRetrievalUseCase businessRetrieval;
+    private final ServiceRetrievalUseCase serviceRetrieval;
     private final StaffRetrievalUseCase staffRetrieval;
 
     public boolean isOwnerOfBusiness(long businessId, String subject) {
@@ -21,5 +23,9 @@ public class AuthorizationHandler {
 
     public boolean isInvitedStaff(long invitationId, String subject) {
         return staffRetrieval.findStaffInvitationById(invitationId).getSub().equals(subject);
+    }
+
+    public boolean isOwnerOfService(long serviceId, String subject) {
+        return serviceRetrieval.findById(serviceId).getBusiness().getOwnerSub().equals(subject);
     }
 }

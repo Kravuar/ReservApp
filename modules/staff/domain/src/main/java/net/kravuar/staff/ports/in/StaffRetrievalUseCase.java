@@ -42,7 +42,7 @@ public interface StaffRetrievalUseCase {
      * @return {@link List<StaffInvitation>} staff invitations associated with the provided subject
      * @throws BusinessNotFoundException if business wasn't found
      */
-    List<StaffInvitation> findStaffInvitationBySubject(String sub);
+    List<StaffInvitation> findStaffInvitationsBySubject(String sub);
 
     /**
      * Find staff invitations by business.

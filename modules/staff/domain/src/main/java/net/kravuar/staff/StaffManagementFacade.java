@@ -106,6 +106,7 @@ public class StaffManagementFacade implements StaffManagementUseCase {
             Staff staff = staffRetrievalPort.findById(command.staffId());
             staff.setActive(false);
             staffPersistencePort.save(staff);
+            staffNotificationPort.notifyStaffActiveChanged(staff);
         } finally {
             staffLockPort.lock(command.staffId(), false);
         }
