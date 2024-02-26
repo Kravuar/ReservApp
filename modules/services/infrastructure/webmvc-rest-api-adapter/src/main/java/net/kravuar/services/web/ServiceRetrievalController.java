@@ -14,20 +14,20 @@ import java.util.List;
 @RequestMapping("/retrieval")
 @RequiredArgsConstructor
 class ServiceRetrievalController {
-    private final ServiceRetrievalUseCase serviceRetrievalUseCase;
+    private final ServiceRetrievalUseCase serviceRetrieval;
 
     @GetMapping("/active-by-business/{businessId}")
     public List<Service> activeByCurrentUser(@PathVariable("businessId") long businessId) {
-        return serviceRetrievalUseCase.findAllActiveByBusiness(businessId);
+        return serviceRetrieval.findAllActiveByBusiness(businessId);
     }
 
     @GetMapping("/byId/{id}")
     public Service byId(@PathVariable("id") long id) {
-        return serviceRetrievalUseCase.findById(id);
+        return serviceRetrieval.findById(id);
     }
 
     @GetMapping("/active")
     public List<Service> byOwner() {
-        return serviceRetrievalUseCase.findAllActive();
+        return serviceRetrieval.findAllActive();
     }
 }

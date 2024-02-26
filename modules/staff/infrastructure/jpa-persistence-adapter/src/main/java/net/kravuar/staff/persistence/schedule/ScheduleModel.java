@@ -7,7 +7,6 @@ import net.kravuar.staff.domain.Staff;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -35,7 +34,7 @@ class ScheduleModel {
     @Column(updatable = false, nullable = false)
     private LocalDate validFrom;
     @Column(updatable = false)
-    private LocalDateTime disabledAt;
+    private LocalDate validUntil;
 
     @ElementCollection
     private List<WorkingHoursFragmentEmbeddable> workingHours;

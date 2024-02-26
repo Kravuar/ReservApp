@@ -3,7 +3,7 @@ package net.kravuar.staff.ports.in;
 import net.kravuar.staff.domain.Staff;
 import net.kravuar.staff.domain.StaffInvitation;
 import net.kravuar.staff.domain.commands.StaffAnswerInvitationCommand;
-import net.kravuar.staff.domain.commands.StaffDescriptionUpdateCommand;
+import net.kravuar.staff.domain.commands.StaffChangeDetailsCommand;
 import net.kravuar.staff.domain.commands.StaffInvitationCommand;
 import net.kravuar.staff.domain.commands.StaffRemovalCommand;
 import net.kravuar.staff.domain.exceptions.*;
@@ -31,12 +31,12 @@ public interface StaffManagementUseCase {
     void answerInvitation(StaffAnswerInvitationCommand command);
 
     /**
-     * Update staff description
+     * Changes details for a {@link Staff}.
      *
-     * @param command the command containing information for description update
+     * @param command the command containing information for details update of the staff
      * @throws StaffNotFoundException if staff wasn't found
      */
-    void updateDescription(StaffDescriptionUpdateCommand command);
+    void changeDetails(StaffChangeDetailsCommand command);
 
     /**
      * Removes staff from business

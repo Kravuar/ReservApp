@@ -31,6 +31,11 @@ public class StaffRetrievalFacade implements StaffRetrievalUseCase {
     }
 
     @Override
+    public StaffInvitation findStaffInvitationById(long invitationId) {
+        return invitationRetrievalPort.findById(invitationId);
+    }
+
+    @Override
     public List<StaffInvitation> findStaffInvitationBySubject(String sub) {
         return invitationRetrievalPort.findBySubject(sub);
     }

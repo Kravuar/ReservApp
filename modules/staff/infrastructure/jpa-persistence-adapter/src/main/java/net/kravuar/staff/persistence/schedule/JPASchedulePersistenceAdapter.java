@@ -20,7 +20,7 @@ class JPASchedulePersistenceAdapter implements SchedulePersistencePort {
                 .service(service)
                 .staff(staff)
                 .validFrom(schedule.getValidFrom())
-                .disabledAt(schedule.getDisabledAt())
+                .validUntil(schedule.getValidUntil())
                 .workingHours(schedule.getWorkingHours().stream()
                         .map(workingHoursMapper::toModel)
                         .toList()

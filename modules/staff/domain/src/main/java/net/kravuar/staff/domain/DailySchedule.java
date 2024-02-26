@@ -23,7 +23,11 @@ public class DailySchedule {
     @NotNull
     @FutureOrPresent
     private final LocalDate validFrom = LocalDate.now();
-    private final LocalDateTime disabledAt;
+    private final LocalDate validUntil;
+    @Builder.Default
+    @NotNull
+    @FutureOrPresent
+    private final LocalDateTime createdAt = LocalDateTime.now();
     @Builder.Default
     @NotNull
     private final NavigableSet<@NotNull WorkingHoursFragment> workingHours = new TreeSet<>();

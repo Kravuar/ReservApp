@@ -17,4 +17,6 @@ public class Service {
     @Size(min = 3, max = 30)
     private String name;
     private boolean active;
+
+    private String description;
 }

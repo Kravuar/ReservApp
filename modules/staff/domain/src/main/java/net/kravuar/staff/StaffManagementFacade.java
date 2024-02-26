@@ -6,7 +6,7 @@ import net.kravuar.staff.domain.Business;
 import net.kravuar.staff.domain.Staff;
 import net.kravuar.staff.domain.StaffInvitation;
 import net.kravuar.staff.domain.commands.StaffAnswerInvitationCommand;
-import net.kravuar.staff.domain.commands.StaffDescriptionUpdateCommand;
+import net.kravuar.staff.domain.commands.StaffChangeDetailsCommand;
 import net.kravuar.staff.domain.commands.StaffInvitationCommand;
 import net.kravuar.staff.domain.commands.StaffRemovalCommand;
 import net.kravuar.staff.domain.exceptions.AccountNotFoundException;
@@ -86,7 +86,7 @@ public class StaffManagementFacade implements StaffManagementUseCase {
     }
 
     @Override
-    public void updateDescription(StaffDescriptionUpdateCommand command) {
+    public void changeDetails(StaffChangeDetailsCommand command) {
         try {
             staffLockPort.lock(command.staffId(), true);
 

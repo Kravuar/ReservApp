@@ -16,6 +16,7 @@ public class Staff {
     private final String sub;
     @NotNull
     private final Business business;
-    private String description;
     private boolean active;
+
+    private String description;
 }

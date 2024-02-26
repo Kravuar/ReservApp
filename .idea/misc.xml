@@ -40,6 +40,7 @@
         <option value="$PROJECT_DIR$/modules/resource-servers/accounts/infrastructure/okta-api-persistence-adapter/pom.xml" />
         <option value="$PROJECT_DIR$/modules/resource-servers/accounts/infrastructure/smtp-email-sending-adapter/pom.xml" />
         <option value="$PROJECT_DIR$/modules/resource-servers/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/staff/infrastructure/kafka-in-adapter/pom.xml" />
       </set>
     </option>
   </component>

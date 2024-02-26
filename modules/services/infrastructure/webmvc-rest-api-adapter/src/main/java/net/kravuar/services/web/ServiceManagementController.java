@@ -3,6 +3,7 @@ package net.kravuar.services.web;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.services.domain.Service;
 import net.kravuar.services.domain.commands.ServiceChangeActiveCommand;
+import net.kravuar.services.domain.commands.ServiceChangeDetailsCommand;
 import net.kravuar.services.domain.commands.ServiceChangeNameCommand;
 import net.kravuar.services.domain.commands.ServiceCreationCommand;
 import net.kravuar.services.ports.in.ServiceManagementUseCase;
@@ -16,20 +17,26 @@ class ServiceManagementController {
     private final ServiceManagementUseCase serviceManagement;
 
     @PostMapping("/create")
-    @PreAuthorize("isAuthenticated() && @businessRetrievalFacade.findById(#command.businessId).ownerSub.equals(authentication.details.getSubject())")
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfBusiness(#command.businessId(), authentication.details.subject)")
     Service create(@RequestBody ServiceCreationCommand command) {
         return serviceManagement.create(command);
     }
 
     @PostMapping("/change-name")
-    @PreAuthorize("isAuthenticated() && @serviceRetrievalFacade.findById(#command.serviceId).business.ownerSub.equals(authentication.details.getSubject())")
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfService(#command.serviceId(), authentication.details.subject)")
     public void changeName(@RequestBody ServiceChangeNameCommand command) {
         serviceManagement.changeName(command);
     }
 
     @PutMapping("/change-active")
-    @PreAuthorize("isAuthenticated() && @serviceRetrievalFacade.findById(#command.serviceId).business.ownerSub.equals(authentication.details.getSubject())")
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfService(#command.serviceId(), authentication.details.subject)")
     public void changeName(@RequestBody ServiceChangeActiveCommand command) {
         serviceManagement.changeActive(command);
+    }
+
+    @PutMapping("/update-details")
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfService(#command.serviceId(), authentication.details.subject)")
+    public void updateDetails(@RequestBody ServiceChangeDetailsCommand command) {
+        serviceManagement.changeDetails(command);
     }
 }

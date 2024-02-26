@@ -5,6 +5,7 @@ import net.kravuar.context.AppComponent;
 import net.kravuar.services.domain.Business;
 import net.kravuar.services.domain.Service;
 import net.kravuar.services.domain.commands.ServiceChangeActiveCommand;
+import net.kravuar.services.domain.commands.ServiceChangeDetailsCommand;
 import net.kravuar.services.domain.commands.ServiceChangeNameCommand;
 import net.kravuar.services.domain.commands.ServiceCreationCommand;
 import net.kravuar.services.domain.exceptions.ServiceNameAlreadyTaken;
@@ -67,6 +68,19 @@ public class ServiceManagementFacade implements ServiceManagementUseCase {
             existing.setActive(command.active());
             existing = servicePersistencePort.save(existing);
             serviceNotificationPort.notifyServiceActiveChanged(existing);
+        } finally {
+            serviceLockPort.lock(command.serviceId(), false);
+        }
+    }
+
+    @Override
+    public void changeDetails(ServiceChangeDetailsCommand command) {
+        try {
+            serviceLockPort.lock(command.serviceId(), true);
+
+            Service service = serviceRetrievalPort.findById(command.serviceId());
+            service.setDescription(command.description());
+            servicePersistencePort.save(service);
         } finally {
             serviceLockPort.lock(command.serviceId(), false);
         }

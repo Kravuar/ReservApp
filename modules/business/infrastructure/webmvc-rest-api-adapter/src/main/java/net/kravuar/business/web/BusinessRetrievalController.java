@@ -17,26 +17,26 @@ import java.util.List;
 @RequestMapping("/retrieval")
 @RequiredArgsConstructor
 class BusinessRetrievalController {
-    private final BusinessRetrievalUseCase businessRetrievalUseCase;
+    private final BusinessRetrievalUseCase businessRetrieval;
 
     @GetMapping("/my")
     @PreAuthorize("isAuthenticated()")
     List<Business> byCurrentUser(@AuthenticationPrincipal Jwt user) {
-        return businessRetrievalUseCase.findActiveBySub(user.getSubject());
+        return businessRetrieval.findActiveBySub(user.getSubject());
     }
 
     @GetMapping("/byId/{id}")
     Business byId(@PathVariable("id") long id) {
-        return businessRetrievalUseCase.findById(id);
+        return businessRetrieval.findById(id);
     }
 
     @GetMapping("/byOwner/{sub}")
     List<Business> byOwner(@PathVariable("sub") String sub) {
-        return businessRetrievalUseCase.findActiveBySub(sub);
+        return businessRetrieval.findActiveBySub(sub);
     }
 
     @GetMapping("/active")
     List<Business> active() {
-        return businessRetrievalUseCase.findAllActive();
+        return businessRetrieval.findAllActive();
     }
 }

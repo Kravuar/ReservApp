@@ -13,8 +13,15 @@ import net.kravuar.staff.ports.out.ScheduleRetrievalPort;
 import net.kravuar.staff.ports.out.ServiceRetrievalPort;
 import net.kravuar.staff.ports.out.StaffRetrievalPort;
 
+import java.time.DayOfWeek;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @AppComponent
 @RequiredArgsConstructor
@@ -24,30 +31,57 @@ public class ScheduleRetrievalFacade implements ScheduleRetrievalUseCase {
     private final StaffRetrievalPort staffRetrievalPort;
 
     @Override
-    public SortedSet<DailySchedule> findDailyScheduleChangesByStaff(StaffScheduleRetrievalCommand command) {
+    public Map<DayOfWeek, SortedSet<DailySchedule>> findScheduleWithChangesByStaff(StaffScheduleRetrievalCommand command) {
         Service service = serviceRetrievalPort.findById(command.serviceId());
         Staff staff = staffRetrievalPort.findById(command.staffId());
 
         if (!service.isActive())
             throw new ServiceDisabledException();
 
-        return scheduleRetrievalPort.findDailyScheduleChanges(
+        var scheduleChanges = scheduleRetrievalPort.findDailyScheduleChanges(
                 service,
                 staff,
                 command.startDate()
         );
+
+        // Mapping day of the week to the sorted set of schedules, containing only the latest update for each validFrom date
+        return scheduleChanges.stream()
+                .collect(groupByDayWithLatestUpdatesOnly());
     }
 
     @Override
-    public Map<Staff, SortedSet<DailySchedule>> findDailyScheduleChangesByService(ServiceScheduleRetrievalCommand command) {
+    public Map<Staff, Map<DayOfWeek, SortedSet<DailySchedule>>> findScheduleWithChangesByService(ServiceScheduleRetrievalCommand command) {
         Service service = serviceRetrievalPort.findById(command.serviceId());
 
         if (!service.isActive())
             throw new ServiceDisabledException();
 
-        return scheduleRetrievalPort.findDailyScheduleChangesByDateAndService(
+        var scheduleChangesForAllStaff = scheduleRetrievalPort.findDailyScheduleChangesByDateAndService(
                 service,
                 command.startDate()
+        );
+
+        // Mapping staff to map of day of the week to the sorted set of schedules, containing only the latest update for each validFrom date
+        return scheduleChangesForAllStaff.entrySet().stream().collect(
+                Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().stream()
+                                .collect(groupByDayWithLatestUpdatesOnly())
+                )
+        );
+    }
+
+    private Collector<DailySchedule, ?, Map<DayOfWeek, SortedSet<DailySchedule>>> groupByDayWithLatestUpdatesOnly() {
+        return Collectors.groupingBy(
+                DailySchedule::getDayOfWeek,
+                Collectors.collectingAndThen(
+                        Collectors.toMap(
+                                DailySchedule::getValidFrom,
+                                Function.identity(),
+                                BinaryOperator.maxBy(Comparator.comparing(DailySchedule::getCreatedAt))
+                        ),
+                        map -> new TreeSet<>(map.values())
+                )
         );
     }
 }

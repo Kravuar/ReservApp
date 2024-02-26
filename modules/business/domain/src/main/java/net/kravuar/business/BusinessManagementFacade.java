@@ -3,6 +3,7 @@ package net.kravuar.business;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.business.domain.Business;
 import net.kravuar.business.domain.commands.BusinessChangeActiveCommand;
+import net.kravuar.business.domain.commands.BusinessChangeDetailsCommand;
 import net.kravuar.business.domain.commands.BusinessChangeNameCommand;
 import net.kravuar.business.domain.commands.BusinessCreationCommand;
 import net.kravuar.business.domain.exceptions.BusinessNameAlreadyTaken;
@@ -67,6 +68,19 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
             business.setActive(command.active());
             businessPersistencePort.save(business);
             businessNotificationPort.notifyBusinessActiveChanged(business);
+        } finally {
+            businessLockPort.lock(command.businessId(), false);
+        }
+    }
+
+    @Override
+    public void changeDetails(BusinessChangeDetailsCommand command) {
+        try {
+            businessLockPort.lock(command.businessId(), true);
+
+            Business business = businessRetrievalPort.findById(command.businessId());
+            business.setDescription(command.description());
+            businessPersistencePort.save(business);
         } finally {
             businessLockPort.lock(command.businessId(), false);
         }

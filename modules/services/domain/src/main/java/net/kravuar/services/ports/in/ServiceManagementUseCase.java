@@ -2,6 +2,7 @@ package net.kravuar.services.ports.in;
 
 import net.kravuar.services.domain.Service;
 import net.kravuar.services.domain.commands.ServiceChangeActiveCommand;
+import net.kravuar.services.domain.commands.ServiceChangeDetailsCommand;
 import net.kravuar.services.domain.commands.ServiceChangeNameCommand;
 import net.kravuar.services.domain.commands.ServiceCreationCommand;
 import net.kravuar.services.domain.exceptions.BusinessDisabledException;
@@ -38,4 +39,12 @@ public interface ServiceManagementUseCase {
      * @throws IllegalStateException if service's business is disabled
      */
     void changeActive(ServiceChangeActiveCommand command);
+
+    /**
+     * Changes details for a {@link Service}.
+     *
+     * @param command the command containing information for details update of the service
+     * @throws ServiceNotFoundException if service wasn't found
+     */
+    void changeDetails(ServiceChangeDetailsCommand command);
 }

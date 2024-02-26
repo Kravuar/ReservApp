@@ -21,7 +21,7 @@ class ScheduleKafkaNotificationAdapter implements ScheduleNotificationPort {
                 new ScheduleUpdatedDTO(
                         schedule.getDayOfWeek(),
                         schedule.getValidFrom(),
-                        schedule.getDisabledAt(),
+                        schedule.getValidUntil(),
                         schedule.getWorkingHours().stream()
                                 .map(workingHours -> new WorkingHoursDTO(
                                                 workingHours.getStart(),
