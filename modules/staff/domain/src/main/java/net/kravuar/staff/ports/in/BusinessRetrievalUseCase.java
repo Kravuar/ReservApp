@@ -7,7 +7,7 @@ public interface BusinessRetrievalUseCase {
     /**
      * Find business by businessId.
      *
-     * @param id businessId of the business to find
+     * @param id id of the business to find
      * @return {@link Business} associated the with provided businessId
      * @throws BusinessNotFoundException if business wasn't found
      */

@@ -1,7 +1,5 @@
 package net.kravuar.staff.domain;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,15 +10,10 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class StaffInvitation {
-    private final Long id;
-    @NotNull
-    @NotBlank
+    private Long id;
     private final String sub;
-    @NotNull
     private final Business business;
-    @NotNull
-    private final LocalDateTime createdAt;
-    @NotNull
+    private final LocalDateTime createdAt = LocalDateTime.now();
     @Builder.Default
     private Status status = Status.WAITING;
 

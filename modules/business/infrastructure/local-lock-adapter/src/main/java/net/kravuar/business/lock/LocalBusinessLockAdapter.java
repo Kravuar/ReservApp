@@ -24,7 +24,7 @@ class LocalBusinessLockAdapter implements BusinessLockPort {
         var lock = idLocks.computeIfAbsent(businessId, (k) -> new ReentrantLock());
         if (acquire)
             lock.lock();
-        else
+        else if (lock.isHeldByCurrentThread())
             lock.unlock();
     }
 
@@ -33,7 +33,7 @@ class LocalBusinessLockAdapter implements BusinessLockPort {
         var lock = nameLocks.computeIfAbsent(name, (k) -> new ReentrantLock());
         if (acquire)
             lock.lock();
-        else
+        else if (lock.isHeldByCurrentThread())
             lock.unlock();
     }
 }

@@ -1,7 +1,6 @@
 package net.kravuar.staff.persistence.staff.invitation;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.staff.domain.Business;
 import net.kravuar.staff.domain.StaffInvitation;
 import net.kravuar.staff.domain.exceptions.InvitationNotFoundException;
 import net.kravuar.staff.ports.out.InvitationRetrievalPort;
@@ -21,8 +20,10 @@ class JPAInvitationRetrievalAdapter implements InvitationRetrievalPort {
     }
 
     @Override
-    public boolean existsByBusinessAndSub(Business business, String sub) {
-        return invitationRepository.existsByBusinessAndSub(business, sub);
+    public boolean existsActiveByBusinessIdAndSub(long businessId, String sub) {
+        return invitationRepository.findByBusinessIdAndSub(businessId, sub)
+                .filter(invitation -> invitation.getStatus() == StaffInvitation.Status.WAITING)
+                .isPresent();
     }
 
     @Override
@@ -31,7 +32,7 @@ class JPAInvitationRetrievalAdapter implements InvitationRetrievalPort {
     }
 
     @Override
-    public List<StaffInvitation> findByBusiness(Business business) {
-        return invitationRepository.findAllByBusiness(business);
+    public List<StaffInvitation> findByBusinessId(long businessId) {
+        return invitationRepository.findAllByBusinessId(businessId);
     }
 }

@@ -36,14 +36,14 @@ class OktaClient implements AccountPersistencePort {
                     .setPassword(account.getPassword().toCharArray())
                     .buildAndCreate(client);
 
-            return Account.builder()
-                    .username(account.getUsername())
-                    .firstName(account.getFirstName())
-                    .lastName(account.getLastName())
-                    .email(account.getEmail())
-                    .sub(user.getId())
-                    .password(account.getPassword())
-                    .build();
+            return new Account(
+                    user.getId(),
+                    account.getUsername(),
+                    account.getFirstName(),
+                    account.getLastName(),
+                    account.getEmail(),
+                    account.getPassword()
+            );
         } catch (ApiException exception) {
             // TODO: somehow extract whether it was username/email already taken error and map to existing exceptions
             // ApiExceptionHelper.getError(exception).

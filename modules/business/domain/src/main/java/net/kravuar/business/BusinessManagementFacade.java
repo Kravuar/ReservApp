@@ -32,6 +32,7 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
             Business newBusiness = Business.builder()
                     .ownerSub(command.ownerSub())
                     .name(command.name())
+                    .description(command.description())
                     .active(true)
                     .build();
             newBusiness = businessPersistencePort.save(newBusiness);

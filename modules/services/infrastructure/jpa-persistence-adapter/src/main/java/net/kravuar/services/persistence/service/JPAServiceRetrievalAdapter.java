@@ -1,7 +1,6 @@
 package net.kravuar.services.persistence.service;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.services.domain.Business;
 import net.kravuar.services.domain.Service;
 import net.kravuar.services.domain.exceptions.ServiceNotFoundException;
 import net.kravuar.services.ports.out.ServiceRetrievalPort;
@@ -26,16 +25,16 @@ class JPAServiceRetrievalAdapter implements ServiceRetrievalPort {
     }
 
     @Override
-    public List<Service> findAllActiveByBusiness(Business business) {
+    public List<Service> findAllActiveByBusinessId(long businessId) {
         return servicesRepository
-                .findByBusinessAndActiveIsTrue(business).stream()
+                .findByBusinessIdAndActiveIsTrue(businessId).stream()
                 .toList();
     }
 
     @Override
-    public List<Service> findAllByBusiness(Business business) {
+    public List<Service> findAllByBusinessId(long businessId) {
         return servicesRepository
-                .findAllByBusiness(business).stream()
+                .findAllByBusinessId(businessId).stream()
                 .toList();
     }
 

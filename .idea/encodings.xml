@@ -100,6 +100,10 @@
     <file url="file://$PROJECT_DIR$/modules/resource-servers/accounts/infrastructure/webmvc-rest-api-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/resource-servers/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/resource-servers/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/schedule/domain/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/schedule/domain/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/schedule/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/schedule/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/services/domain/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/services/domain/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/services/infrastructure/jpa-persistence-adapter/src/main/java" charset="UTF-8" />

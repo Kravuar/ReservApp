@@ -1,8 +1,6 @@
 package net.kravuar.staff.web;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.staff.domain.Staff;
-import net.kravuar.staff.domain.StaffInvitation;
 import net.kravuar.staff.ports.in.StaffRetrievalUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,25 +17,32 @@ import java.util.List;
 @RequiredArgsConstructor
 class StaffRetrievalController {
     private final StaffRetrievalUseCase staffRetrieval;
+    private final DTOStaffMapper dtoStaffMapper;
 
     @GetMapping("/by-id/{id}")
-    public Staff findById(@PathVariable("id") long id) {
-        return staffRetrieval.findStaffById(id);
+    public StaffDTO findById(@PathVariable("id") long id) {
+        return dtoStaffMapper.staffToDTO(staffRetrieval.findStaffById(id));
     }
 
     @GetMapping("/by-business/{businessId}")
-    public List<Staff> findByBusiness(@PathVariable("businessId") long businessId) {
-        return staffRetrieval.findAllStaffByBusiness(businessId);
+    public List<StaffDTO> findByBusiness(@PathVariable("businessId") long businessId) {
+        return staffRetrieval.findAllStaffByBusiness(businessId).stream()
+                .map(dtoStaffMapper::staffToDTO)
+                .toList();
     }
 
     @GetMapping("/invitations-by-sub")
-    public List<StaffInvitation> findInvitationsBySub(@AuthenticationPrincipal Jwt principal) {
-        return staffRetrieval.findStaffInvitationsBySubject(principal.getSubject());
+    public List<StaffInvitationDTO> findInvitationsBySub(@AuthenticationPrincipal Jwt principal) {
+        return staffRetrieval.findStaffInvitationsBySubject(principal.getSubject()).stream()
+                .map(dtoStaffMapper::invitationToDTO)
+                .toList();
     }
 
     @GetMapping("/invitations-by-business/{businessId}")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfBusiness(#businessId, authentication.details.subject)")
-    public List<StaffInvitation> findInvitationsByBusiness(@PathVariable("businessId") long businessId) {
-        return staffRetrieval.findStaffInvitationsByBusiness(businessId);
+    public List<StaffInvitationDTO> findInvitationsByBusiness(@PathVariable("businessId") long businessId) {
+        return staffRetrieval.findStaffInvitationsByBusiness(businessId).stream()
+                .map(dtoStaffMapper::invitationToDTO)
+                .toList();
     }
 }

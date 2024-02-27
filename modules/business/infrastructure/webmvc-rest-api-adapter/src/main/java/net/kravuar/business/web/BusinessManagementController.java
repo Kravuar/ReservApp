@@ -1,7 +1,6 @@
 package net.kravuar.business.web;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.business.domain.Business;
 import net.kravuar.business.domain.commands.BusinessChangeActiveCommand;
 import net.kravuar.business.domain.commands.BusinessChangeDetailsCommand;
 import net.kravuar.business.domain.commands.BusinessChangeNameCommand;
@@ -17,15 +16,17 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 class BusinessManagementController {
     private final BusinessManagementUseCase businessManagement;
+    private final DTOMapper dtoMapper;
 
     @PostMapping("/create")
     @PreAuthorize("isAuthenticated()")
-    Business create(@AuthenticationPrincipal Jwt user, @RequestBody BusinessCreationDTO businessCreation) {
+    BusinessDTO create(@AuthenticationPrincipal Jwt user, @RequestBody BusinessCreationDTO businessCreation) {
         var command = new BusinessCreationCommand(
                 user.getSubject(),
-                businessCreation.name()
+                businessCreation.name(),
+                businessCreation.description()
         );
-        return businessManagement.create(command);
+        return dtoMapper.toDTO(businessManagement.create(command));
     }
 
     @PostMapping("/change-name")
@@ -42,7 +43,7 @@ class BusinessManagementController {
 
     @PutMapping("/update-details")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwner(#command.businessId(), authentication.details.subject)")
-    public void updateDetails(@RequestBody BusinessChangeDetailsCommand command) {
+    void updateDetails(@RequestBody BusinessChangeDetailsCommand command) {
         businessManagement.changeDetails(command);
     }
 }

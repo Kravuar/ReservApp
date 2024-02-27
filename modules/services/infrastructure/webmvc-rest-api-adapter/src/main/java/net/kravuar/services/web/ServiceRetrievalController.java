@@ -1,7 +1,6 @@
 package net.kravuar.services.web;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.services.domain.Service;
 import net.kravuar.services.ports.in.ServiceRetrievalUseCase;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,19 +14,24 @@ import java.util.List;
 @RequiredArgsConstructor
 class ServiceRetrievalController {
     private final ServiceRetrievalUseCase serviceRetrieval;
+    private final DTOServiceMapper dtoServiceMapper;
 
     @GetMapping("/active-by-business/{businessId}")
-    public List<Service> activeByCurrentUser(@PathVariable("businessId") long businessId) {
-        return serviceRetrieval.findAllActiveByBusiness(businessId);
+    public List<ServiceDTO> activeByCurrentUser(@PathVariable("businessId") long businessId) {
+        return serviceRetrieval.findAllActiveByBusiness(businessId).stream()
+                .map(dtoServiceMapper::toDTO)
+                .toList();
     }
 
     @GetMapping("/byId/{id}")
-    public Service byId(@PathVariable("id") long id) {
-        return serviceRetrieval.findById(id);
+    public ServiceDTO byId(@PathVariable("id") long id) {
+        return dtoServiceMapper.toDTO(serviceRetrieval.findById(id));
     }
 
     @GetMapping("/active")
-    public List<Service> byOwner() {
-        return serviceRetrieval.findAllActive();
+    public List<ServiceDTO> byOwner() {
+        return serviceRetrieval.findAllActive().stream()
+                .map(dtoServiceMapper::toDTO)
+                .toList();
     }
 }

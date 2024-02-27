@@ -1,7 +1,5 @@
 package net.kravuar.staff.domain;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,11 +8,8 @@ import lombok.Setter;
 @Getter
 @Builder
 public class Staff {
-    private final Long id;
-    @NotNull
-    @NotBlank
+    private Long id;
     private final String sub;
-    @NotNull
     private final Business business;
     private boolean active;
 

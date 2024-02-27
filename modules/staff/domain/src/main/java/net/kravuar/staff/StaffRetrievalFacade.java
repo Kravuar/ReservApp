@@ -2,7 +2,6 @@ package net.kravuar.staff;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
-import net.kravuar.staff.domain.Business;
 import net.kravuar.staff.domain.Staff;
 import net.kravuar.staff.domain.StaffInvitation;
 import net.kravuar.staff.ports.in.StaffRetrievalUseCase;
@@ -20,14 +19,13 @@ public class StaffRetrievalFacade implements StaffRetrievalUseCase {
     private final InvitationRetrievalPort invitationRetrievalPort;
 
     @Override
-    public Staff findStaffById(long id) {
-        return staffRetrievalPort.findById(id);
+    public Staff findStaffById(long staffId) {
+        return staffRetrievalPort.findById(staffId);
     }
 
     @Override
     public List<Staff> findAllStaffByBusiness(long businessId) {
-        Business business = businessRetrievalPort.findById(businessId);
-        return staffRetrievalPort.findAllStaffByBusiness(business);
+        return staffRetrievalPort.findAllStaffByBusinessId(businessId);
     }
 
     @Override
@@ -42,7 +40,6 @@ public class StaffRetrievalFacade implements StaffRetrievalUseCase {
 
     @Override
     public List<StaffInvitation> findStaffInvitationsByBusiness(long businessId) {
-        Business business = businessRetrievalPort.findById(businessId);
-        return invitationRetrievalPort.findByBusiness(business);
+        return invitationRetrievalPort.findByBusinessId(businessId);
     }
 }

@@ -24,7 +24,7 @@ class LocalServiceLockAdapter implements ServiceLockPort {
         var lock = idLocks.computeIfAbsent(serviceId, (k) -> new ReentrantLock());
         if (acquire)
             lock.lock();
-        else
+        else if (lock.isHeldByCurrentThread())
             lock.unlock();
     }
 
@@ -33,7 +33,7 @@ class LocalServiceLockAdapter implements ServiceLockPort {
         var lock = nameLocks.computeIfAbsent(name, (k) -> new ReentrantLock());
         if (acquire)
             lock.lock();
-        else
+        else if (lock.isHeldByCurrentThread())
             lock.unlock();
     }
 }

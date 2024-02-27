@@ -1,7 +1,6 @@
 package net.kravuar.business.web;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.business.domain.Business;
 import net.kravuar.business.ports.in.BusinessRetrievalUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,25 +17,32 @@ import java.util.List;
 @RequiredArgsConstructor
 class BusinessRetrievalController {
     private final BusinessRetrievalUseCase businessRetrieval;
+    private final DTOMapper dtoMapper;
 
     @GetMapping("/my")
     @PreAuthorize("isAuthenticated()")
-    List<Business> byCurrentUser(@AuthenticationPrincipal Jwt user) {
-        return businessRetrieval.findActiveBySub(user.getSubject());
+    List<BusinessDTO> byCurrentUser(@AuthenticationPrincipal Jwt user) {
+        return businessRetrieval.findActiveBySub(user.getSubject()).stream()
+                .map(dtoMapper::toDTO)
+                .toList();
     }
 
     @GetMapping("/byId/{id}")
-    Business byId(@PathVariable("id") long id) {
-        return businessRetrieval.findById(id);
+    BusinessDTO byId(@PathVariable("id") long id) {
+        return dtoMapper.toDTO(businessRetrieval.findById(id));
     }
 
     @GetMapping("/byOwner/{sub}")
-    List<Business> byOwner(@PathVariable("sub") String sub) {
-        return businessRetrieval.findActiveBySub(sub);
+    List<BusinessDTO> byOwner(@PathVariable("sub") String sub) {
+        return businessRetrieval.findActiveBySub(sub).stream()
+                .map(dtoMapper::toDTO)
+                .toList();
     }
 
     @GetMapping("/active")
-    List<Business> active() {
-        return businessRetrieval.findAllActive();
+    List<BusinessDTO> active() {
+        return businessRetrieval.findAllActive().stream()
+                .map(dtoMapper::toDTO)
+                .toList();
     }
 }

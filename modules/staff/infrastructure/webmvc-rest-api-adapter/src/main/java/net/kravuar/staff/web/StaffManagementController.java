@@ -1,7 +1,6 @@
 package net.kravuar.staff.web;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.staff.domain.StaffInvitation;
 import net.kravuar.staff.domain.commands.StaffAnswerInvitationCommand;
 import net.kravuar.staff.domain.commands.StaffChangeDetailsCommand;
 import net.kravuar.staff.domain.commands.StaffInvitationCommand;
@@ -14,21 +13,22 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 class StaffManagementController {
     private final StaffManagementUseCase staffManagement;
+    private final DTOStaffMapper dtoStaffMapper;
 
     @PostMapping("/send-invitation/{subject}/{businessId}")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfBusiness(#businessId, authentication.details.subject)")
-    public StaffInvitation sendInvitation(@PathVariable("subject") String sub, @PathVariable("businessId") long businessId) {
-        return staffManagement.sendInvitation(
+    public StaffInvitationDTO sendInvitation(@PathVariable("subject") String sub, @PathVariable("businessId") long businessId) {
+        return dtoStaffMapper.invitationToDTO(staffManagement.sendInvitation(
                 new StaffInvitationCommand(
                         sub,
                         businessId
                 )
-        );
+        ));
     }
 
-    @PostMapping("/send-invitation/{invitationId}/{accept}")
+    @PostMapping("/answer-invitation/{invitationId}/{accept}")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isInvitedStaff(#invitationId, authentication.details.subject)")
-    public void sendInvitation(@PathVariable("invitationId") long invitationId, @PathVariable("accept") boolean accept) {
+    public void answerInvitation(@PathVariable("invitationId") long invitationId, @PathVariable("accept") boolean accept) {
         staffManagement.answerInvitation(
                 new StaffAnswerInvitationCommand(
                         invitationId,

@@ -1,5 +1,6 @@
 package net.kravuar.staff;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
 import net.kravuar.staff.domain.Business;
@@ -14,7 +15,6 @@ import net.kravuar.staff.domain.exceptions.BusinessDisabledException;
 import net.kravuar.staff.domain.exceptions.InvitationInvalidStatusException;
 import net.kravuar.staff.ports.in.StaffManagementUseCase;
 import net.kravuar.staff.ports.out.*;
-import org.springframework.transaction.annotation.Transactional;
 
 @AppComponent
 @RequiredArgsConstructor
@@ -35,7 +35,9 @@ public class StaffManagementFacade implements StaffManagementUseCase {
 
             Business business = businessRetrievalPort.findById(command.businessId());
 
-            if (invitationRetrievalPort.existsByBusinessAndSub(business, command.sub()))
+            if (staffRetrievalPort.existsActiveByBusinessIdAndSub(command.businessId(), command.sub()))
+                throw new IllegalStateException("Staff already exists");
+            if (invitationRetrievalPort.existsActiveByBusinessIdAndSub(command.businessId(), command.sub()))
                 throw new IllegalStateException("Invitation already exists");
             if (!business.isActive())
                 throw new BusinessDisabledException();
@@ -87,28 +89,16 @@ public class StaffManagementFacade implements StaffManagementUseCase {
 
     @Override
     public void changeDetails(StaffChangeDetailsCommand command) {
-        try {
-            staffLockPort.lock(command.staffId(), true);
-
-            Staff staff = staffRetrievalPort.findById(command.staffId());
-            staff.setDescription(command.description());
-            staffPersistencePort.save(staff);
-        } finally {
-            staffLockPort.lock(command.staffId(), false);
-        }
+        Staff staff = staffRetrievalPort.findById(command.staffId());
+        staff.setDescription(command.description());
+        staffPersistencePort.save(staff);
     }
 
     @Override
     public void removeStaff(StaffRemovalCommand command) {
-        try {
-            staffLockPort.lock(command.staffId(), true);
-
-            Staff staff = staffRetrievalPort.findById(command.staffId());
-            staff.setActive(false);
-            staffPersistencePort.save(staff);
-            staffNotificationPort.notifyStaffActiveChanged(staff);
-        } finally {
-            staffLockPort.lock(command.staffId(), false);
-        }
+        Staff staff = staffRetrievalPort.findActiveById(command.staffId());
+        staff.setActive(false);
+        staffPersistencePort.save(staff);
+        staffNotificationPort.notifyStaffActiveChanged(staff);
     }
 }

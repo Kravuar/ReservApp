@@ -1,5 +1,7 @@
 package net.kravuar.staff.ports.in;
 
+import jakarta.validation.Valid;
+import net.kravuar.context.AppValidated;
 import net.kravuar.staff.domain.Staff;
 import net.kravuar.staff.domain.StaffInvitation;
 import net.kravuar.staff.domain.commands.StaffAnswerInvitationCommand;
@@ -8,6 +10,7 @@ import net.kravuar.staff.domain.commands.StaffInvitationCommand;
 import net.kravuar.staff.domain.commands.StaffRemovalCommand;
 import net.kravuar.staff.domain.exceptions.*;
 
+@AppValidated
 public interface StaffManagementUseCase {
     /**
      * Sends invitation to business if not already invited.
@@ -17,9 +20,9 @@ public interface StaffManagementUseCase {
      * @throws BusinessNotFoundException if business to associate Staff with wasn't found
      * @throws BusinessDisabledException if business is disabled
      * @throws AccountNotFoundException if account to invite wasn't found
-     * @throws IllegalStateException if there's an active invitation
+     * @throws IllegalStateException if there's an active invitation/staff
      */
-    StaffInvitation sendInvitation(StaffInvitationCommand command);
+    StaffInvitation sendInvitation(@Valid StaffInvitationCommand command);
 
     /**
      * Answer on invitation to business.
@@ -36,7 +39,7 @@ public interface StaffManagementUseCase {
      * @param command the command containing information for details update of the staff
      * @throws StaffNotFoundException if staff wasn't found
      */
-    void changeDetails(StaffChangeDetailsCommand command);
+    void changeDetails(@Valid StaffChangeDetailsCommand command);
 
     /**
      * Removes staff from business

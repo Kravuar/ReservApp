@@ -1,7 +1,6 @@
 package net.kravuar.services.web;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.services.domain.Service;
 import net.kravuar.services.domain.commands.ServiceChangeActiveCommand;
 import net.kravuar.services.domain.commands.ServiceChangeDetailsCommand;
 import net.kravuar.services.domain.commands.ServiceChangeNameCommand;
@@ -15,11 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 class ServiceManagementController {
     private final ServiceManagementUseCase serviceManagement;
+    private final DTOServiceMapper dtoServiceMapper;
 
     @PostMapping("/create")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfBusiness(#command.businessId(), authentication.details.subject)")
-    Service create(@RequestBody ServiceCreationCommand command) {
-        return serviceManagement.create(command);
+    ServiceDTO create(@RequestBody ServiceCreationCommand command) {
+        return dtoServiceMapper.toDTO(serviceManagement.create(command));
     }
 
     @PostMapping("/change-name")

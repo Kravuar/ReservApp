@@ -66,22 +66,4 @@
             </basic>
         </attributes>
     </entity>
-
-    <entity class="net.kravuar.staff.domain.Service" access="FIELD">
-        <table name="service"/>
-        <attributes>
-            <id name="id">
-                <generated-value strategy="IDENTITY"/>
-            </id>
-            <basic name="active">
-                <column nullable="false"/>
-            </basic>
-            <many-to-one name="business" fetch="LAZY">
-                <join-column name="businessId"/>
-                <cascade>
-                    <cascade-all/>
-                </cascade>
-            </many-to-one>
-        </attributes>
-    </entity>
 </entity-mappings>

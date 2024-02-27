@@ -19,6 +19,7 @@
         <module>accounts</module>
         <module>services</module>
         <module>staff</module>
+        <module>schedule</module>
     </modules>
 
     <dependencies>

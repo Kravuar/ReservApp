@@ -8,6 +8,7 @@ import net.kravuar.services.domain.commands.ServiceChangeActiveCommand;
 import net.kravuar.services.domain.commands.ServiceChangeDetailsCommand;
 import net.kravuar.services.domain.commands.ServiceChangeNameCommand;
 import net.kravuar.services.domain.commands.ServiceCreationCommand;
+import net.kravuar.services.domain.exceptions.BusinessDisabledException;
 import net.kravuar.services.domain.exceptions.ServiceNameAlreadyTaken;
 import net.kravuar.services.ports.in.ServiceManagementUseCase;
 import net.kravuar.services.ports.out.*;
@@ -29,10 +30,13 @@ public class ServiceManagementFacade implements ServiceManagementUseCase {
             if (serviceRetrievalPort.existsByName(command.name()))
                 throw new ServiceNameAlreadyTaken();
             Business business = businessRetrievalPort.findById(command.businessId());
+            if (!business.isActive())
+                throw new BusinessDisabledException();
             Service existing = servicePersistencePort.save(
                     Service.builder()
                             .name(command.name())
                             .business(business)
+                            .description(command.description())
                             .build()
             );
             serviceNotificationPort.notifyNewService(existing);
@@ -61,28 +65,16 @@ public class ServiceManagementFacade implements ServiceManagementUseCase {
 
     @Override
     public void changeActive(ServiceChangeActiveCommand command) {
-        try {
-            serviceLockPort.lock(command.serviceId(), true);
-
-            Service existing = serviceRetrievalPort.findById(command.serviceId());
-            existing.setActive(command.active());
-            existing = servicePersistencePort.save(existing);
-            serviceNotificationPort.notifyServiceActiveChanged(existing);
-        } finally {
-            serviceLockPort.lock(command.serviceId(), false);
-        }
+        Service existing = serviceRetrievalPort.findById(command.serviceId());
+        existing.setActive(command.active());
+        existing = servicePersistencePort.save(existing);
+        serviceNotificationPort.notifyServiceActiveChanged(existing);
     }
 
     @Override
     public void changeDetails(ServiceChangeDetailsCommand command) {
-        try {
-            serviceLockPort.lock(command.serviceId(), true);
-
-            Service service = serviceRetrievalPort.findById(command.serviceId());
-            service.setDescription(command.description());
-            servicePersistencePort.save(service);
-        } finally {
-            serviceLockPort.lock(command.serviceId(), false);
-        }
+        Service service = serviceRetrievalPort.findById(command.serviceId());
+        service.setDescription(command.description());
+        servicePersistencePort.save(service);
     }
 }

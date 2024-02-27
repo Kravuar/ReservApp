@@ -1,5 +1,7 @@
 package net.kravuar.services.ports.in;
 
+import jakarta.validation.Valid;
+import net.kravuar.context.AppValidated;
 import net.kravuar.services.domain.Service;
 import net.kravuar.services.domain.commands.ServiceChangeActiveCommand;
 import net.kravuar.services.domain.commands.ServiceChangeDetailsCommand;
@@ -10,6 +12,7 @@ import net.kravuar.services.domain.exceptions.BusinessNotFoundException;
 import net.kravuar.services.domain.exceptions.ServiceNameAlreadyTaken;
 import net.kravuar.services.domain.exceptions.ServiceNotFoundException;
 
+@AppValidated
 public interface ServiceManagementUseCase {
     /**
      * Creates a {@link Service}.
@@ -20,7 +23,7 @@ public interface ServiceManagementUseCase {
      * @throws ServiceNameAlreadyTaken if service name already taken
      * @throws BusinessDisabledException if business is disabled
      */
-    Service create(ServiceCreationCommand command);
+    Service create(@Valid ServiceCreationCommand command);
 
     /**
      * Changes the name of a {@link Service}.
@@ -29,14 +32,13 @@ public interface ServiceManagementUseCase {
      * @throws ServiceNotFoundException if service wasn't found
      * @throws ServiceNameAlreadyTaken if service name already taken
      */
-    void changeName(ServiceChangeNameCommand command);
+    void changeName(@Valid ServiceChangeNameCommand command);
 
     /**
      * Enables/disables a {@link Service}.
      *
      * @param command the command containing information for enabling/disabling service
      * @throws ServiceNotFoundException if service wasn't found
-     * @throws IllegalStateException if service's business is disabled
      */
     void changeActive(ServiceChangeActiveCommand command);
 
@@ -46,5 +48,5 @@ public interface ServiceManagementUseCase {
      * @param command the command containing information for details update of the service
      * @throws ServiceNotFoundException if service wasn't found
      */
-    void changeDetails(ServiceChangeDetailsCommand command);
+    void changeDetails(@Valid ServiceChangeDetailsCommand command);
 }

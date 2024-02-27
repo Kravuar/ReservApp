@@ -24,7 +24,7 @@ class LocalStaffLockAdapter implements StaffLockPort {
         var lock = idLocks.computeIfAbsent(staffId, (k) -> new ReentrantLock());
         if (acquire)
             lock.lock();
-        else
+        else if (lock.isHeldByCurrentThread())
             lock.unlock();
     }
 
@@ -34,9 +34,10 @@ class LocalStaffLockAdapter implements StaffLockPort {
         var lock = invitationLocks.computeIfAbsent(key, (k) -> new ReentrantLock());
         if (acquire)
             lock.lock();
-        else
+        else if (lock.isHeldByCurrentThread())
             lock.unlock();
     }
 
-    record InvitationKey(long businessId, String sub) {}
+    record InvitationKey(long businessId, String sub) {
+    }
 }
