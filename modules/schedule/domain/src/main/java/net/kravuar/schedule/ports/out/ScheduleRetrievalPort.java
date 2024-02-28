@@ -7,15 +7,6 @@ import java.util.List;
 
 public interface ScheduleRetrievalPort {
     /**
-     * Find schedule by scheduleId.
-     *
-     * @param scheduleId id of the schedule to find
-     * @return {@link Schedule} associated the with provided {@code scheduleId}
-     * @throws ScheduleNotFoundException if schedule wasn't found
-     */
-    Schedule findById(long scheduleId);
-
-    /**
      * Find active schedule by scheduleId.
      *
      * @param scheduleId id of the schedule to find
@@ -30,5 +21,5 @@ public interface ScheduleRetrievalPort {
      * @param staffId id of the staff
      * @return {@link List<Schedule>} of schedules associated the with provided {@code staffId}
      */
-    List<Schedule> findByStaffId(long staffId);
+    List<Schedule> findActiveByStaffId(long staffId);
 }

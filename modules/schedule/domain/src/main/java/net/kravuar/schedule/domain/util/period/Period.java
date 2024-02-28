@@ -6,5 +6,6 @@ import java.time.temporal.Temporal;
 @StartBeforeEnd
 public interface Period<T extends Temporal> {
     T getStart();
+
     T getEnd();
 }

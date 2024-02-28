@@ -1,4 +1,3 @@
-
 package net.kravuar.staff.notification;
 
 import net.kravuar.context.AppComponent;

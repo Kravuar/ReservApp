@@ -5,7 +5,6 @@ import net.kravuar.context.AppComponent;
 import net.kravuar.staff.domain.Staff;
 import net.kravuar.staff.domain.StaffInvitation;
 import net.kravuar.staff.ports.in.StaffRetrievalUseCase;
-import net.kravuar.staff.ports.out.BusinessRetrievalPort;
 import net.kravuar.staff.ports.out.InvitationRetrievalPort;
 import net.kravuar.staff.ports.out.StaffRetrievalPort;
 
@@ -14,18 +13,17 @@ import java.util.List;
 @AppComponent
 @RequiredArgsConstructor
 public class StaffRetrievalFacade implements StaffRetrievalUseCase {
-    private final BusinessRetrievalPort businessRetrievalPort;
     private final StaffRetrievalPort staffRetrievalPort;
     private final InvitationRetrievalPort invitationRetrievalPort;
 
     @Override
-    public Staff findStaffById(long staffId) {
-        return staffRetrievalPort.findById(staffId);
+    public Staff findStaffById(long staffId, boolean activeOnly) {
+        return staffRetrievalPort.findById(staffId, activeOnly);
     }
 
     @Override
-    public List<Staff> findAllStaffByBusiness(long businessId) {
-        return staffRetrievalPort.findAllStaffByBusinessId(businessId);
+    public List<Staff> findAllStaffByBusiness(long businessId, boolean activeOnly) {
+        return staffRetrievalPort.findAllStaffByBusinessId(businessId, activeOnly);
     }
 
     @Override

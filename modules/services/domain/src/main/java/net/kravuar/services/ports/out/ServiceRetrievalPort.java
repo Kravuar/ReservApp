@@ -7,37 +7,31 @@ import java.util.List;
 
 public interface ServiceRetrievalPort {
     /**
-     * Find service by serviceId.
+     * Find active service by serviceId.
      *
-     * @param id id of the service to find
-     * @return {@link Service} associated the with provided serviceId
+     * @param serviceId  id of the service to find
+     * @param activeOnly whether to search active only
+     * @return {@link Service} associated the with provided {@code serviceId}
      * @throws ServiceNotFoundException if service wasn't found
      */
-    Service findById(long id);
+    Service findById(long serviceId, boolean activeOnly);
 
     /**
-     * Check whether service exists by name.
+     * Check whether an active service exists by name.
      *
      * @param name name to check
      * @return {@code true} if exists, {@code false} otherwise
      */
-    boolean existsByName(String name);
-
-    /**
-     * Find all active services by associated business.
-     *
-     * @param businessId id of the business
-     * @return {@link List<Service>} of active services associated the with provided {@code businessId}
-     */
-    List<Service> findAllActiveByBusinessId(long businessId);
+    boolean existsActiveByName(String name);
 
     /**
      * Find all services by associated business.
      *
      * @param businessId id of the business
+     * @param activeOnly whether to search active only
      * @return {@link List<Service>} of services associated the with provided {@code businessId}
      */
-    List<Service> findAllByBusinessId(long businessId);
+    List<Service> findAllByBusinessId(long businessId, boolean activeOnly);
 
     /**
      * Find all active services.

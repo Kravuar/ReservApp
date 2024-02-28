@@ -6,11 +6,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.kravuar.schedule.domain.ScheduleExceptionDay;
 import net.kravuar.schedule.domain.halfbreeddomain.SchedulePattern;
 import net.kravuar.schedule.domain.util.period.Period;
 import net.kravuar.schedule.domain.util.period.StartBeforeEnd;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,6 +20,7 @@ import java.util.List;
 @StartBeforeEnd
 public class CreateScheduleCommand implements Period<LocalDate> {
     private final long staffId;
+    private final long serviceId;
     @NotNull
     @FutureOrPresent
     private final LocalDate start;
@@ -26,4 +29,5 @@ public class CreateScheduleCommand implements Period<LocalDate> {
     @NotNull
     @Size(min = 1)
     private final List<@NotNull @Valid SchedulePattern> patterns;
+    private final List<@NotNull @Valid ScheduleExceptionDay> exceptionDays = new ArrayList<>();
 }

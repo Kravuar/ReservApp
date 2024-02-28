@@ -7,9 +7,9 @@ public interface BusinessRetrievalUseCase {
     /**
      * Find business by businessId.
      *
-     * @param id id of the business to find
-     * @return {@link Business} associated the with provided businessId
+     * @param businessId id of the business to find
+     * @return {@link Business} associated the with provided {@code businessId}
      * @throws BusinessNotFoundException if business wasn't found
      */
-    Business findById(long id);
+    Business findActiveById(long businessId);
 }

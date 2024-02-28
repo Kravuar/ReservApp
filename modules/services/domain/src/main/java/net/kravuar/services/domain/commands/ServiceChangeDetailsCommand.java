@@ -4,4 +4,5 @@ public record ServiceChangeDetailsCommand(
         long serviceId,
         String description
         // TODO: picture and other details
-) {}
+) {
+}

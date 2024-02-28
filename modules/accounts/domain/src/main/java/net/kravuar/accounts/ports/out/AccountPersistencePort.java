@@ -11,7 +11,7 @@ public interface AccountPersistencePort {
      * @param account the account to save
      * @return the saved account object
      * @throws UsernameAlreadyTakenException if the username is already taken
-     * @throws EmailAlreadyTakenException if the email is already taken
+     * @throws EmailAlreadyTakenException    if the email is already taken
      */
     Account save(Account account);
 }

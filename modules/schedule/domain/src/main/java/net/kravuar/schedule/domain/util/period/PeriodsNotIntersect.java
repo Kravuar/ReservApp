@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Target({ FIELD, PARAMETER, TYPE_USE })
+@Target({FIELD, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {TimePeriodsIntersectionValidator.class, DatePeriodsIntersectionValidator.class})
 @Documented

@@ -10,6 +10,6 @@ class AuthorizationHandler {
     private final BusinessRetrievalUseCase businessRetrieval;
 
     public boolean isOwner(long businessId, String subject) {
-        return businessRetrieval.findById(businessId).getOwnerSub().equals(subject);
+        return businessRetrieval.findById(businessId, false).getOwnerSub().equals(subject);
     }
 }

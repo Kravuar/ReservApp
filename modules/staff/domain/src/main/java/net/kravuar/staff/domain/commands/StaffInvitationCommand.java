@@ -8,4 +8,5 @@ public record StaffInvitationCommand(
         @NotBlank
         String sub,
         long businessId
-) {}
+) {
+}

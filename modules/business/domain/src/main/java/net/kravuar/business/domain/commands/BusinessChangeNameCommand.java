@@ -8,4 +8,5 @@ public record BusinessChangeNameCommand(
         @NotNull
         @Size(min = 3, max = 30)
         String newName
-) {}
+) {
+}

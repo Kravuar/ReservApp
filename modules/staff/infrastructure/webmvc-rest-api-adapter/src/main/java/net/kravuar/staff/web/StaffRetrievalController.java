@@ -21,12 +21,12 @@ class StaffRetrievalController {
 
     @GetMapping("/by-id/{id}")
     public StaffDTO findById(@PathVariable("id") long id) {
-        return dtoStaffMapper.staffToDTO(staffRetrieval.findStaffById(id));
+        return dtoStaffMapper.staffToDTO(staffRetrieval.findStaffById(id, true));
     }
 
     @GetMapping("/by-business/{businessId}")
     public List<StaffDTO> findByBusiness(@PathVariable("businessId") long businessId) {
-        return staffRetrieval.findAllStaffByBusiness(businessId).stream()
+        return staffRetrieval.findAllStaffByBusiness(businessId, true).stream()
                 .map(dtoStaffMapper::staffToDTO)
                 .toList();
     }

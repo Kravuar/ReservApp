@@ -26,7 +26,7 @@ public interface BusinessManagementUseCase {
      *
      * @param command the command containing information for changing the business name
      * @throws BusinessNotFoundException if business wasn't found
-     * @throws BusinessNameAlreadyTaken if business name already taken
+     * @throws BusinessNameAlreadyTaken  if business name already taken
      */
     void changeName(@Valid BusinessChangeNameCommand command);
 

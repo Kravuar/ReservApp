@@ -12,8 +12,8 @@ class JPABusinessRetrievalAdapter implements BusinessRetrievalPort {
     private final BusinessRepository businessRepository;
 
     @Override
-    public Business findById(long id) {
-        return businessRepository.findById(id)
+    public Business findById(long businessId, boolean activeOnly) {
+        return businessRepository.findByIdAndActive(businessId, activeOnly)
                 .orElseThrow(BusinessNotFoundException::new);
     }
 }

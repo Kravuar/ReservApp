@@ -12,4 +12,5 @@ public record ChangeSchedulePatternsCommand(
         @NotNull
         @Size(min = 1)
         List<@NotNull @Valid SchedulePattern> patterns
-) {}
+) {
+}

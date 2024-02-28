@@ -10,6 +10,8 @@ import java.util.Optional;
 @Repository
 interface InvitationRepository extends JpaRepository<StaffInvitation, Long> {
     Optional<StaffInvitation> findByBusinessIdAndSub(long businessId, String sub);
+
     List<StaffInvitation> findAllByBusinessId(long businessId);
+
     List<StaffInvitation> findAllBySub(String sub);
 }

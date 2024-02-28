@@ -27,7 +27,7 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
         try {
             businessLockPort.lock(command.name(), true);
 
-            if (businessRetrievalPort.existsByName(command.name()))
+            if (businessRetrievalPort.existsActiveByName(command.name()))
                 throw new BusinessNameAlreadyTaken();
             Business newBusiness = Business.builder()
                     .ownerSub(command.ownerSub())
@@ -49,9 +49,9 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
             businessLockPort.lock(command.businessId(), true);
             businessLockPort.lock(command.newName(), true);
 
-            if (businessRetrievalPort.existsByName(command.newName()))
+            if (businessRetrievalPort.existsActiveByName(command.newName()))
                 throw new BusinessNameAlreadyTaken();
-            Business business = businessRetrievalPort.findById(command.businessId());
+            Business business = businessRetrievalPort.findById(command.businessId(), false);
             business.setName(command.newName());
             businessPersistencePort.save(business);
         } finally {
@@ -65,10 +65,20 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
         try {
             businessLockPort.lock(command.businessId(), true);
 
-            Business business = businessRetrievalPort.findById(command.businessId());
-            business.setActive(command.active());
-            businessPersistencePort.save(business);
-            businessNotificationPort.notifyBusinessActiveChanged(business);
+            Business business = businessRetrievalPort.findById(command.businessId(), false);
+            try {
+                if (command.active())
+                    businessLockPort.lock(business.getName(), true);
+
+                if (businessRetrievalPort.existsActiveByName(business.getName()))
+                    throw new BusinessNameAlreadyTaken();
+
+                business.setActive(command.active());
+                businessPersistencePort.save(business);
+                businessNotificationPort.notifyBusinessActiveChanged(business);
+            } finally {
+                businessLockPort.lock(business.getName(), false);
+            }
         } finally {
             businessLockPort.lock(command.businessId(), false);
         }
@@ -76,14 +86,8 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
 
     @Override
     public void changeDetails(BusinessChangeDetailsCommand command) {
-        try {
-            businessLockPort.lock(command.businessId(), true);
-
-            Business business = businessRetrievalPort.findById(command.businessId());
-            business.setDescription(command.description());
-            businessPersistencePort.save(business);
-        } finally {
-            businessLockPort.lock(command.businessId(), false);
-        }
+        Business business = businessRetrievalPort.findById(command.businessId(), false);
+        business.setDescription(command.description());
+        businessPersistencePort.save(business);
     }
 }

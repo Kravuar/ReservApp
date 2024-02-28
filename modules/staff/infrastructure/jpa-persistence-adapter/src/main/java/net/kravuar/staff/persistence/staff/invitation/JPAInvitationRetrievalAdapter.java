@@ -20,7 +20,7 @@ class JPAInvitationRetrievalAdapter implements InvitationRetrievalPort {
     }
 
     @Override
-    public boolean existsActiveByBusinessIdAndSub(long businessId, String sub) {
+    public boolean existsWaitingByBusinessIdAndSub(long businessId, String sub) {
         return invitationRepository.findByBusinessIdAndSub(businessId, sub)
                 .filter(invitation -> invitation.getStatus() == StaffInvitation.Status.WAITING)
                 .isPresent();

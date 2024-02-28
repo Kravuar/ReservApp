@@ -11,19 +11,21 @@ public interface StaffRetrievalUseCase {
     /**
      * Find staff member by ID.
      *
-     * @param staffId id of the staff member to find
+     * @param staffId    id of the staff member to find
+     * @param activeOnly whether to search active only
      * @return {@link Staff} object associated with the provided {@code staffId}
      * @throws StaffNotFoundException if staff member wasn't found
      */
-    Staff findStaffById(long staffId);
+    Staff findStaffById(long staffId, boolean activeOnly);
 
     /**
      * Find all staff members by business.
      *
      * @param businessId id of the business
-     * @return {@link List<Staff>} all staff members associated with the provided {@code businessId}
+     * @param activeOnly whether to search active only
+     * @return {@link List<Staff>} of all staff members associated with the provided {@code businessId}
      */
-    List<Staff> findAllStaffByBusiness(long businessId);
+    List<Staff> findAllStaffByBusiness(long businessId, boolean activeOnly);
 
     /**
      * Find staff invitation by id.

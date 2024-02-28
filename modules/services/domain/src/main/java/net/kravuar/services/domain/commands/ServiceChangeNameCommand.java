@@ -8,4 +8,5 @@ public record ServiceChangeNameCommand(
         @NotNull
         @Size(min = 3, max = 30)
         String newName
-) {}
+) {
+}

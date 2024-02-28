@@ -5,12 +5,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 interface BusinessRepository extends JpaRepository<Business, Long> {
-    List<Business> findByOwnerSubAndActiveIsTrue(String sub);
+    Optional<Business> findByIdAndActive(long businessId, boolean activeOnly);
+
+    List<Business> findByOwnerSubAndActive(String sub, boolean activeOnly);
 
     List<Business> findAllByActiveIsTrue();
 
-    boolean existsByName(String name);
+    boolean existsByNameAndActiveIsTrue(String name);
 }

@@ -20,7 +20,7 @@ public class HandleBusinessUpdatesFacade implements HandleBusinessUpdatesUseCase
     @Override
     @Transactional
     public void onActivityChange(HandleBusinessActiveChangeCommand command) {
-        List<Service> associated = serviceRetrievalPort.findAllByBusinessId(command.businessId());
+        List<Service> associated = serviceRetrievalPort.findAllByBusinessId(command.businessId(), false);
         associated.forEach(service -> {
             service.setActive(command.active());
             servicePersistencePort.save(service);

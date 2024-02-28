@@ -7,7 +7,6 @@ import net.kravuar.schedule.domain.commands.ChangeSchedulePatternsCommand;
 import net.kravuar.schedule.domain.commands.CreateScheduleCommand;
 import net.kravuar.schedule.domain.commands.RemoveScheduleCommand;
 import net.kravuar.schedule.domain.exceptions.ScheduleNotFoundException;
-import net.kravuar.schedule.domain.exceptions.ServiceNotFoundException;
 import net.kravuar.schedule.domain.exceptions.StaffNotFoundException;
 
 @AppValidated
@@ -17,7 +16,7 @@ public interface ScheduleManagementUseCase {
      *
      * @param command command containing details of the update
      * @throws ScheduleNotFoundException if schedule wasn't found
-     * @throws IllegalStateException if schedule duration isn't sufficient for provided patterns
+     * @throws IllegalStateException     if schedule duration isn't sufficient for provided patterns
      */
     void updateSchedulePatterns(@Valid ChangeSchedulePatternsCommand command);
 
@@ -26,7 +25,8 @@ public interface ScheduleManagementUseCase {
      *
      * @param command command containing details of the update
      * @throws ScheduleNotFoundException if schedule wasn't found
-     * @throws IllegalStateException if schedule overlaps with other staff schedules
+     * @throws IllegalStateException     if schedule overlaps with other staff schedules or
+     *                                   does not have sufficient duration for provided patterns
      */
     void updateScheduleDuration(@Valid ChangeScheduleDurationCommand command);
 
@@ -35,7 +35,8 @@ public interface ScheduleManagementUseCase {
      *
      * @param command command containing details of the schedule creation
      * @throws StaffNotFoundException if staff wasn't found
-     * @throws ServiceNotFoundException if service wasn't found
+     * @throws IllegalStateException  if schedule overlaps with other staff schedules or
+     *                                does not have sufficient duration for provided patterns
      */
     void addSchedule(@Valid CreateScheduleCommand command);
 

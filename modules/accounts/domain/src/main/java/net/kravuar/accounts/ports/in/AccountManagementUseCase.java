@@ -15,7 +15,7 @@ public interface AccountManagementUseCase {
      * @param command the command containing account information
      * @return the newly created account
      * @throws UsernameAlreadyTakenException if an account with the provided {@code username} already exists
-     * @throws EmailAlreadyTakenException if an account with the provided {@code email} already exists
+     * @throws EmailAlreadyTakenException    if an account with the provided {@code email} already exists
      */
     Account createAccount(@Valid AccountCreationCommand command);
 }

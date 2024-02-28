@@ -12,10 +12,10 @@ public class AuthorizationHandler {
     private final ServiceRetrievalUseCase serviceRetrieval;
 
     public boolean isOwnerOfBusiness(long businessId, String subject) {
-        return businessRetrieval.findById(businessId).getOwnerSub().equals(subject);
+        return businessRetrieval.findById(businessId, false).getOwnerSub().equals(subject);
     }
 
     public boolean isOwnerOfService(long serviceId, String subject) {
-        return serviceRetrieval.findById(serviceId).getBusiness().getOwnerSub().equals(subject);
+        return serviceRetrieval.findById(serviceId, false).getBusiness().getOwnerSub().equals(subject);
     }
 }

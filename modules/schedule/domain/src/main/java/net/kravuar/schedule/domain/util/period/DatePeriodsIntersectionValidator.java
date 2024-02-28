@@ -15,7 +15,7 @@ public class DatePeriodsIntersectionValidator implements ConstraintValidator<Sta
         List<Period<ChronoLocalDate>> sorted = periods.stream()
                 .sorted(Comparator.comparing(Period::getStart))
                 .toList();
-        for (Period<ChronoLocalDate> fragment: sorted) {
+        for (Period<ChronoLocalDate> fragment : sorted) {
             if (previousEnd != null && previousEnd.isAfter(fragment.getStart()))
                 return false;
 

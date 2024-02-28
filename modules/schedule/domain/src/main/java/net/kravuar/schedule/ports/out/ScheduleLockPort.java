@@ -5,7 +5,7 @@ public interface ScheduleLockPort {
      * Lock action on the schedule.
      *
      * @param scheduleId schedule id to lock on
-     * @param acquire whether to acquire/release lock
+     * @param acquire    whether to acquire/release lock
      */
     void lock(long scheduleId, boolean acquire);
 

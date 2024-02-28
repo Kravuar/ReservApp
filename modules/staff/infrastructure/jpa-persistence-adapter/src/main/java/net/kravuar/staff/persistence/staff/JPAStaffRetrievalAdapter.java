@@ -7,6 +7,7 @@ import net.kravuar.staff.ports.out.StaffRetrievalPort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -14,20 +15,14 @@ class JPAStaffRetrievalAdapter implements StaffRetrievalPort {
     private final StaffRepository staffRepository;
 
     @Override
-    public Staff findById(long staffId) {
-        return staffRepository.findById(staffId)
+    public Staff findById(long staffId, boolean activeOnly) {
+        return staffRepository.findByIdAndActive(staffId, activeOnly)
                 .orElseThrow(StaffNotFoundException::new);
     }
 
     @Override
-    public Staff findActiveById(long staffId) {
-        return staffRepository.findById(staffId)
-                .filter(Staff::isActive)
-                .orElseThrow(StaffNotFoundException::new);
-    }
-
-    public List<Staff> findAllStaffByBusinessId(long businessId) {
-        return staffRepository.findAllByBusinessId(businessId);
+    public List<Staff> findAllStaffByBusinessId(long businessId, boolean activeOnly) {
+        return staffRepository.findAllByBusinessIdAndActive(businessId, activeOnly);
     }
 
     @Override
@@ -35,5 +30,10 @@ class JPAStaffRetrievalAdapter implements StaffRetrievalPort {
         return staffRepository.findByBusinessIdAndSub(businessId, sub)
                 .filter(Staff::isActive)
                 .isPresent();
+    }
+
+    @Override
+    public Optional<Staff> findByBusinessIdAndSub(long businessId, String sub, boolean activeOnly) {
+        return staffRepository.findByBusinessIdAndSub(businessId, sub);
     }
 }

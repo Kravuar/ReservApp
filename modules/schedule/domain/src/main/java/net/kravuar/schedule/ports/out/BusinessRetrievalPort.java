@@ -5,11 +5,11 @@ import net.kravuar.schedule.domain.exceptions.BusinessNotFoundException;
 
 public interface BusinessRetrievalPort {
     /**
-     * Find business by businessId.
+     * Find active business by id.
      *
-     * @param id id of the business to find
-     * @return {@link Business} associated the with provided businessId
+     * @param businessId id of the business
+     * @return {@link Business} associated the with provided {@code businessId}
      * @throws BusinessNotFoundException if business wasn't found
      */
-    Business findById(long id);
+    Business findActiveById(long businessId);
 }

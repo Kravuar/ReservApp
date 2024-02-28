@@ -4,4 +4,5 @@ record BusinessDTO(
         long id,
         String ownerSub,
         boolean active
-) {}
+) {
+}

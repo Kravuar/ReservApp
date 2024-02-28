@@ -6,4 +6,5 @@ record ServiceDTO(
         String name,
         boolean active,
         String description
-) {}
+) {
+}

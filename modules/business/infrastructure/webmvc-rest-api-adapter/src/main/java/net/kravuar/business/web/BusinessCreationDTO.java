@@ -1,6 +1,7 @@
 package net.kravuar.business.web;
 
-record BusinessCreationDTO (
+record BusinessCreationDTO(
         String name,
         String description
-) {}
+) {
+}

@@ -1,6 +1,6 @@
 package net.kravuar.schedule.domain;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.kravuar.schedule.domain.halfbreeddomain.SchedulePattern;
@@ -12,12 +12,13 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder
+@AllArgsConstructor
 public class Schedule implements Period<LocalDate> {
     private Long id;
     private LocalDate start;
     private LocalDate end;
-    private final Staff staff;
+    private Staff staff;
+    private final Service service;
     private List<SchedulePattern> patterns;
     private List<ScheduleExceptionDay> exceptionDays;
 

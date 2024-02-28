@@ -12,4 +12,5 @@ public record BusinessCreationCommand(
         @Size(min = 3, max = 30)
         String name,
         String description
-) {}
+) {
+}

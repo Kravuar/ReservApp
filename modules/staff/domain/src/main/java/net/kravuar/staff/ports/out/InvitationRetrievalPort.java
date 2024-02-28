@@ -16,13 +16,13 @@ public interface InvitationRetrievalPort {
     StaffInvitation findById(long invitationId);
 
     /**
-     * Check whether an active invitation exists.
+     * Check whether a waiting invitation exists.
      *
      * @param businessId id of the business
      * @param sub        subject of the staff invitation
      * @return {@code true} if exists, {@code false} otherwise
      */
-    boolean existsActiveByBusinessIdAndSub(long businessId, String sub);
+    boolean existsWaitingByBusinessIdAndSub(long businessId, String sub);
 
     /**
      * Find staff invitations by subject.

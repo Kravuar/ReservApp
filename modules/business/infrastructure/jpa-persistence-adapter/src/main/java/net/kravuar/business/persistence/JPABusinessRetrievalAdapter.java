@@ -14,19 +14,19 @@ class JPABusinessRetrievalAdapter implements BusinessRetrievalPort {
     private final BusinessRepository businessRepository;
 
     @Override
-    public Business findById(long id) {
-        return businessRepository.findById(id)
+    public Business findById(long businessId, boolean activeOnly) {
+        return businessRepository.findByIdAndActive(businessId, activeOnly)
                 .orElseThrow(BusinessNotFoundException::new);
     }
 
     @Override
-    public boolean existsByName(String name) {
-        return businessRepository.existsByName(name);
+    public boolean existsActiveByName(String name) {
+        return businessRepository.existsByNameAndActiveIsTrue(name);
     }
 
     @Override
-    public List<Business> findActiveBySub(String sub) {
-        return businessRepository.findByOwnerSubAndActiveIsTrue(sub)
+    public List<Business> findBySub(String sub, boolean activeOnly) {
+        return businessRepository.findByOwnerSubAndActive(sub, activeOnly)
                 .stream()
                 .toList();
     }

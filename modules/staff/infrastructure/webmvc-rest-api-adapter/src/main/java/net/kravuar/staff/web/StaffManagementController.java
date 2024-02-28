@@ -1,6 +1,7 @@
 package net.kravuar.staff.web;
 
 import lombok.RequiredArgsConstructor;
+import net.kravuar.staff.domain.commands.RemoveStaffCommand;
 import net.kravuar.staff.domain.commands.StaffAnswerInvitationCommand;
 import net.kravuar.staff.domain.commands.StaffChangeDetailsCommand;
 import net.kravuar.staff.domain.commands.StaffInvitationCommand;
@@ -38,8 +39,14 @@ class StaffManagementController {
     }
 
     @PutMapping("/update-details")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isStaff(#command.staffId(), authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isStaffOrOwnerOfStaffBusiness(#command.staffId(), authentication.details.subject)")
     public void updateDetails(@RequestBody StaffChangeDetailsCommand command) {
         staffManagement.changeDetails(command);
+    }
+
+    @DeleteMapping("/remove-staff")
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfStaffBusiness(#command.staffId(), authentication.details.subject)")
+    public void removeStaff(@RequestBody RemoveStaffCommand command) {
+        staffManagement.removeStaff(command);
     }
 }

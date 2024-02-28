@@ -15,7 +15,7 @@ public class TimePeriodsIntersectionValidator implements ConstraintValidator<Sta
         List<Period<LocalTime>> sorted = periods.stream()
                 .sorted(Comparator.comparing(Period::getStart))
                 .toList();
-        for (Period<LocalTime> fragment: sorted) {
+        for (Period<LocalTime> fragment : sorted) {
             if (previousEnd != null && previousEnd.isAfter(fragment.getStart()))
                 return false;
 

@@ -6,12 +6,11 @@ import net.kravuar.context.AppComponent;
 import net.kravuar.staff.domain.Business;
 import net.kravuar.staff.domain.Staff;
 import net.kravuar.staff.domain.StaffInvitation;
+import net.kravuar.staff.domain.commands.RemoveStaffCommand;
 import net.kravuar.staff.domain.commands.StaffAnswerInvitationCommand;
 import net.kravuar.staff.domain.commands.StaffChangeDetailsCommand;
 import net.kravuar.staff.domain.commands.StaffInvitationCommand;
-import net.kravuar.staff.domain.commands.StaffRemovalCommand;
 import net.kravuar.staff.domain.exceptions.AccountNotFoundException;
-import net.kravuar.staff.domain.exceptions.BusinessDisabledException;
 import net.kravuar.staff.domain.exceptions.InvitationInvalidStatusException;
 import net.kravuar.staff.ports.in.StaffManagementUseCase;
 import net.kravuar.staff.ports.out.*;
@@ -33,14 +32,12 @@ public class StaffManagementFacade implements StaffManagementUseCase {
         try {
             staffLockPort.lock(command.businessId(), command.sub(), true);
 
-            Business business = businessRetrievalPort.findById(command.businessId());
+            Business business = businessRetrievalPort.findById(command.businessId(), true);
 
             if (staffRetrievalPort.existsActiveByBusinessIdAndSub(command.businessId(), command.sub()))
                 throw new IllegalStateException("Staff already exists");
-            if (invitationRetrievalPort.existsActiveByBusinessIdAndSub(command.businessId(), command.sub()))
+            if (invitationRetrievalPort.existsWaitingByBusinessIdAndSub(command.businessId(), command.sub()))
                 throw new IllegalStateException("Invitation already exists");
-            if (!business.isActive())
-                throw new BusinessDisabledException();
             if (!accountExistenceCheckPort.exists(command.sub()))
                 throw new AccountNotFoundException();
             return invitationPersistencePort.save(
@@ -74,13 +71,18 @@ public class StaffManagementFacade implements StaffManagementUseCase {
             );
             invitationPersistencePort.save(invitation);
             if (command.accept()) {
-                Staff newStaff = Staff.builder()
+                Staff staff = staffRetrievalPort.findByBusinessIdAndSub(
+                        invitation.getBusiness().getId(),
+                        invitation.getSub(),
+                        false
+                ).orElse(Staff.builder()
                         .business(invitation.getBusiness())
                         .sub(invitation.getSub())
-                        .active(true)
-                        .build();
-                staffPersistencePort.save(newStaff);
-                staffNotificationPort.notifyNewStaff(newStaff);
+                        .build());
+
+                staff.setActive(true);
+                staffPersistencePort.save(staff);
+                staffNotificationPort.notifyNewStaff(staff);
             }
         } finally {
             staffLockPort.lock(invitation.getBusiness().getId(), invitation.getSub(), false);
@@ -89,14 +91,14 @@ public class StaffManagementFacade implements StaffManagementUseCase {
 
     @Override
     public void changeDetails(StaffChangeDetailsCommand command) {
-        Staff staff = staffRetrievalPort.findById(command.staffId());
+        Staff staff = staffRetrievalPort.findById(command.staffId(), false);
         staff.setDescription(command.description());
         staffPersistencePort.save(staff);
     }
 
     @Override
-    public void removeStaff(StaffRemovalCommand command) {
-        Staff staff = staffRetrievalPort.findActiveById(command.staffId());
+    public void removeStaff(RemoveStaffCommand command) {
+        Staff staff = staffRetrievalPort.findById(command.staffId(), true);
         staff.setActive(false);
         staffPersistencePort.save(staff);
         staffNotificationPort.notifyStaffActiveChanged(staff);

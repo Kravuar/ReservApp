@@ -5,4 +5,5 @@ record StaffDTO(
         String sub,
         BusinessDTO business,
         boolean active
-) {}
+) {
+}

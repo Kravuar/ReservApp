@@ -21,27 +21,36 @@ class BusinessRetrievalController {
 
     @GetMapping("/my")
     @PreAuthorize("isAuthenticated()")
-    List<BusinessDTO> byCurrentUser(@AuthenticationPrincipal Jwt user) {
-        return businessRetrieval.findActiveBySub(user.getSubject()).stream()
+    List<BusinessDTO> my(@AuthenticationPrincipal Jwt user) {
+        return businessRetrieval
+                .findAllBySub(user.getSubject(), false).stream()
                 .map(dtoMapper::toDTO)
                 .toList();
     }
 
-    @GetMapping("/byId/{id}")
-    BusinessDTO byId(@PathVariable("id") long id) {
-        return dtoMapper.toDTO(businessRetrieval.findById(id));
+    @GetMapping("/my/byId/{businessId}")
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwner(#businessId, authentication.details.subject)")
+    BusinessDTO myById(@PathVariable("businessId") long businessId) {
+        return dtoMapper.toDTO(businessRetrieval.findById(businessId, false));
+    }
+
+    @GetMapping("/byId/{businessId}")
+    BusinessDTO byId(@PathVariable("businessId") long businessId) {
+        return dtoMapper.toDTO(businessRetrieval.findById(businessId, true));
     }
 
     @GetMapping("/byOwner/{sub}")
     List<BusinessDTO> byOwner(@PathVariable("sub") String sub) {
-        return businessRetrieval.findActiveBySub(sub).stream()
+        return businessRetrieval
+                .findAllBySub(sub, true).stream()
                 .map(dtoMapper::toDTO)
                 .toList();
     }
 
     @GetMapping("/active")
     List<BusinessDTO> active() {
-        return businessRetrieval.findAllActive().stream()
+        return businessRetrieval
+                .findAllActive().stream()
                 .map(dtoMapper::toDTO)
                 .toList();
     }

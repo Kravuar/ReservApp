@@ -7,9 +7,10 @@ public interface BusinessRetrievalPort {
     /**
      * Find business by businessId.
      *
-     * @param id id of the business to find
-     * @return {@link Business} associated the with provided businessId
+     * @param businessId id of the business to find
+     * @param activeOnly whether to search active only
+     * @return {@link Business} associated the with provided {@code businessId}
      * @throws BusinessNotFoundException if business wasn't found
      */
-    Business findById(long id);
+    Business findById(long businessId, boolean activeOnly);
 }

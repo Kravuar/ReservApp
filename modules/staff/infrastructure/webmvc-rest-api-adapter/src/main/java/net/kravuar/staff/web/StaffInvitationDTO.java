@@ -10,4 +10,5 @@ record StaffInvitationDTO(
         BusinessDTO business,
         LocalDateTime createdAt,
         StaffInvitation.Status status
-) {}
+) {
+}

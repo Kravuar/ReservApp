@@ -1,5 +1,6 @@
 package net.kravuar.staff.domain.commands;
 
-public record StaffRemovalCommand(
+public record RemoveStaffCommand(
         long staffId
-) {}
+) {
+}

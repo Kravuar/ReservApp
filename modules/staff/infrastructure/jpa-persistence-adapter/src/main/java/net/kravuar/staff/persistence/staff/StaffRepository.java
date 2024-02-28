@@ -9,6 +9,9 @@ import java.util.Optional;
 
 @Repository
 interface StaffRepository extends JpaRepository<Staff, Long> {
-    List<Staff> findAllByBusinessId(long businessId);
+    Optional<Staff> findByIdAndActive(long serviceId, boolean activeOnly);
+
+    List<Staff> findAllByBusinessIdAndActive(long businessId, boolean activeOnly);
+
     Optional<Staff> findByBusinessIdAndSub(long businessId, String sub);
 }

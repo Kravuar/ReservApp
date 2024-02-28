@@ -9,27 +9,29 @@ public interface BusinessRetrievalPort {
     /**
      * Find business by businessId.
      *
-     * @param id id of the business to find
-     * @return {@link Business} associated the with provided businessId
+     * @param businessId id of the business to find
+     * @param activeOnly whether to search active only
+     * @return {@link Business} associated the with provided {@code businessId}
      * @throws BusinessNotFoundException if business wasn't found
      */
-    Business findById(long id);
+    Business findById(long businessId, boolean activeOnly);
 
     /**
-     * Check whether business exists by name.
+     * Check whether an active business exists by name.
      *
      * @param name name to check
      * @return {@code true} if exists, {@code false} otherwise
      */
-    boolean existsByName(String name);
+    boolean existsActiveByName(String name);
 
     /**
-     * Find active businesses by owner.
+     * Find all businesses by owner.
      *
-     * @param sub sub of the owner
-     * @return {@link List<Business>} active businesses associated the with provided owner
+     * @param sub        sub of the owner
+     * @param activeOnly whether to search active only
+     * @return {@link List<Business>} of businesses associated the with provided owner {@code sub}
      */
-    List<Business> findActiveBySub(String sub);
+    List<Business> findBySub(String sub, boolean activeOnly);
 
     /**
      * Find all active.

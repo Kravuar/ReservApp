@@ -7,9 +7,10 @@ public interface StaffRetrievalUseCase {
     /**
      * Find staff member by ID.
      *
-     * @param staffId id of the staff member to find
+     * @param staffId    id of the staff member to find
+     * @param activeOnly whether to search active only
      * @return {@link Staff} object associated with the provided {@code staffId}
      * @throws StaffNotFoundException if staff member wasn't found
      */
-    Staff findStaffById(long staffId);
+    Staff findActiveById(long staffId, boolean activeOnly);
 }

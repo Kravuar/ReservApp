@@ -8,7 +8,6 @@ import net.kravuar.services.domain.commands.ServiceChangeActiveCommand;
 import net.kravuar.services.domain.commands.ServiceChangeDetailsCommand;
 import net.kravuar.services.domain.commands.ServiceChangeNameCommand;
 import net.kravuar.services.domain.commands.ServiceCreationCommand;
-import net.kravuar.services.domain.exceptions.BusinessDisabledException;
 import net.kravuar.services.domain.exceptions.ServiceNameAlreadyTaken;
 import net.kravuar.services.ports.in.ServiceManagementUseCase;
 import net.kravuar.services.ports.out.*;
@@ -27,11 +26,9 @@ public class ServiceManagementFacade implements ServiceManagementUseCase {
         try {
             serviceLockPort.lock(command.name(), true);
 
-            if (serviceRetrievalPort.existsByName(command.name()))
+            if (serviceRetrievalPort.existsActiveByName(command.name()))
                 throw new ServiceNameAlreadyTaken();
-            Business business = businessRetrievalPort.findById(command.businessId());
-            if (!business.isActive())
-                throw new BusinessDisabledException();
+            Business business = businessRetrievalPort.findById(command.businessId(), true);
             Service existing = servicePersistencePort.save(
                     Service.builder()
                             .name(command.name())
@@ -52,9 +49,9 @@ public class ServiceManagementFacade implements ServiceManagementUseCase {
             serviceLockPort.lock(command.serviceId(), true);
             serviceLockPort.lock(command.newName(), true);
 
-            if (serviceRetrievalPort.existsByName(command.newName()))
+            if (serviceRetrievalPort.existsActiveByName(command.newName()))
                 throw new ServiceNameAlreadyTaken();
-            Service existing = serviceRetrievalPort.findById(command.serviceId());
+            Service existing = serviceRetrievalPort.findById(command.serviceId(), false);
             existing.setName(command.newName());
             servicePersistencePort.save(existing);
         } finally {
@@ -65,15 +62,32 @@ public class ServiceManagementFacade implements ServiceManagementUseCase {
 
     @Override
     public void changeActive(ServiceChangeActiveCommand command) {
-        Service existing = serviceRetrievalPort.findById(command.serviceId());
-        existing.setActive(command.active());
-        existing = servicePersistencePort.save(existing);
-        serviceNotificationPort.notifyServiceActiveChanged(existing);
+        try {
+            serviceLockPort.lock(command.serviceId(), true);
+
+            Service service = serviceRetrievalPort.findById(command.serviceId(), false);
+
+            try {
+                if (command.active())
+                    serviceLockPort.lock(service.getName(), true);
+
+                if (serviceRetrievalPort.existsActiveByName(service.getName()))
+                    throw new ServiceNameAlreadyTaken();
+
+                service.setActive(command.active());
+                service = servicePersistencePort.save(service);
+                serviceNotificationPort.notifyServiceActiveChanged(service);
+            } finally {
+                serviceLockPort.lock(service.getName(), false);
+            }
+        } finally {
+            serviceLockPort.lock(command.serviceId(), false);
+        }
     }
 
     @Override
     public void changeDetails(ServiceChangeDetailsCommand command) {
-        Service service = serviceRetrievalPort.findById(command.serviceId());
+        Service service = serviceRetrievalPort.findById(command.serviceId(), false);
         service.setDescription(command.description());
         servicePersistencePort.save(service);
     }
