@@ -7,9 +7,9 @@ public interface ServiceRetrievalPort {
     /**
      * Find active service by id.
      *
-     * @param id id of the service to find
-     * @return {@link Service} associated the with provided serviceId
+     * @param serviceId id of the service to find
+     * @return {@link Service} associated the with provided {@code serviceId}
      * @throws ServiceNotFoundException if service wasn't found
      */
-    Service findActiveById(long id);
+    Service findActiveById(long serviceId);
 }

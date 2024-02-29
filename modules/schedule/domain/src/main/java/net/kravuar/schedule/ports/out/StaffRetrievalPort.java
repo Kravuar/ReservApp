@@ -5,7 +5,7 @@ import net.kravuar.schedule.domain.exceptions.StaffNotFoundException;
 
 public interface StaffRetrievalPort {
     /**
-     * Find active staff by staffId.
+     * Find active staff by staff id.
      *
      * @param staffId id of the staff to find
      * @return active {@link Staff} associated the with provided {@code staffId}

@@ -11,5 +11,5 @@ public interface BusinessRetrievalUseCase {
      * @return {@link Business} associated the with provided {@code businessId}
      * @throws BusinessNotFoundException if business wasn't found
      */
-    Business findActiveById(long businessId);
+    Business findById(long businessId);
 }

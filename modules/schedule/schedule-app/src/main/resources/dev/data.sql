@@ -15,7 +15,13 @@ VALUES (1, 'ownerSub', true),
        (14, 'ownerSub', true),
        (15, 'ownerSub', false);
 
-INSERT INTO service (business_id, name, active)
-VALUES (1, "cog an bol torture", true),
-       (2, "bebr creation", true),
-       (2, "akwodawkd", false);
+INSERT INTO service (id, business_id, name, active)
+VALUES (1, 1, "cog an bol torture", true),
+       (2, 2, "bebr creation", true),
+       (3, 2, "akwodawkd", false);
+
+INSERT INTO staff (id, sub, business_id, description, active)
+VALUES (1, 'sub1', 1, 'just a bebr', true),
+       (2, 'sub2', 2, 'sub2 descr', true),
+       (3, 'sub3', 2, 'aajfwnjfa', true),
+       (4, 'ownerSub', 2, 'likes to do owner stuff', true);
