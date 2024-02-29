@@ -29,14 +29,14 @@ public interface ServiceRetrievalPort {
      *
      * @param businessId id of the business
      * @param activeOnly whether to search active only
-     * @return {@link List<Service>} of services associated the with provided {@code businessId}
+     * @return {@code List<Service>} of services associated the with provided {@code businessId}
      */
     List<Service> findAllByBusinessId(long businessId, boolean activeOnly);
 
     /**
      * Find all active services.
      *
-     * @return {@link List<Service>} of active services.
+     * @return {@code List<Service>} of active services.
      */
     List<Service> findAllActive();
 }

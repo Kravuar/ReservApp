@@ -22,7 +22,7 @@ public interface StaffRetrievalPort {
      *
      * @param businessId id of the business
      * @param activeOnly whether to search active only
-     * @return {@link List<Staff>} all staff members associated with the provided {@code businessId}
+     * @return {@code List<Staff>} all staff members associated with the provided {@code businessId}
      */
     List<Staff> findAllStaffByBusinessId(long businessId, boolean activeOnly);
 
@@ -41,7 +41,7 @@ public interface StaffRetrievalPort {
      * @param businessId id of the business
      * @param sub        subject of the staff
      * @param activeOnly whether to search active only
-     * @return {@link Optional<Staff>} object of staff associated with the provided {@code businessId} and {@code sub}
+     * @return {@code Optional<Staff>} object of staff associated with the provided {@code businessId} and {@code sub}
      */
     Optional<Staff> findByBusinessIdAndSub(long businessId, String sub, boolean activeOnly);
 }

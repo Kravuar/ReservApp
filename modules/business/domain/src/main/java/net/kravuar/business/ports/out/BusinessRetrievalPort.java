@@ -29,7 +29,7 @@ public interface BusinessRetrievalPort {
      *
      * @param sub        sub of the owner
      * @param activeOnly whether to search active only
-     * @return {@link List<Business>} of businesses associated the with provided owner {@code sub}
+     * @return {@code List<Business>} of businesses associated the with provided owner {@code sub}
      */
     List<Business> findBySub(String sub, boolean activeOnly);
 

@@ -28,7 +28,7 @@ public interface InvitationRetrievalPort {
      * Find staff invitations by subject.
      *
      * @param sub subject of the staff invitations
-     * @return {@link List<StaffInvitation>} staff invitations associated with the provided {@code sub}
+     * @return {@code List<StaffInvitation>} staff invitations associated with the provided {@code sub}
      */
     List<StaffInvitation> findBySubject(String sub);
 
@@ -36,7 +36,7 @@ public interface InvitationRetrievalPort {
      * Find staff invitations by business.
      *
      * @param businessId id the business
-     * @return {@link List<StaffInvitation>} staff invitations associated with the provided {@code businessId}
+     * @return {@code List<StaffInvitation>} staff invitations associated with the provided {@code businessId}
      */
     List<StaffInvitation> findByBusinessId(long businessId);
 }

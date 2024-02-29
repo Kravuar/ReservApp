@@ -21,14 +21,14 @@ public interface ServiceRetrievalUseCase {
      *
      * @param businessId id of the associated business
      * @param activeOnly whether to search active only
-     * @return {@link List<Service>} of active services associated the with provided {@code businessId}
+     * @return {@code List<Service>} of active services associated the with provided {@code businessId}
      */
     List<Service> findAllByBusinessId(long businessId, boolean activeOnly);
 
     /**
      * Find all active services.
      *
-     * @return {@link List<Service>} of active services.
+     * @return {@code List<Service>} of active services.
      */
     List<Service> findAll();
 }

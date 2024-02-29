@@ -23,7 +23,7 @@ public interface StaffRetrievalUseCase {
      *
      * @param businessId id of the business
      * @param activeOnly whether to search active only
-     * @return {@link List<Staff>} of all staff members associated with the provided {@code businessId}
+     * @return {@code List<Staff>} of all staff members associated with the provided {@code businessId}
      */
     List<Staff> findAllStaffByBusiness(long businessId, boolean activeOnly);
 
@@ -40,7 +40,7 @@ public interface StaffRetrievalUseCase {
      * Find staff invitations by subject.
      *
      * @param sub subject of the staff invitations
-     * @return {@link List<StaffInvitation>} staff invitations associated with the provided {@code subject}
+     * @return {@code List<StaffInvitation>} staff invitations associated with the provided {@code subject}
      */
     List<StaffInvitation> findStaffInvitationsBySubject(String sub);
 
@@ -48,7 +48,7 @@ public interface StaffRetrievalUseCase {
      * Find staff invitations by business.
      *
      * @param businessId id of the business
-     * @return {@link List<StaffInvitation>} staff invitations associated with the provided {@code businessId}
+     * @return {@code List<StaffInvitation>} staff invitations associated with the provided {@code businessId}
      */
     List<StaffInvitation> findStaffInvitationsByBusiness(long businessId);
 }
