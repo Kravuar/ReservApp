@@ -1,4 +1,4 @@
-package net.kravuar.schedule.domain;
+package net.kravuar.schedule.domain.halfbreeddomain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +13,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class ScheduleExceptionDay {
-    private Long id;
     private final LocalDate date;
-    private final LocalDateTime createdAt = LocalDateTime.now();
     private final List<WorkingHours> workingHours;
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class JPAServiceRetrievalAdapter implements ServiceRetrievalPort {
+class MongoServiceRetrievalAdapter implements ServiceRetrievalPort {
     private final ServiceRepository serviceRepository;
 
     @Override

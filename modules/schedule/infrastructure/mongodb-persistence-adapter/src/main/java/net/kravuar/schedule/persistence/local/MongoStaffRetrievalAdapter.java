@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class JPAStaffRetrievalAdapter implements StaffRetrievalPort {
+class MongoStaffRetrievalAdapter implements StaffRetrievalPort {
     private final StaffRepository staffRepository;
 
     @Override

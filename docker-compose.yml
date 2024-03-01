@@ -60,9 +60,9 @@ services:
     expose:
       - "8081"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://business-db:3306/business-db
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: business-pass
+      SPRING_DATASOURCE_URL: 'jdbc:mysql://business-db:3306/business-db'
+      SPRING_DATASOURCE_USERNAME: 'root'
+      SPRING_DATASOURCE_PASSWORD: 'business-pass'
 
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${OKTA_ISSUER_URI}
 
@@ -76,8 +76,8 @@ services:
   business-db:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: business-pass
-      MYSQL_DATABASE: business-db
+      MYSQL_ROOT_PASSWORD: 'business-pass'
+      MYSQL_DATABASE: 'business-db'
     healthcheck:
       test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
       timeout: 10s
@@ -123,13 +123,13 @@ services:
     expose:
       - "8083"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://services-db:3306/services-db
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: services-pass
+      SPRING_DATASOURCE_URL: 'jdbc:mysql://services-db:3306/services-db'
+      SPRING_DATASOURCE_USERNAME: 'root'
+      SPRING_DATASOURCE_PASSWORD: 'services-pass'
 
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${OKTA_ISSUER_URI}
 
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: http://kafka:9092
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: 'http://kafka:9092'
       SPRING_KAFKA_CONSUMER_GROUP_ID: "services_group"
       SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: 'org.springframework.kafka.support.serializer.JsonSerializer'
       SPRING_KAFKA_CONSUMER_VALUE_DESERIALIZER: 'org.springframework.kafka.support.serializer.JsonDeserializer'
@@ -143,8 +143,8 @@ services:
   services-db:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: services-pass
-      MYSQL_DATABASE: services-db
+      MYSQL_ROOT_PASSWORD: 'services-pass'
+      MYSQL_DATABASE: 'services-db'
     healthcheck:
       test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
       timeout: 10s
@@ -171,13 +171,13 @@ services:
     expose:
       - "8084"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://staff-db:3306/staff-db
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: staff-pass
+      SPRING_DATASOURCE_URL: 'jdbc:mysql://staff-db:3306/staff-db'
+      SPRING_DATASOURCE_USERNAME: 'root'
+      SPRING_DATASOURCE_PASSWORD: 'staff-pass'
 
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${OKTA_ISSUER_URI}
 
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: http://kafka:9092
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: 'http://kafka:9092'
       SPRING_KAFKA_CONSUMER_GROUP_ID: "staff_group"
       SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: 'org.springframework.kafka.support.serializer.JsonSerializer'
       SPRING_KAFKA_CONSUMER_VALUE_DESERIALIZER: 'org.springframework.kafka.support.serializer.JsonDeserializer'
@@ -191,8 +191,8 @@ services:
   staff-db:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: staff-pass
-      MYSQL_DATABASE: staff-db
+      MYSQL_ROOT_PASSWORD: 'staff-pass'
+      MYSQL_DATABASE: 'staff-db'
     healthcheck:
       test: [ "CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
       timeout: 10s
@@ -217,15 +217,17 @@ services:
         MODULE_PATH: 'schedule'
         BUILD_MODULE_PATH: 'schedule/schedule-app'
     expose:
-      - "8084"
+      - "8085"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://schedule-db:3306/schedule-db
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: schedule-pass
+      SPRING_DATA_MONGODB_HOST: 'schedule-db'
+      SPRING_DATA_MONGODB_PORT: '27017'
+      SPRING_DATA_MONGODB_DATABASE: 'schedule-db'
+      SPRING_DATA_MONGODB_USERNAME: 'root'
+      SPRING_DATA_MONGODB_PASSWORD: 'schedule-password'
 
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${OKTA_ISSUER_URI}
 
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: http://kafka:9092
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: 'http://kafka:9092'
       SPRING_KAFKA_CONSUMER_GROUP_ID: "schedule_group"
       SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: 'org.springframework.kafka.support.serializer.JsonSerializer'
       SPRING_KAFKA_CONSUMER_VALUE_DESERIALIZER: 'org.springframework.kafka.support.serializer.JsonDeserializer'
@@ -238,16 +240,17 @@ services:
       - infrastructure-network
       - schedule-network
   schedule-db:
-    image: mysql:latest
+    image: mongo:latest
     environment:
-      MYSQL_ROOT_PASSWORD: schedule-pass
-      MYSQL_DATABASE: schedule-db
+      MONGO_INITDB_ROOT_USERNAME: 'root'
+      MONGO_INITDB_ROOT_PASSWORD: 'schedule-pass'
+      MONGO_INITDB_DATABASE: 'schedule-db'
     healthcheck:
-      test: [ "CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+      test: [ "CMD", "mongo", "--eval", "db.adminCommand('ping')" ]
       timeout: 10s
       retries: 10
     volumes:
-      - schedule-db-data:/var/lib/mysql
+      - schedule-db-data:/data/db
     networks:
       - schedule-network
 

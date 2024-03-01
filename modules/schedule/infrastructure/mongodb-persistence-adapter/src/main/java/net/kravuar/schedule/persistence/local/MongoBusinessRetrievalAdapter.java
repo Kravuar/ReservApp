@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class JPABusinessRetrievalAdapter implements BusinessRetrievalPort {
+class MongoBusinessRetrievalAdapter implements BusinessRetrievalPort {
     private final BusinessRepository businessRepository;
 
     @Override

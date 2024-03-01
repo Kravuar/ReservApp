@@ -3,7 +3,7 @@ package net.kravuar.schedule;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
 import net.kravuar.schedule.domain.Schedule;
-import net.kravuar.schedule.domain.ScheduleExceptionDay;
+import net.kravuar.schedule.domain.halfbreeddomain.ScheduleExceptionDay;
 import net.kravuar.schedule.domain.Staff;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
@@ -73,9 +73,8 @@ public class ScheduleRetrievalFacade implements ScheduleRetrievalUseCase {
                     // Check if its exceptional day (take latest exception update)
                     Optional<ScheduleExceptionDay> latestExceptionDay = currentSchedule
                             .getExceptionDays().stream()
-                            .sorted(Comparator.comparing(ScheduleExceptionDay::getCreatedAt).reversed())
                             .filter(exceptionDay -> exceptionDay.getDate().equals(currentDay))
-                            .findFirst();
+                            .findAny();
                     if (latestExceptionDay.isPresent())
                         return latestExceptionDay.get().getWorkingHours();
                     else if (currentSchedule.getPatterns().isEmpty()) // Note: validation layer won't allow this though

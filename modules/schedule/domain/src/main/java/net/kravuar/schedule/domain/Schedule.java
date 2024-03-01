@@ -3,6 +3,7 @@ package net.kravuar.schedule.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import net.kravuar.schedule.domain.halfbreeddomain.ScheduleExceptionDay;
 import net.kravuar.schedule.domain.halfbreeddomain.SchedulePattern;
 import net.kravuar.schedule.domain.util.period.Period;
 

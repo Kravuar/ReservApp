@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.kravuar.schedule.domain.ScheduleExceptionDay;
+import net.kravuar.schedule.domain.halfbreeddomain.ScheduleExceptionDay;
 import net.kravuar.schedule.domain.halfbreeddomain.SchedulePattern;
 import net.kravuar.schedule.domain.util.period.Period;
 import net.kravuar.schedule.domain.util.period.StartBeforeEnd;
