@@ -12,16 +12,8 @@ class StaffKafkaConfig {
     private final StaffKafkaProps staffKafkaProps;
 
     @Bean
-    public NewTopic staffCreationTopic() {
-        return TopicBuilder.name(staffKafkaProps.getCreationTopic())
-                .partitions(1)
-                .replicas(1)
-                .build();
-    }
-
-    @Bean
-    public NewTopic activityChangeTopic() {
-        return TopicBuilder.name(staffKafkaProps.getActivityChangeTopic())
+    public NewTopic staffUpdateTopic() {
+        return TopicBuilder.name(staffKafkaProps.getStaffUpdateTopic())
                 .partitions(1)
                 .replicas(1)
                 .build();

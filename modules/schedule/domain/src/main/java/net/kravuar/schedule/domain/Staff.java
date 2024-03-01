@@ -1,15 +1,14 @@
 package net.kravuar.schedule.domain;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-@Builder
+@AllArgsConstructor
 public class Staff {
     private Long id;
-    private final String sub;
     private final Business business;
     private boolean active;
 }

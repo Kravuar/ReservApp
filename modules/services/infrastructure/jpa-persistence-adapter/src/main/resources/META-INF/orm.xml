@@ -10,9 +10,7 @@
     <entity class="net.kravuar.services.domain.Business" access="FIELD">
         <table name="business"/>
         <attributes>
-            <id name="id">
-                <generated-value strategy="IDENTITY"/>
-            </id>
+            <id name="id"/>
             <basic name="ownerSub">
                 <column nullable="false"/>
             </basic>
@@ -34,11 +32,8 @@
             <basic name="active">
                 <column nullable="false"/>
             </basic>
-            <many-to-one name="business" fetch="LAZY">
+            <many-to-one name="business" fetch="LAZY" optional="false">
                 <join-column name="businessId"/>
-                <cascade>
-                    <cascade-all/>
-                </cascade>
             </many-to-one>
         </attributes>
     </entity>

@@ -20,6 +20,8 @@ public interface ScheduleRetrievalPort {
 
     /**
      * Find active schedules by staff.
+     * Find all that have at least 1 bound between {@code from} and {@code to},
+     * or both bounds out of the range.
      *
      * @param staffId id of the staff
      * @param from    lower bound
@@ -30,6 +32,8 @@ public interface ScheduleRetrievalPort {
 
     /**
      * Find active schedules by staff and service.
+     * Find all that have at least 1 bound between {@code from} and {@code to},
+     * or both bounds out of the range.
      *
      * @param staffId   id of the staff
      * @param serviceId id of the service
@@ -41,11 +45,13 @@ public interface ScheduleRetrievalPort {
 
     /**
      * Find active schedules by service.
+     * Find all that have at least 1 bound between {@code from} and {@code to},
+     * or both bounds out of the range.
      *
      * @param serviceId id of the service
      * @param from      lower bound
      * @param to        upper bound
      * @return {@code Map<Staff, List<Schedule>>} of schedules for each staff associated the with provided @code serviceId}
      */
-    Map<Staff, List<Schedule>> findActiveByStaffIdAndServiceId(long serviceId, LocalDate from, LocalDate to);
+    Map<Staff, List<Schedule>> findActiveByServiceId(long serviceId, LocalDate from, LocalDate to);
 }

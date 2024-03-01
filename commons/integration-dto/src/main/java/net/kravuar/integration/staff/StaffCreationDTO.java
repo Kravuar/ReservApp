@@ -1,7 +1,7 @@
 package net.kravuar.integration.staff;
 
 public record StaffCreationDTO (
-        long id,
+        long staffId,
         long businessId,
         boolean active
 ) {}

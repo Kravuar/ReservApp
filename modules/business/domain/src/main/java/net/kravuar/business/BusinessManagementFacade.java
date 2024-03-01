@@ -29,12 +29,13 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
 
             if (businessRetrievalPort.existsActiveByName(command.name()))
                 throw new BusinessNameAlreadyTaken();
-            Business newBusiness = Business.builder()
-                    .ownerSub(command.ownerSub())
-                    .name(command.name())
-                    .description(command.description())
-                    .active(true)
-                    .build();
+            Business newBusiness = new Business(
+                    null,
+                    command.ownerSub(),
+                    command.name(),
+                    true,
+                    command.description()
+            );
             newBusiness = businessPersistencePort.save(newBusiness);
             businessNotificationPort.notifyNewBusiness(newBusiness);
             return newBusiness;

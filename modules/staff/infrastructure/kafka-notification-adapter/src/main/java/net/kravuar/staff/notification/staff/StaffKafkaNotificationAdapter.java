@@ -17,7 +17,7 @@ class StaffKafkaNotificationAdapter implements StaffNotificationPort {
     @Override
     public void notifyNewStaff(Staff staff) {
         template.send(
-                staffKafkaProps.getCreationTopic(),
+                staffKafkaProps.getStaffUpdateTopic(),
                 new StaffCreationDTO(
                         staff.getId(),
                         staff.getBusiness().getId(),
@@ -28,7 +28,7 @@ class StaffKafkaNotificationAdapter implements StaffNotificationPort {
     @Override
     public void notifyStaffActiveChanged(Staff staff) {
         template.send(
-                staffKafkaProps.getActivityChangeTopic(),
+                staffKafkaProps.getStaffUpdateTopic(),
                 new StaffActivityChangeDTO(
                         staff.getId(),
                         staff.isActive()

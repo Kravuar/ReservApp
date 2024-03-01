@@ -30,11 +30,13 @@ public class ServiceManagementFacade implements ServiceManagementUseCase {
                 throw new ServiceNameAlreadyTaken();
             Business business = businessRetrievalPort.findById(command.businessId(), true);
             Service existing = servicePersistencePort.save(
-                    Service.builder()
-                            .name(command.name())
-                            .business(business)
-                            .description(command.description())
-                            .build()
+                    new Service(
+                            null,
+                            business,
+                            command.name(),
+                            true,
+                            command.description()
+                    )
             );
             serviceNotificationPort.notifyNewService(existing);
             return existing;

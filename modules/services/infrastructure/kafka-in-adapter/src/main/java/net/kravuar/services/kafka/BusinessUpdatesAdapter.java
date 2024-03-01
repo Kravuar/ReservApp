@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@KafkaListener(id = "servicesBusinessUpdater", topics = "${business.update.topic}")
+@KafkaListener(id = "serviceBusinessInUpdater", topics = "${business.update.business-update-topic}")
 public class BusinessUpdatesAdapter {
     private final HandleBusinessUpdatesUseCase handleBusinessUpdatesUseCase;
 
     @KafkaHandler
     void onBusinessCreated(BusinessActivityChangeDTO changeDTO) {
         handleBusinessUpdatesUseCase.onActivityChange(new HandleBusinessActiveChangeCommand(
-                changeDTO.id(),
+                changeDTO.businessId(),
                 changeDTO.active()
         ));
     }

@@ -41,10 +41,11 @@ public class StaffManagementFacade implements StaffManagementUseCase {
             if (!accountExistenceCheckPort.exists(command.sub()))
                 throw new AccountNotFoundException();
             return invitationPersistencePort.save(
-                    StaffInvitation.builder()
-                            .business(business)
-                            .sub(command.sub())
-                            .build()
+                    new StaffInvitation(
+                            null,
+                            command.sub(),
+                            business
+                    )
             );
         } finally {
             staffLockPort.lock(command.businessId(), command.sub(), false);
@@ -75,11 +76,13 @@ public class StaffManagementFacade implements StaffManagementUseCase {
                         invitation.getBusiness().getId(),
                         invitation.getSub(),
                         false
-                ).orElse(Staff.builder()
-                        .business(invitation.getBusiness())
-                        .sub(invitation.getSub())
-                        .build());
-
+                ).orElse(new Staff(
+                        null,
+                        invitation.getSub(),
+                        invitation.getBusiness(),
+                        true,
+                        null
+                ));
                 staff.setActive(true);
                 staffPersistencePort.save(staff);
                 staffNotificationPort.notifyNewStaff(staff);

@@ -17,7 +17,7 @@ public class Schedule implements Period<LocalDate> {
     private Long id;
     private LocalDate start;
     private LocalDate end;
-    private Staff staff;
+    private final Staff staff;
     private final Service service;
     private List<SchedulePattern> patterns;
     private List<ScheduleExceptionDay> exceptionDays;

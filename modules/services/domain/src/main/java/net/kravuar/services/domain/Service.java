@@ -1,12 +1,12 @@
 package net.kravuar.services.domain;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-@Builder
+@AllArgsConstructor
 public class Service {
     private Long id;
     private final Business business;

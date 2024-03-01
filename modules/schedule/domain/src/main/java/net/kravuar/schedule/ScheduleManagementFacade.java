@@ -13,7 +13,6 @@ import net.kravuar.schedule.ports.in.ScheduleManagementUseCase;
 import net.kravuar.schedule.ports.out.*;
 
 import java.time.Duration;
-import java.util.Comparator;
 import java.util.List;
 
 @AppComponent
@@ -49,6 +48,7 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
 
             Schedule schedule = scheduleRetrievalPort.findActiveById(command.getScheduleId());
 
+            // TODO: throw if would affect reservations
             boolean mayOverlap = schedule.getStart().isAfter(command.getStart())
                     || schedule.getEnd().isBefore(command.getEnd());
 
@@ -59,10 +59,15 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
                 throw new IllegalStateException("Schedule duration isn't sufficient for provided patterns");
 
             try {
-                scheduleLockPort.lockByStaff(schedule.getStaff().getId(), true);
-
                 if (mayOverlap) {
-                    List<Schedule> overlapped = getStaffSchedulesOverlap(schedule);
+                    scheduleLockPort.lockByStaff(schedule.getStaff().getId(), true);
+
+                    List<Schedule> overlapped = scheduleRetrievalPort.findActiveByStaffIdAndServiceId(
+                            schedule.getStaff().getId(),
+                            schedule.getService().getId(),
+                            schedule.getStart(),
+                            schedule.getEnd()
+                    );
                     int amount = overlapped.size();
                     boolean noOverlapOrSelf = amount == 0 || (amount == 1 && overlapped.getFirst().getId().equals(schedule.getId()));
                     if (!noOverlapOrSelf)
@@ -73,7 +78,6 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
             } finally {
                 scheduleLockPort.lockByStaff(schedule.getStaff().getId(), false);
             }
-            // TODO: throw if affected reservations
         } finally {
             scheduleLockPort.lock(command.getScheduleId(), false);
         }
@@ -101,7 +105,13 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
             if (scheduleSizeInsufficient(newSchedule))
                 throw new IllegalStateException("Schedule duration isn't sufficient for provided patterns");
 
-            if (!getStaffSchedulesOverlap(newSchedule).isEmpty())
+            List<Schedule> overlapped = scheduleRetrievalPort.findActiveByStaffIdAndServiceId(
+                    newSchedule.getStaff().getId(),
+                    newSchedule.getService().getId(),
+                    newSchedule.getStart(),
+                    newSchedule.getEnd()
+            );
+            if (!overlapped.isEmpty())
                 throw new IllegalStateException("Schedule overlapped with other schedules");
 
             schedulePersistencePort.save(newSchedule);
@@ -125,14 +135,5 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
                         Duration::plus
                 );
         return Duration.between(schedule.getStart(), schedule.getEnd()).minus(cycleDuration).isNegative();
-    }
-
-    private List<Schedule> getStaffSchedulesOverlap(Schedule schedule) {
-        List<Schedule> schedules = scheduleRetrievalPort.findActiveByStaffId(schedule.getStaff().getId());
-        return schedules.stream()
-                .sorted(Comparator.comparing(Schedule::getStart))
-                .dropWhile(preceding -> preceding.getEnd().isBefore(schedule.getStart()))
-                .takeWhile(later -> later.getStart().isBefore(schedule.getEnd()))
-                .toList();
     }
 }

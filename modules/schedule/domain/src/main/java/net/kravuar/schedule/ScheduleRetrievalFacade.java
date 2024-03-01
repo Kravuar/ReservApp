@@ -40,7 +40,7 @@ public class ScheduleRetrievalFacade implements ScheduleRetrievalUseCase {
 
     @Override
     public Map<Staff, Map<LocalDate, List<WorkingHours>>> findActiveScheduleByService(RetrieveScheduleByServiceCommand command) {
-        Map<Staff, List<Schedule>> schedules = scheduleRetrievalPort.findActiveByStaffIdAndServiceId(command.getServiceId(), command.getStart(), command.getEnd());
+        Map<Staff, List<Schedule>> schedules = scheduleRetrievalPort.findActiveByServiceId(command.getServiceId(), command.getStart(), command.getEnd());
         return schedules.entrySet().stream().collect(Collectors.toMap(
                 Map.Entry::getKey,
                 entry -> toPerDay(entry.getValue(), command.getStart(), command.getEnd())

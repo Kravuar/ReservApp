@@ -6,6 +6,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("staff.update")
 @Data
 class StaffKafkaProps {
-    private String creationTopic;
-    private String activityChangeTopic;
+    private String staffUpdateTopic;
 }

@@ -69,7 +69,7 @@ services:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: http://kafka:9092
       SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: 'org.springframework.kafka.support.serializer.JsonSerializer'
 
-      BUSINESS_UPDATE_TOPIC: 'business_update_topic'
+      BUSINESS_UPDATE_BUSINESS_UPDATE_TOPIC: 'business_update_topic'
     networks:
       - infrastructure-network
       - business-network
@@ -135,8 +135,8 @@ services:
       SPRING_KAFKA_CONSUMER_VALUE_DESERIALIZER: 'org.springframework.kafka.support.serializer.JsonDeserializer'
       SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_JSON_TRUSTED_PACKAGES: '*'
 
-      BUSINESS_UPDATE_TOPIC: 'business_update_topic'
-      SERVICE_UPDATE_TOPIC: 'service_update_topic'
+      BUSINESS_UPDATE_BUSINESS_UPDATE_TOPIC: 'business_update_topic'
+      SERVICE_UPDATE_SERVICE_UPDATE_TOPIC: 'service_update_topic'
     networks:
       - infrastructure-network
       - services-network
@@ -183,7 +183,8 @@ services:
       SPRING_KAFKA_CONSUMER_VALUE_DESERIALIZER: 'org.springframework.kafka.support.serializer.JsonDeserializer'
       SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_JSON_TRUSTED_PACKAGES: '*'
 
-      BUSINESS_UPDATE_TOPIC: 'business_update_topic'
+      BUSINESS_UPDATE_BUSINESS_UPDATE_TOPIC: 'business_update_topic'
+      STAFF_UPDATE_BUSINESS_STAFF_UPDATE_TOPIC: 'staff_update_topic'
     networks:
       - infrastructure-network
       - staff-network
@@ -203,14 +204,65 @@ services:
 
 
 
+  ##############################
+  ###        SCHEDULE        ###
+  ##############################
+  schedule:
+    depends_on:
+      schedule-db:
+        condition: service_healthy
+    build:
+      context: ./
+      args:
+        MODULE_PATH: 'schedule'
+        BUILD_MODULE_PATH: 'schedule/schedule-app'
+    expose:
+      - "8084"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://schedule-db:3306/schedule-db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: schedule-pass
+
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${OKTA_ISSUER_URI}
+
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: http://kafka:9092
+      SPRING_KAFKA_CONSUMER_GROUP_ID: "schedule_group"
+      SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: 'org.springframework.kafka.support.serializer.JsonSerializer'
+      SPRING_KAFKA_CONSUMER_VALUE_DESERIALIZER: 'org.springframework.kafka.support.serializer.JsonDeserializer'
+      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_JSON_TRUSTED_PACKAGES: '*'
+
+      BUSINESS_UPDATE_BUSINESS_UPDATE_TOPIC: 'business_update_topic'
+      STAFF_UPDATE_BUSINESS_STAFF_UPDATE_TOPIC: 'staff_update_topic'
+      SERVICE_UPDATE_SERVICE_UPDATE_TOPIC: 'service_update_topic'
+    networks:
+      - infrastructure-network
+      - schedule-network
+  schedule-db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: schedule-pass
+      MYSQL_DATABASE: schedule-db
+    healthcheck:
+      test: [ "CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+      timeout: 10s
+      retries: 10
+    volumes:
+      - schedule-db-data:/var/lib/mysql
+    networks:
+      - schedule-network
+
+
+
 networks:
   infrastructure-network:
   business-network:
   services-network:
   staff-network:
+  schedule-network:
   kafka-network:
 
 volumes:
   business-db-data:
   services-db-data:
   staff-db-data:
+  schedule-db-data:

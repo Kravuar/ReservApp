@@ -1,6 +1,6 @@
 package net.kravuar.integration.business;
 
 public record BusinessActivityChangeDTO (
-        long id,
+        long businessId,
         boolean active
 ) {}
