@@ -3,7 +3,7 @@ services:
   business-db:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: business-pass
+      MYSQL_ROOT_PASSWORD: pass
       MYSQL_DATABASE: business-db
     ports:
       - "3306:3306"

@@ -20,19 +20,19 @@ class StaffRetrievalController {
     private final DTOStaffMapper dtoStaffMapper;
 
     @GetMapping("/by-id/{id}")
-    public StaffDTO findById(@PathVariable("id") long id) {
+    StaffDTO findById(@PathVariable("id") long id) {
         return dtoStaffMapper.staffToDTO(staffRetrieval.findStaffById(id, true));
     }
 
     @GetMapping("/by-business/{businessId}")
-    public List<StaffDTO> findByBusiness(@PathVariable("businessId") long businessId) {
+    List<StaffDTO> findByBusiness(@PathVariable("businessId") long businessId) {
         return staffRetrieval.findAllStaffByBusiness(businessId, true).stream()
                 .map(dtoStaffMapper::staffToDTO)
                 .toList();
     }
 
     @GetMapping("/invitations-by-sub")
-    public List<StaffInvitationDTO> findInvitationsBySub(@AuthenticationPrincipal Jwt principal) {
+    List<StaffInvitationDTO> findInvitationsBySub(@AuthenticationPrincipal Jwt principal) {
         return staffRetrieval.findStaffInvitationsBySubject(principal.getSubject()).stream()
                 .map(dtoStaffMapper::invitationToDTO)
                 .toList();
@@ -40,7 +40,7 @@ class StaffRetrievalController {
 
     @GetMapping("/invitations-by-business/{businessId}")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfBusiness(#businessId, authentication.details.subject)")
-    public List<StaffInvitationDTO> findInvitationsByBusiness(@PathVariable("businessId") long businessId) {
+    List<StaffInvitationDTO> findInvitationsByBusiness(@PathVariable("businessId") long businessId) {
         return staffRetrieval.findStaffInvitationsByBusiness(businessId).stream()
                 .map(dtoStaffMapper::invitationToDTO)
                 .toList();

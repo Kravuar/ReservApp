@@ -25,28 +25,34 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
     private final SchedulePersistencePort schedulePersistencePort;
 
     @Override
-    public void updateSchedulePatterns(ChangeSchedulePatternsCommand command) {
+    public Schedule changeSchedulePatterns(ChangeSchedulePatternsCommand command) {
         try {
             scheduleLockPort.lock(command.scheduleId(), true);
 
-            Schedule schedule = scheduleRetrievalPort.findActiveById(command.scheduleId());
+            Schedule schedule = scheduleRetrievalPort.findById(
+                    command.scheduleId(),
+                    true
+            );
             schedule.setPatterns(command.patterns());
             if (scheduleSizeInsufficient(schedule))
                 throw new IllegalStateException("Schedule duration isn't sufficient for provided patterns");
 
             // TODO: throw if affected reservations
-            schedulePersistencePort.save(schedule);
+            return schedulePersistencePort.save(schedule);
         } finally {
             scheduleLockPort.lock(command.scheduleId(), false);
         }
     }
 
     @Override
-    public void updateScheduleDuration(ChangeScheduleDurationCommand command) {
+    public Schedule changeScheduleDuration(ChangeScheduleDurationCommand command) {
         try {
             scheduleLockPort.lock(command.getScheduleId(), true);
 
-            Schedule schedule = scheduleRetrievalPort.findActiveById(command.getScheduleId());
+            Schedule schedule = scheduleRetrievalPort.findById(
+                    command.getScheduleId(),
+                    true
+            );
 
             // TODO: throw if would affect reservations
             boolean mayOverlap = schedule.getStart().isAfter(command.getStart())
@@ -60,7 +66,11 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
 
             try {
                 if (mayOverlap) {
-                    scheduleLockPort.lockByStaff(schedule.getStaff().getId(), true);
+                    scheduleLockPort.lockByStaffAndService(
+                            schedule.getStaff().getId(),
+                            schedule.getService().getId(),
+                            true
+                    );
 
                     List<Schedule> overlapped = scheduleRetrievalPort.findActiveByStaffIdAndServiceId(
                             schedule.getStaff().getId(),
@@ -74,9 +84,13 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
                         throw new IllegalArgumentException("Schedule overlapped with other schedules");
                 }
 
-                schedulePersistencePort.save(schedule);
+                return schedulePersistencePort.save(schedule);
             } finally {
-                scheduleLockPort.lockByStaff(schedule.getStaff().getId(), false);
+                scheduleLockPort.lockByStaffAndService(
+                        schedule.getStaff().getId(),
+                        schedule.getService().getId(),
+                        false
+                );
             }
         } finally {
             scheduleLockPort.lock(command.getScheduleId(), false);
@@ -84,9 +98,9 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
     }
 
     @Override
-    public void addSchedule(CreateScheduleCommand command) {
+    public Schedule createSchedule(CreateScheduleCommand command) {
         try {
-            scheduleLockPort.lockByStaff(command.getStaffId(), true);
+            scheduleLockPort.lockByStaffAndService(command.getStaffId(), command.getServiceId(), true);
 
             Staff staff = staffRetrievalPort.findActiveById(command.getStaffId());
             Service service = serviceRetrievalPort.findActiveById(command.getServiceId());
@@ -114,15 +128,18 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
             if (!overlapped.isEmpty())
                 throw new IllegalStateException("Schedule overlapped with other schedules");
 
-            schedulePersistencePort.save(newSchedule);
+            return schedulePersistencePort.save(newSchedule);
         } finally {
-            scheduleLockPort.lockByStaff(command.getStaffId(), false);
+            scheduleLockPort.lockByStaffAndService(command.getStaffId(), command.getServiceId(), false);
         }
     }
 
     @Override
     public void removeSchedule(RemoveScheduleCommand command) {
-        Schedule schedule = scheduleRetrievalPort.findActiveById(command.scheduleId());
+        Schedule schedule = scheduleRetrievalPort.findById(
+                command.scheduleId(),
+                true
+        );
         schedule.setActive(false);
         schedulePersistencePort.save(schedule);
     }

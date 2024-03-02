@@ -12,7 +12,7 @@ public class BusinessRetrievalFacade implements BusinessRetrievalUseCase {
     private final BusinessRetrievalPort businessRetrievalPort;
 
     @Override
-    public Business findActiveById(long businessId) {
+    public Business findById(long businessId) {
         return businessRetrievalPort.findActiveById(businessId);
     }
 }

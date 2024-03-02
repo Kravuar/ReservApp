@@ -2,7 +2,7 @@ spring:
   docker:
     compose:
       enabled: true
-      lifecycle-management: start_only
+      lifecycle-management: start_and_stop
       file: classpath:dev/docker-compose.yml
   jpa:
     show-sql: true
@@ -18,6 +18,12 @@ spring:
       data-locations: classpath:dev/data.sql
   mvc:
     log-request-details: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer_uri: ${ISSUER_URI}
 
 logging:
   level:

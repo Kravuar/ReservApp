@@ -19,7 +19,7 @@ class ServiceRetrievalController {
 
     @GetMapping("/my/by-business/{businessId}")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfBusiness(#businessId, authentication.details.subject)")
-    public List<ServiceDTO> myByBusiness(@PathVariable("businessId") long businessId) {
+    List<ServiceDTO> myByBusiness(@PathVariable("businessId") long businessId) {
         return serviceRetrieval
                 .findAllByBusinessId(businessId, false).stream()
                 .map(dtoServiceMapper::toDTO)
@@ -33,7 +33,7 @@ class ServiceRetrievalController {
     }
 
     @GetMapping("/by-business/{businessId}")
-    public List<ServiceDTO> byBusiness(@PathVariable("businessId") long businessId) {
+    List<ServiceDTO> byBusiness(@PathVariable("businessId") long businessId) {
         return serviceRetrieval
                 .findAllByBusinessId(businessId, true).stream()
                 .map(dtoServiceMapper::toDTO)
@@ -41,12 +41,12 @@ class ServiceRetrievalController {
     }
 
     @GetMapping("/byId/{serviceId}")
-    public ServiceDTO byId(@PathVariable("serviceId") long serviceId) {
+    ServiceDTO byId(@PathVariable("serviceId") long serviceId) {
         return dtoServiceMapper.toDTO(serviceRetrieval.findById(serviceId, true));
     }
 
     @GetMapping("/active")
-    public List<ServiceDTO> allActive() {
+    List<ServiceDTO> allActive() {
         return serviceRetrieval.findAll().stream()
                 .map(dtoServiceMapper::toDTO)
                 .toList();

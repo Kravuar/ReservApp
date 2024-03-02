@@ -18,7 +18,7 @@ class StaffManagementController {
 
     @PostMapping("/send-invitation/{subject}/{businessId}")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfBusiness(#businessId, authentication.details.subject)")
-    public StaffInvitationDTO sendInvitation(@PathVariable("subject") String sub, @PathVariable("businessId") long businessId) {
+    StaffInvitationDTO sendInvitation(@PathVariable("subject") String sub, @PathVariable("businessId") long businessId) {
         return dtoStaffMapper.invitationToDTO(staffManagement.sendInvitation(
                 new StaffInvitationCommand(
                         sub,
@@ -29,7 +29,7 @@ class StaffManagementController {
 
     @PostMapping("/answer-invitation/{invitationId}/{accept}")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isInvitedStaff(#invitationId, authentication.details.subject)")
-    public void answerInvitation(@PathVariable("invitationId") long invitationId, @PathVariable("accept") boolean accept) {
+    void answerInvitation(@PathVariable("invitationId") long invitationId, @PathVariable("accept") boolean accept) {
         staffManagement.answerInvitation(
                 new StaffAnswerInvitationCommand(
                         invitationId,
@@ -40,13 +40,13 @@ class StaffManagementController {
 
     @PutMapping("/update-details")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isStaffOrOwnerOfStaffBusiness(#command.staffId(), authentication.details.subject)")
-    public void updateDetails(@RequestBody StaffChangeDetailsCommand command) {
+    void updateDetails(@RequestBody StaffChangeDetailsCommand command) {
         staffManagement.changeDetails(command);
     }
 
     @DeleteMapping("/remove-staff")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfStaffBusiness(#command.staffId(), authentication.details.subject)")
-    public void removeStaff(@RequestBody RemoveStaffCommand command) {
+    void removeStaff(@RequestBody RemoveStaffCommand command) {
         staffManagement.removeStaff(command);
     }
 }

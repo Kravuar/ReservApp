@@ -1,9 +1,9 @@
 version: '4.27'
 services:
-  service-db:
+  services-db:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: services-pass
+      MYSQL_ROOT_PASSWORD: pass
       MYSQL_DATABASE: services-db
     ports:
       - "3306:3306"

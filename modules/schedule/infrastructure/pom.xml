@@ -16,7 +16,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>mongodb-persistence-adapter</module>
+        <module>jpa-persistence-adapter</module>
         <module>webmvc-rest-api-adapter</module>
         <module>local-lock-adapter</module>
     </modules>

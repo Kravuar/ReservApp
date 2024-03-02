@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AuthorizationHandler {
+class AuthorizationHandler {
     private final BusinessRetrievalUseCase businessRetrieval;
     private final StaffRetrievalUseCase staffRetrieval;
 

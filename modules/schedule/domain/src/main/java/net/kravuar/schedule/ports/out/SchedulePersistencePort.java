@@ -8,5 +8,5 @@ public interface SchedulePersistencePort {
      *
      * @param schedule new schedule object to save
      */
-    void save(Schedule schedule);
+    Schedule save(Schedule schedule);
 }

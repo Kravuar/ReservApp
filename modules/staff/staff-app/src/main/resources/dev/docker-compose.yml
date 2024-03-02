@@ -3,7 +3,7 @@ services:
   staff-db:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: staff-pass
+      MYSQL_ROOT_PASSWORD: pass
       MYSQL_DATABASE: staff-db
     ports:
       - "3306:3306"

@@ -3,7 +3,7 @@ package net.kravuar.schedule.domain.commands;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import net.kravuar.schedule.domain.halfbreeddomain.SchedulePattern;
+import net.kravuar.schedule.domain.SchedulePattern;
 
 import java.util.List;
 

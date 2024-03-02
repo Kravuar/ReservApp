@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
+                 http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd"
+                 version="2.2">
+
+    <description>Mapping for domain Schedule</description>
+
+    <entity class="net.kravuar.schedule.domain.Schedule" access="FIELD">
+        <table name="schedule"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+
+            <basic name="start">
+                <column nullable="false"/>
+            </basic>
+            <basic name="end">
+                <column nullable="false"/>
+            </basic>
+
+            <many-to-one name="staff" fetch="LAZY" optional="false">
+                <join-column name="staffId"/>
+            </many-to-one>
+            <many-to-one name="service" fetch="LAZY" optional="false">
+                <join-column name="serviceId"/>
+            </many-to-one>
+
+            <one-to-many name="patterns" orphan-removal="true">
+                <join-table name="schedulePattern">
+                    <join-column name="scheduleId" referenced-column-name="id"/>
+                    <inverse-join-column name="id" referenced-column-name="id"/>
+                </join-table>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
+            <one-to-many name="exceptionDays" orphan-removal="true">
+                <join-table name="scheduleExceptionDay">
+                    <join-column name="scheduleId" referenced-column-name="id"/>
+                    <inverse-join-column name="id" referenced-column-name="id"/>
+                </join-table>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
+        </attributes>
+    </entity>
+
+    <entity class="net.kravuar.schedule.domain.ScheduleExceptionDay" access="FIELD">
+        <table name="scheduleExceptionDay"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="date">
+                <column nullable="false"/>
+            </basic>
+
+            <element-collection target-class="net.kravuar.schedule.domain.weak.WorkingHours" name="workingHours" fetch="EAGER">
+                <column nullable="false"/>
+                <collection-table name="exceptionDaysHours"/>
+            </element-collection>
+        </attributes>
+    </entity>
+
+    <entity class="net.kravuar.schedule.domain.SchedulePattern" access="FIELD">
+        <table name="schedulePattern"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+
+            <basic name="repeatDays">
+                <column nullable="false"/>
+            </basic>
+            <basic name="pauseDays">
+                <column nullable="false"/>
+            </basic>
+
+            <element-collection target-class="net.kravuar.schedule.domain.weak.WorkingHours" name="workingHours" fetch="EAGER">
+                <column nullable="false"/>
+                <collection-table name="patternHours"/>
+            </element-collection>
+        </attributes>
+    </entity>
+
+    <entity class="net.kravuar.schedule.domain.Staff" access="FIELD">
+        <table name="staff"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="active">
+                <column nullable="false"/>
+            </basic>
+            <many-to-one name="business" fetch="LAZY" optional="false">
+                <join-column name="businessId"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+
+    <entity class="net.kravuar.schedule.domain.Service" access="FIELD">
+        <table name="service"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="active">
+                <column nullable="false"/>
+            </basic>
+            <many-to-one name="business" fetch="LAZY" optional="false">
+                <join-column name="businessId"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+
+    <entity class="net.kravuar.schedule.domain.Business" access="FIELD">
+        <table name="business"/>
+        <attributes>
+            <id name="id"/>
+            <basic name="ownerSub">
+                <column nullable="false"/>
+            </basic>
+            <basic name="active">
+                <column nullable="false"/>
+            </basic>
+        </attributes>
+    </entity>
+
+    <embeddable class="net.kravuar.schedule.domain.weak.WorkingHours" access="FIELD"/>
+</entity-mappings>

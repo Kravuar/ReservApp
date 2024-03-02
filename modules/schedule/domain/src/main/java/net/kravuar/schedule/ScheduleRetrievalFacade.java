@@ -3,12 +3,12 @@ package net.kravuar.schedule;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
 import net.kravuar.schedule.domain.Schedule;
-import net.kravuar.schedule.domain.halfbreeddomain.ScheduleExceptionDay;
+import net.kravuar.schedule.domain.ScheduleExceptionDay;
+import net.kravuar.schedule.domain.SchedulePattern;
 import net.kravuar.schedule.domain.Staff;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
-import net.kravuar.schedule.domain.halfbreeddomain.SchedulePattern;
-import net.kravuar.schedule.domain.halfbreeddomain.WorkingHours;
+import net.kravuar.schedule.domain.weak.WorkingHours;
 import net.kravuar.schedule.ports.in.ScheduleRetrievalUseCase;
 import net.kravuar.schedule.ports.out.ScheduleRetrievalPort;
 
@@ -25,7 +25,12 @@ public class ScheduleRetrievalFacade implements ScheduleRetrievalUseCase {
     private final ScheduleRetrievalPort scheduleRetrievalPort;
 
     @Override
-    public Map<LocalDate, List<WorkingHours>> findActiveScheduleByStaffAndService(RetrieveScheduleByStaffAndServiceCommand command) {
+    public Schedule findScheduleById(long scheduleId, boolean activeOnly) {
+        return scheduleRetrievalPort.findById(scheduleId, activeOnly);
+    }
+
+    @Override
+    public Map<LocalDate, List<WorkingHours>> findActiveScheduleByStaffAndServiceInPerDay(RetrieveScheduleByStaffAndServiceCommand command) {
         return toPerDay(scheduleRetrievalPort
                         .findActiveByStaffIdAndServiceId(
                                 command.getStaffId(),
@@ -39,7 +44,7 @@ public class ScheduleRetrievalFacade implements ScheduleRetrievalUseCase {
     }
 
     @Override
-    public Map<Staff, Map<LocalDate, List<WorkingHours>>> findActiveScheduleByService(RetrieveScheduleByServiceCommand command) {
+    public Map<Staff, Map<LocalDate, List<WorkingHours>>> findActiveScheduleByServiceInPerDay(RetrieveScheduleByServiceCommand command) {
         Map<Staff, List<Schedule>> schedules = scheduleRetrievalPort.findActiveByServiceId(command.getServiceId(), command.getStart(), command.getEnd());
         return schedules.entrySet().stream().collect(Collectors.toMap(
                 Map.Entry::getKey,

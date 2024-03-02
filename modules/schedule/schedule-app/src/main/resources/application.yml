@@ -4,5 +4,5 @@ spring:
 
 server:
   servlet:
-    context-path: /staff/api-v1
+    context-path: /schedule/api-v1
   port: 8085 # TODO: Hardcoded

@@ -10,13 +10,14 @@ import java.util.Map;
 
 public interface ScheduleRetrievalPort {
     /**
-     * Find active schedule by schedule id.
+     * Find schedule by schedule id.
      *
      * @param scheduleId id of the schedule to find
-     * @return active {@link Schedule} associated the with provided {@code scheduleId}
+     * @param activeOnly whether to search activeOnly
+     * @return {@link Schedule} associated the with provided {@code scheduleId}
      * @throws ScheduleNotFoundException if schedule wasn't found
      */
-    Schedule findActiveById(long scheduleId);
+    Schedule findById(long scheduleId, boolean activeOnly);
 
     /**
      * Find active schedules by staff.

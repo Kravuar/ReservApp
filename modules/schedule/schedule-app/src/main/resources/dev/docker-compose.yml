@@ -1,17 +1,14 @@
 version: '4.27'
 services:
   schedule-db:
-    image: mongo:latest
+    image: mysql:latest
     environment:
-      MONGO_INITDB_ROOT_USERNAME: 'root'
-      MONGO_INITDB_ROOT_PASSWORD: 'schedule-pass'
-      MONGO_INITDB_DATABASE: 'schedule-db'
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: schedule-db
     ports:
-      - '27017:27017'
+      - "3306:3306"
     volumes:
-      - schedule-db-data:/data/db
-    networks:
-      - schedule-network
+      - schedule-db-data:/var/lib/mysql
 
 volumes:
   schedule-db-data:

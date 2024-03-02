@@ -8,5 +8,5 @@ import org.mapstruct.Mapper;
 interface DTOStaffMapper {
     StaffInvitationDTO invitationToDTO(StaffInvitation invitation);
 
-    StaffDTO staffToDTO(Staff invitation);
+    StaffDTO staffToDTO(Staff staff);
 }

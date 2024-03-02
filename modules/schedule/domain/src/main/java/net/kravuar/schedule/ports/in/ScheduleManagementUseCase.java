@@ -2,6 +2,7 @@ package net.kravuar.schedule.ports.in;
 
 import jakarta.validation.Valid;
 import net.kravuar.context.AppValidated;
+import net.kravuar.schedule.domain.Schedule;
 import net.kravuar.schedule.domain.commands.ChangeScheduleDurationCommand;
 import net.kravuar.schedule.domain.commands.ChangeSchedulePatternsCommand;
 import net.kravuar.schedule.domain.commands.CreateScheduleCommand;
@@ -18,7 +19,7 @@ public interface ScheduleManagementUseCase {
      * @throws ScheduleNotFoundException if schedule wasn't found
      * @throws IllegalStateException     if schedule duration isn't sufficient for provided patterns
      */
-    void updateSchedulePatterns(@Valid ChangeSchedulePatternsCommand command);
+    Schedule changeSchedulePatterns(@Valid ChangeSchedulePatternsCommand command);
 
     /**
      * Update schedule duration.
@@ -28,17 +29,17 @@ public interface ScheduleManagementUseCase {
      * @throws IllegalStateException     if schedule overlaps with other staff schedules or
      *                                   does not have sufficient duration for provided patterns
      */
-    void updateScheduleDuration(@Valid ChangeScheduleDurationCommand command);
+    Schedule changeScheduleDuration(@Valid ChangeScheduleDurationCommand command);
 
     /**
-     * Add schedule for a staff member.
+     * Create schedule for a staff member.
      *
      * @param command command containing details of the schedule creation
      * @throws StaffNotFoundException if staff wasn't found
      * @throws IllegalStateException  if schedule overlaps with other staff schedules or
      *                                does not have sufficient duration for provided patterns
      */
-    void addSchedule(@Valid CreateScheduleCommand command);
+    Schedule createSchedule(@Valid CreateScheduleCommand command);
 
     /**
      * Removes schedule for a staff member.

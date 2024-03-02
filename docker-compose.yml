@@ -219,11 +219,9 @@ services:
     expose:
       - "8085"
     environment:
-      SPRING_DATA_MONGODB_HOST: 'schedule-db'
-      SPRING_DATA_MONGODB_PORT: '27017'
-      SPRING_DATA_MONGODB_DATABASE: 'schedule-db'
-      SPRING_DATA_MONGODB_USERNAME: 'root'
-      SPRING_DATA_MONGODB_PASSWORD: 'schedule-password'
+      SPRING_DATASOURCE_URL: 'jdbc:mysql://staff-db:3306/staff-db'
+      SPRING_DATASOURCE_USERNAME: 'root'
+      SPRING_DATASOURCE_PASSWORD: 'staff-pass'
 
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${OKTA_ISSUER_URI}
 
@@ -240,17 +238,16 @@ services:
       - infrastructure-network
       - schedule-network
   schedule-db:
-    image: mongo:latest
+    image: mysql:latest
     environment:
-      MONGO_INITDB_ROOT_USERNAME: 'root'
-      MONGO_INITDB_ROOT_PASSWORD: 'schedule-pass'
-      MONGO_INITDB_DATABASE: 'schedule-db'
+      MYSQL_ROOT_PASSWORD: 'schedule-pass'
+      MYSQL_DATABASE: 'schedule-db'
     healthcheck:
-      test: [ "CMD", "mongo", "--eval", "db.adminCommand('ping')" ]
+      test: [ "CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
       timeout: 10s
       retries: 10
     volumes:
-      - schedule-db-data:/data/db
+      - schedule-db-data:/var/lib/mysql
     networks:
       - schedule-network
 
