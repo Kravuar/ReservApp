@@ -3,6 +3,7 @@ package net.kravuar.schedule;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
 import net.kravuar.schedule.domain.Schedule;
+import net.kravuar.schedule.domain.SchedulePattern;
 import net.kravuar.schedule.domain.Service;
 import net.kravuar.schedule.domain.Staff;
 import net.kravuar.schedule.domain.commands.ChangeScheduleDurationCommand;
@@ -13,6 +14,7 @@ import net.kravuar.schedule.ports.in.ScheduleManagementUseCase;
 import net.kravuar.schedule.ports.out.*;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
 
 @AppComponent
@@ -33,9 +35,11 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
                     command.scheduleId(),
                     true
             );
-            schedule.setPatterns(command.patterns());
-            if (scheduleSizeInsufficient(schedule))
+
+            if (scheduleSizeInsufficient(command.patterns(), schedule.getStart(), schedule.getEnd()))
                 throw new IllegalStateException("Schedule duration isn't sufficient for provided patterns");
+
+            schedule.setPatterns(command.patterns());
 
             // TODO: throw if affected reservations
             return schedulePersistencePort.save(schedule);
@@ -58,11 +62,12 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
             boolean mayOverlap = schedule.getStart().isAfter(command.getStart())
                     || schedule.getEnd().isBefore(command.getEnd());
 
+
+            if (scheduleSizeInsufficient(schedule.getPatterns(), command.getStart(), command.getEnd()))
+                throw new IllegalStateException("Schedule duration isn't sufficient for provided patterns");
+
             schedule.setStart(command.getStart());
             schedule.setEnd(command.getEnd());
-
-            if (scheduleSizeInsufficient(schedule))
-                throw new IllegalStateException("Schedule duration isn't sufficient for provided patterns");
 
             try {
                 if (mayOverlap) {
@@ -102,6 +107,9 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
         try {
             scheduleLockPort.lockByStaffAndService(command.getStaffId(), command.getServiceId(), true);
 
+            if (scheduleSizeInsufficient(command.getPatterns(), command.getStart(), command.getEnd()))
+                throw new IllegalStateException("Schedule duration isn't sufficient for provided patterns");
+
             Staff staff = staffRetrievalPort.findActiveById(command.getStaffId());
             Service service = serviceRetrievalPort.findActiveById(command.getServiceId());
 
@@ -115,9 +123,6 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
                     command.getExceptionDays(),
                     true
             );
-
-            if (scheduleSizeInsufficient(newSchedule))
-                throw new IllegalStateException("Schedule duration isn't sufficient for provided patterns");
 
             List<Schedule> overlapped = scheduleRetrievalPort.findActiveByStaffIdAndServiceId(
                     newSchedule.getStaff().getId(),
@@ -144,13 +149,16 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
         schedulePersistencePort.save(schedule);
     }
 
-    private boolean scheduleSizeInsufficient(Schedule schedule) {
-        Duration cycleDuration = schedule.getPatterns().stream()
+    private boolean scheduleSizeInsufficient(List<SchedulePattern> patterns, LocalDate start, LocalDate end) {
+        Duration cycleDuration = patterns.stream()
                 .reduce(
                         Duration.ZERO,
                         (acc, pattern) -> acc.plusDays(pattern.getRepeatDays() + pattern.getPauseDays()),
                         Duration::plus
                 );
-        return Duration.between(schedule.getStart(), schedule.getEnd()).minus(cycleDuration).isNegative();
+        return start.until(end)
+                .plusDays(1)
+                .minusDays(cycleDuration.toDays())
+                .isNegative();
     }
 }
