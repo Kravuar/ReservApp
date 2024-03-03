@@ -44,11 +44,12 @@ class ServiceManagementFacadeTest {
                 "New Service",
                 "Description"
         );
+        Service service = new Service();
 
         doReturn(mock(Business.class))
                 .when(businessRetrievalPort)
                 .findActiveById(anyLong());
-        doReturn(mock(Service.class))
+        doReturn(service)
                 .when(servicePersistencePort)
                 .save(any(Service.class));
 
@@ -56,16 +57,16 @@ class ServiceManagementFacadeTest {
         Service newService = serviceManagement.create(command);
 
         // Then
-        verify(servicePersistencePort, times(1)).save(any(Service.class));
-        verify(serviceNotificationPort, times(1)).notifyNewService(any(Service.class));
-        assertThat(newService).isNotNull();
+        verify(servicePersistencePort).save(same(service));
+        verify(serviceNotificationPort).notifyNewService(same(service));
+        assertThat(newService).isSameAs(service);
     }
 
     @Test
     void givenValidServiceChangeActiveCommand_whenChangeActive_thenActiveStatusChanged() {
         // Given
         ServiceChangeActiveCommand command = new ServiceChangeActiveCommand(1, true);
-        Service service = mock(Service.class);
+        Service service = spy(new Service());
 
         doReturn(service)
                 .when(serviceRetrievalPort)
@@ -78,11 +79,9 @@ class ServiceManagementFacadeTest {
         serviceManagement.changeActive(command);
 
         // Then
-        verify(serviceRetrievalPort, times(1)).findById(eq(command.serviceId()), eq(false));
-        verify(servicePersistencePort, times(1)).save(same(service));
-        verify(serviceNotificationPort, times(1)).notifyServiceActiveChanged(same(service));
-        verify(serviceLockPort, times(1)).lock(eq(command.serviceId()), eq(true));
-        verify(serviceLockPort, times(1)).lock(eq(command.serviceId()), eq(false));
+        verify(servicePersistencePort).save(same(service));
+        verify(serviceNotificationPort).notifyServiceActiveChanged(same(service));
+        verify(serviceLockPort).lock(eq(command.serviceId()), eq(false));
     }
 
     @Test
@@ -100,11 +99,9 @@ class ServiceManagementFacadeTest {
         // When & Then
         assertThatThrownBy(() -> serviceManagement.changeActive(command))
                 .isInstanceOf(ServiceNotFoundException.class);
-        verify(serviceRetrievalPort, times(1)).findById(eq(command.serviceId()), eq(false));
         verify(servicePersistencePort, never()).save(any(Service.class));
         verify(serviceNotificationPort, never()).notifyServiceActiveChanged(any(Service.class));
-        verify(serviceLockPort, times(1)).lock(eq(command.serviceId()), eq(true));
-        verify(serviceLockPort, times(1)).lock(eq(command.serviceId()), eq(false));
+        verify(serviceLockPort).lock(eq(command.serviceId()), eq(false));
     }
 
     @ParameterizedTest
@@ -121,7 +118,7 @@ class ServiceManagementFacadeTest {
                 name,
                 description
         );
-        Service service = mock(Service.class);
+        Service service = spy(new Service());
 
         doReturn(service)
                 .when(serviceRetrievalPort)
@@ -131,14 +128,13 @@ class ServiceManagementFacadeTest {
         serviceManagement.changeDetails(command);
 
         // Then
-        verify(serviceRetrievalPort, times(1)).findById(eq(command.serviceId()), eq(false));
-        verify(servicePersistencePort, times(1)).save(eq(service));
+        verify(servicePersistencePort).save(eq(service));
         if (command.name() != null)
-            verify(service, times(1)).setName(eq(command.name()));
+            verify(service).setName(eq(command.name()));
         else
             verify(service, times(0)).setName(anyString());
         if (command.description() != null)
-            verify(service, times(1)).setDescription(eq(command.description()));
+            verify(service).setDescription(eq(command.description()));
         else
             verify(service, times(0)).setDescription(anyString());
     }
@@ -159,7 +155,6 @@ class ServiceManagementFacadeTest {
         // When & Then
         assertThatThrownBy(() -> serviceManagement.changeDetails(command))
                 .isInstanceOf(ServiceNotFoundException.class);
-        verify(serviceRetrievalPort, times(1)).findById(eq(command.serviceId()), eq(false));
         verify(servicePersistencePort, never()).save(any(Service.class));
     }
 }

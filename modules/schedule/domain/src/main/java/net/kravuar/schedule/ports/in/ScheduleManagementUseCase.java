@@ -48,7 +48,7 @@ public interface ScheduleManagementUseCase {
      * @throws StaffNotFoundException if staff wasn't found
      * @throws ServiceNotFoundException if service wasn't found
      */
-    ScheduleExceptionDay addScheduleExceptionDay(@Valid CreateScheduleExceptionDayCommand command);
+    ScheduleExceptionDay addOrUpdateScheduleExceptionDay(@Valid CreateScheduleExceptionDayCommand command);
 
     /**
      * Removes schedule for a staff member.

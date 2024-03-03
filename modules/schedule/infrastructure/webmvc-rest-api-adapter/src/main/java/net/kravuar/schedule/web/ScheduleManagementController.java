@@ -42,7 +42,7 @@ class ScheduleManagementController {
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfServiceBusiness(#command.serviceId(), authentication.details.subject)")
     ScheduleExceptionDayDTO createExceptionDay(@RequestBody CreateScheduleExceptionDayCommand command) {
         return dtoScheduleExceptionDayMapper.scheduleExceptionDayToDTO(
-                scheduleManagementUseCase.addScheduleExceptionDay(command)
+                scheduleManagementUseCase.addOrUpdateScheduleExceptionDay(command)
         );
     }
 

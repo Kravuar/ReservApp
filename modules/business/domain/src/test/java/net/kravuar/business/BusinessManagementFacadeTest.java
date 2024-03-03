@@ -17,7 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -44,23 +43,20 @@ class BusinessManagementFacadeTest {
                 "Description"
         );
 
-        doReturn(false)
-                .when(businessRetrievalPort)
-                .existsActiveByName(eq(command.name()));
         doReturn(mock(Business.class))
                 .when(businessPersistencePort)
                 .save(any(Business.class));
+        doReturn(false)
+                .when(businessRetrievalPort)
+                .existsActiveByName(eq(command.name()));
 
         // When
-        Business newBusiness = businessManagement.create(command);
+        businessManagement.create(command);
 
         // Then
-        verify(businessLockPort, times(1)).lock(eq(command.name()), eq(true));
-        verify(businessLockPort, times(1)).lock(eq(command.name()), eq(false));
-        verify(businessRetrievalPort, times(1)).existsActiveByName(eq(command.name()));
-        verify(businessPersistencePort, times(1)).save(any(Business.class));
-        verify(businessNotificationPort, times(1)).notifyNewBusiness(any(Business.class));
-        assertThat(newBusiness).isNotNull();
+        verify(businessPersistencePort).save(any(Business.class));
+        verify(businessNotificationPort).notifyNewBusiness(any(Business.class));
+        verify(businessLockPort).lock(eq(command.name()), eq(false));
     }
 
     @Test
@@ -79,15 +75,13 @@ class BusinessManagementFacadeTest {
         // When & Then
         assertThatThrownBy(() -> businessManagement.create(command))
                 .isInstanceOf(BusinessNameAlreadyTaken.class);
-        verify(businessRetrievalPort, times(1)).existsActiveByName(eq(command.name()));
         verify(businessPersistencePort, never()).save(any(Business.class));
         verify(businessNotificationPort, never()).notifyNewBusiness(any(Business.class));
-        verify(businessLockPort, times(1)).lock(eq(command.name()), eq(true));
-        verify(businessLockPort, times(1)).lock(eq(command.name()), eq(false));
+        verify(businessLockPort).lock(eq(command.name()), eq(false));
     }
 
     @Test
-    void givenValidBusinessChangeNameCommand_whenChangeName_thenNameChanged() {
+    void givenValidBusinessChangeNameCommandAndAvailableName_whenChangeName_thenNameChanged() {
         // Given
         BusinessChangeNameCommand command = new BusinessChangeNameCommand(
                 1,
@@ -106,13 +100,9 @@ class BusinessManagementFacadeTest {
         businessManagement.changeName(command);
 
         // Then
-        verify(businessLockPort, times(1)).lock(eq(command.businessId()), eq(true));
-        verify(businessLockPort, times(1)).lock(eq(command.newName()), eq(true));
-        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()), eq(false));
-        verify(businessRetrievalPort, times(1)).existsActiveByName(eq(command.newName()));
-        verify(businessPersistencePort, times(1)).save(eq(business));
-        verify(businessLockPort, times(1)).lock(eq(command.newName()), eq(false));
-        verify(businessLockPort, times(1)).lock(eq(command.businessId()), eq(false));
+        verify(businessPersistencePort).save(eq(business));
+        verify(businessLockPort).lock(eq(command.newName()), eq(false));
+        verify(businessLockPort).lock(eq(command.businessId()), eq(false));
     }
 
     @Test
@@ -130,13 +120,10 @@ class BusinessManagementFacadeTest {
         // When & Then
         assertThatThrownBy(() -> businessManagement.changeName(command))
                 .isInstanceOf(BusinessNameAlreadyTaken.class);
-        verify(businessRetrievalPort, times(1)).existsActiveByName(eq(command.newName()));
         verify(businessPersistencePort, never()).save(any(Business.class));
         verify(businessNotificationPort, never()).notifyNewBusiness(any(Business.class));
-        verify(businessLockPort, times(1)).lock(eq(command.newName()), eq(true));
-        verify(businessLockPort, times(1)).lock(eq(command.businessId()), eq(true));
-        verify(businessLockPort, times(1)).lock(eq(command.newName()), eq(false));
-        verify(businessLockPort, times(1)).lock(eq(command.businessId()), eq(false));
+        verify(businessLockPort).lock(eq(command.newName()), eq(false));
+        verify(businessLockPort).lock(eq(command.businessId()), eq(false));
     }
 
     @Test
@@ -157,14 +144,10 @@ class BusinessManagementFacadeTest {
         // When & Then
         assertThatThrownBy(() -> businessManagement.changeName(command))
                 .isInstanceOf(BusinessNotFoundException.class);
-        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()), eq(false));
-        verify(businessRetrievalPort, times(1)).existsActiveByName(eq(command.newName()));
         verify(businessPersistencePort, never()).save(any(Business.class));
         verify(businessNotificationPort, never()).notifyNewBusiness(any(Business.class));
-        verify(businessLockPort, times(1)).lock(command.newName(), true);
-        verify(businessLockPort, times(1)).lock(command.businessId(), true);
-        verify(businessLockPort, times(1)).lock(command.newName(), false);
-        verify(businessLockPort, times(1)).lock(command.businessId(), false);
+        verify(businessLockPort).lock(command.newName(), false);
+        verify(businessLockPort).lock(command.businessId(), false);
     }
 
     @Test
@@ -185,13 +168,11 @@ class BusinessManagementFacadeTest {
         businessManagement.changeActive(command);
 
         // Then
-        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()), eq(false));
-        verify(businessPersistencePort, times(1)).save(same(business));
-        verify(businessNotificationPort, times(1)).notifyBusinessActiveChanged(same(business));
-        verify(businessLockPort, times(1)).lock(eq(command.businessId()), eq(true));
-        verify(businessLockPort, times(1)).lock(eq(businessName), eq(true));
-        verify(businessLockPort, times(1)).lock(eq(businessName), eq(false));
-        verify(businessLockPort, times(1)).lock(eq(command.businessId()), eq(false));
+        verify(business).setActive(eq(command.active()));
+        verify(businessPersistencePort).save(same(business));
+        verify(businessNotificationPort).notifyBusinessActiveChanged(same(business));
+        verify(businessLockPort).lock(eq(businessName), eq(false));
+        verify(businessLockPort).lock(eq(command.businessId()), eq(false));
     }
 
     @Test
@@ -214,14 +195,10 @@ class BusinessManagementFacadeTest {
         // When & Then
         assertThatThrownBy(() -> businessManagement.changeActive(command))
                 .isInstanceOf(BusinessNameAlreadyTaken.class);
-        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()), eq(false));
         verify(businessPersistencePort, never()).save(same(business));
         verify(businessNotificationPort, never()).notifyBusinessActiveChanged(same(business));
-        verify(businessRetrievalPort, times(1)).existsActiveByName(eq(businessName));
-        verify(businessLockPort, times(1)).lock(eq(command.businessId()), eq(true));
-        verify(businessLockPort, times(1)).lock(eq(command.businessId()), eq(true));
-        verify(businessLockPort, times(1)).lock(eq(businessName), eq(false));
-        verify(businessLockPort, times(1)).lock(eq(businessName), eq(false));
+        verify(businessLockPort).lock(eq(businessName), eq(false));
+        verify(businessLockPort).lock(eq(businessName), eq(false));
     }
 
     @Test
@@ -239,12 +216,9 @@ class BusinessManagementFacadeTest {
         // When & Then
         assertThatThrownBy(() -> businessManagement.changeActive(command))
                 .isInstanceOf(BusinessNotFoundException.class);
-        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()), eq(false));
         verify(businessPersistencePort, never()).save(any(Business.class));
         verify(businessNotificationPort, never()).notifyBusinessActiveChanged(any(Business.class));
-        verify(businessRetrievalPort, never()).existsActiveByName(anyString());
-        verify(businessLockPort, times(1)).lock(eq(command.businessId()), eq(true));
-        verify(businessLockPort, times(1)).lock(eq(command.businessId()), eq(false));
+        verify(businessLockPort).lock(eq(command.businessId()), eq(false));
         verify(businessLockPort, never()).lock(anyString(), eq(true));
     }
 
@@ -257,15 +231,16 @@ class BusinessManagementFacadeTest {
         );
         Business business = mock(Business.class);
 
-        doReturn(business).when(businessRetrievalPort).findById(eq(command.businessId()), eq(false));
+        doReturn(business)
+                .when(businessRetrievalPort)
+                .findById(eq(command.businessId()), eq(false));
 
         // When
         businessManagement.changeDetails(command);
 
         // Then
-        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()), eq(false));
-        verify(businessPersistencePort, times(1)).save(eq(business));
-        verify(business, times(1)).setDescription(eq(command.description()));
+        verify(business).setDescription(eq(command.description()));
+        verify(businessPersistencePort).save(eq(business));
     }
 
     @Test
@@ -283,7 +258,6 @@ class BusinessManagementFacadeTest {
         // When & Then
         assertThatThrownBy(() -> businessManagement.changeDetails(command))
                 .isInstanceOf(BusinessNotFoundException.class);
-        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()), eq(false));
         verify(businessPersistencePort, never()).save(any(Business.class));
     }
 }

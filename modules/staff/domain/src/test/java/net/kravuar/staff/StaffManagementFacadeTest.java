@@ -79,13 +79,13 @@ class StaffManagementFacadeTest {
         StaffInvitation invitation = staffManagement.sendInvitation(command);
 
         // Then
-        verify(staffLockPort, times(1)).lock(eq(command.businessId()), eq(command.sub()), eq(true));
-        verify(staffLockPort, times(1)).lock(eq(command.businessId()), eq(command.sub()), eq(false));
-        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()));
-        verify(staffRetrievalPort, times(1)).existsActiveByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
-        verify(invitationRetrievalPort, times(1)).existsWaitingByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
-        verify(accountExistenceCheckPort, times(1)).exists(eq(command.sub()));
-        verify(invitationPersistencePort, times(1)).save(any(StaffInvitation.class));
+        verify(staffLockPort).lock(eq(command.businessId()), eq(command.sub()), eq(true));
+        verify(staffLockPort).lock(eq(command.businessId()), eq(command.sub()), eq(false));
+        verify(businessRetrievalPort).findById(eq(command.businessId()));
+        verify(staffRetrievalPort).existsActiveByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
+        verify(invitationRetrievalPort).existsWaitingByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
+        verify(accountExistenceCheckPort).exists(eq(command.sub()));
+        verify(invitationPersistencePort).save(any(StaffInvitation.class));
         assertThat(invitation).isNotNull();
     }
 
@@ -105,10 +105,10 @@ class StaffManagementFacadeTest {
         assertThatThrownBy(() -> staffManagement.sendInvitation(command))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("Staff already exists");
-        verify(staffLockPort, times(1)).lock(eq(command.businessId()), eq(command.sub()), eq(true));
-        verify(staffLockPort, times(1)).lock(eq(command.businessId()), eq(command.sub()), eq(false));
-        verify(staffRetrievalPort, times(1)).existsActiveByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
-        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()));
+        verify(staffLockPort).lock(eq(command.businessId()), eq(command.sub()), eq(true));
+        verify(staffLockPort).lock(eq(command.businessId()), eq(command.sub()), eq(false));
+        verify(staffRetrievalPort).existsActiveByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
+        verify(businessRetrievalPort).findById(eq(command.businessId()));
         verifyNoInteractions(invitationRetrievalPort, accountExistenceCheckPort, invitationPersistencePort);
     }
 
@@ -128,11 +128,11 @@ class StaffManagementFacadeTest {
         assertThatThrownBy(() -> staffManagement.sendInvitation(command))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("Invitation already exists");
-        verify(staffLockPort, times(1)).lock(eq(command.businessId()), eq(command.sub()), eq(true));
-        verify(staffLockPort, times(1)).lock(eq(command.businessId()), eq(command.sub()), eq(false));
-        verify(invitationRetrievalPort, times(1)).existsWaitingByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
-        verify(staffRetrievalPort, times(1)).existsActiveByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
-        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()));
+        verify(staffLockPort).lock(eq(command.businessId()), eq(command.sub()), eq(true));
+        verify(staffLockPort).lock(eq(command.businessId()), eq(command.sub()), eq(false));
+        verify(invitationRetrievalPort).existsWaitingByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
+        verify(staffRetrievalPort).existsActiveByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
+        verify(businessRetrievalPort).findById(eq(command.businessId()));
         verifyNoInteractions(accountExistenceCheckPort, invitationPersistencePort);
     }
 
@@ -151,12 +151,12 @@ class StaffManagementFacadeTest {
         // When & Then
         assertThatThrownBy(() -> staffManagement.sendInvitation(command))
                 .isInstanceOf(AccountNotFoundException.class);
-        verify(staffLockPort, times(1)).lock(eq(command.businessId()), eq(command.sub()), eq(true));
-        verify(staffLockPort, times(1)).lock(eq(command.businessId()), eq(command.sub()), eq(false));
-        verify(accountExistenceCheckPort, times(1)).exists(eq(command.sub()));
-        verify(invitationRetrievalPort, times(1)).existsWaitingByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
-        verify(staffRetrievalPort, times(1)).existsActiveByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
-        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()));
+        verify(staffLockPort).lock(eq(command.businessId()), eq(command.sub()), eq(true));
+        verify(staffLockPort).lock(eq(command.businessId()), eq(command.sub()), eq(false));
+        verify(accountExistenceCheckPort).exists(eq(command.sub()));
+        verify(invitationRetrievalPort).existsWaitingByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
+        verify(staffRetrievalPort).existsActiveByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
+        verify(businessRetrievalPort).findById(eq(command.businessId()));
         verifyNoInteractions(invitationPersistencePort);
     }
 
@@ -203,30 +203,30 @@ class StaffManagementFacadeTest {
         staffManagement.answerInvitation(command);
 
         // Then
-        verify(staffLockPort, times(1)).lock(
+        verify(staffLockPort).lock(
                 eq(businessId),
                 eq(sub),
                 eq(true)
         );
-        verify(staffLockPort, times(1)).lock(
+        verify(staffLockPort).lock(
                 eq(businessId),
                 eq(sub),
                 eq(false)
         );
-        verify(invitation, times(1)).getStatus();
-        verify(invitation, times(1)).setStatus(argThat(status ->
+        verify(invitation).getStatus();
+        verify(invitation).setStatus(argThat(status ->
                 status == (command.accept()
                         ? StaffInvitation.Status.ACCEPTED
                         : StaffInvitation.Status.DECLINED)
         ));
-        verify(staffLockPort, times(1)).lock(eq(businessId), eq(sub), eq(true));
-        verify(staffLockPort, times(1)).lock(eq(businessId), eq(sub), eq(false));
-        verify(invitationRetrievalPort, times(1)).findById(eq(command.invitationId()));
-        verify(invitationPersistencePort, times(1)).save(same(invitation));
+        verify(staffLockPort).lock(eq(businessId), eq(sub), eq(true));
+        verify(staffLockPort).lock(eq(businessId), eq(sub), eq(false));
+        verify(invitationRetrievalPort).findById(eq(command.invitationId()));
+        verify(invitationPersistencePort).save(same(invitation));
         if (command.accept()) {
-            verify(staff, times(1)).setActive(eq(true));
-            verify(staffPersistencePort, times(1)).save(any(Staff.class));
-            verify(staffNotificationPort, times(1)).notifyNewStaff(any(Staff.class));
+            verify(staff).setActive(eq(true));
+            verify(staffPersistencePort).save(any(Staff.class));
+            verify(staffNotificationPort).notifyNewStaff(any(Staff.class));
         } else {
             verify(staffRetrievalPort, never()).findByBusinessAndSub(anyLong(), anyString(), eq(false), eq(false));
             verify(staffPersistencePort, never()).save(any(Staff.class));
@@ -265,20 +265,20 @@ class StaffManagementFacadeTest {
         // When & Then
         assertThatThrownBy(() -> staffManagement.answerInvitation(command))
                 .isInstanceOf(InvitationInvalidStatusException.class);
-        verify(staffLockPort, times(1)).lock(
+        verify(staffLockPort).lock(
                 anyLong(),
                 eq(sub),
                 eq(true)
         );
-        verify(staffLockPort, times(1)).lock(
+        verify(staffLockPort).lock(
                 anyLong(),
                 eq(sub),
                 eq(false)
         );
-        verify(staffLockPort, times(1)).lock(eq(businessId), eq(sub), eq(true));
-        verify(staffLockPort, times(1)).lock(eq(businessId), eq(sub), eq(false));
-        verify(invitationRetrievalPort, times(1)).findById(eq(command.invitationId()));
-        verify(invitation, times(1)).getStatus();
+        verify(staffLockPort).lock(eq(businessId), eq(sub), eq(true));
+        verify(staffLockPort).lock(eq(businessId), eq(sub), eq(false));
+        verify(invitationRetrievalPort).findById(eq(command.invitationId()));
+        verify(invitation).getStatus();
         verifyNoInteractions(invitationPersistencePort, staffRetrievalPort, staffPersistencePort, staffNotificationPort);
     }
 
@@ -321,12 +321,12 @@ class StaffManagementFacadeTest {
         staffManagement.changeDetails(command);
 
         // Then
-        verify(staffLockPort, times(1)).lock(eq(command.staffId()), eq(true));
-        verify(staffLockPort, times(1)).lock(eq(command.staffId()), eq(false));
-        verify(staffRetrievalPort, times(1)).findById(eq(command.staffId()), eq(true));
-        verify(staffPersistencePort, times(1)).save(eq(staff));
+        verify(staffLockPort).lock(eq(command.staffId()), eq(true));
+        verify(staffLockPort).lock(eq(command.staffId()), eq(false));
+        verify(staffRetrievalPort).findById(eq(command.staffId()), eq(true));
+        verify(staffPersistencePort).save(eq(staff));
         if (command.description() != null)
-            verify(staff, times(1)).setDescription(eq(command.description()));
+            verify(staff).setDescription(eq(command.description()));
         else
             verify(staff, times(0)).setDescription(anyString());
     }
@@ -346,9 +346,9 @@ class StaffManagementFacadeTest {
         // When & Then
         assertThatThrownBy(() -> staffManagement.changeDetails(command))
                 .isInstanceOf(StaffNotFoundException.class);
-        verify(staffLockPort, times(1)).lock(eq(command.staffId()), eq(true));
-        verify(staffLockPort, times(1)).lock(eq(command.staffId()), eq(false));
-        verify(staffRetrievalPort, times(1)).findById(eq(command.staffId()), eq(true));
+        verify(staffLockPort).lock(eq(command.staffId()), eq(true));
+        verify(staffLockPort).lock(eq(command.staffId()), eq(false));
+        verify(staffRetrievalPort).findById(eq(command.staffId()), eq(true));
         verify(staffPersistencePort, never()).save(any(Staff.class));
     }
 
@@ -366,10 +366,10 @@ class StaffManagementFacadeTest {
         staffManagement.removeStaff(command);
 
         // Then
-        verify(staffRetrievalPort, times(1)).findById(eq(command.staffId()), eq(true));
-        verify(staff, times(1)).setActive(eq(false));
-        verify(staffPersistencePort, times(1)).save(eq(staff));
-        verify(staffNotificationPort, times(1)).notifyStaffActiveChanged(eq(staff));
+        verify(staffRetrievalPort).findById(eq(command.staffId()), eq(true));
+        verify(staff).setActive(eq(false));
+        verify(staffPersistencePort).save(eq(staff));
+        verify(staffNotificationPort).notifyStaffActiveChanged(eq(staff));
     }
 
     @Test
@@ -384,7 +384,7 @@ class StaffManagementFacadeTest {
         // When & Then
         assertThatThrownBy(() -> staffManagement.removeStaff(command))
                 .isInstanceOf(StaffNotFoundException.class);
-        verify(staffRetrievalPort, times(1)).findById(eq(command.staffId()), eq(true));
+        verify(staffRetrievalPort).findById(eq(command.staffId()), eq(true));
         verifyNoInteractions(staffPersistencePort, staffNotificationPort);
     }
 }

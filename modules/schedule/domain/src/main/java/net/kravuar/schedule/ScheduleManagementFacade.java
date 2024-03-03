@@ -60,9 +60,6 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
             if (scheduleSizeInsufficient(schedule.getPatterns(), command.getStart(), command.getEnd()))
                 throw new IllegalStateException("Schedule duration isn't sufficient for provided patterns");
 
-            schedule.setStart(command.getStart());
-            schedule.setEnd(command.getEnd());
-
             try {
                 if (mayOverlap) {
                     scheduleLockPort.lockByStaffAndService(
@@ -74,14 +71,17 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
                     List<Schedule> overlapped = scheduleRetrievalPort.findActiveSchedulesByStaffAndService(
                             schedule.getStaff().getId(),
                             schedule.getService().getId(),
-                            schedule.getStart(),
-                            schedule.getEnd()
+                            command.getStart(),
+                            command.getEnd()
                     );
                     int amount = overlapped.size();
                     boolean noOverlapOrSelf = amount == 0 || (amount == 1 && overlapped.getFirst().getId().equals(schedule.getId()));
                     if (!noOverlapOrSelf)
                         throw new IllegalArgumentException("Schedule overlapped with other schedules");
                 }
+
+                schedule.setStart(command.getStart());
+                schedule.setEnd(command.getEnd());
 
                 return schedulePersistencePort.save(schedule);
             } finally {
@@ -133,7 +133,7 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
     }
 
     @Override
-    public ScheduleExceptionDay addScheduleExceptionDay(CreateScheduleExceptionDayCommand command) {
+    public ScheduleExceptionDay addOrUpdateScheduleExceptionDay(CreateScheduleExceptionDayCommand command) {
         Service service = serviceRetrievalPort.findActiveById(command.serviceId());
         Staff staff = staffRetrievalPort.findActiveById(command.staffId());
 
@@ -146,8 +146,10 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
                 command.date(),
                 staff,
                 service,
-                command.workingHours()
+                null
         ));
+
+        exceptionDay.setWorkingHours(command.workingHours());
 
         return schedulePersistencePort.save(exceptionDay);
     }
