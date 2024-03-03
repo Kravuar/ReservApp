@@ -1,6 +1,5 @@
 package net.kravuar.schedule.web;
 
-import net.kravuar.schedule.domain.ScheduleExceptionDay;
 import net.kravuar.schedule.domain.SchedulePattern;
 
 import java.time.LocalDate;
@@ -14,7 +13,7 @@ record ScheduleDTO(
         StaffDTO staff,
         ServiceDTO service,
         List<SchedulePattern> patterns,
-        List<ScheduleExceptionDay> exceptionDays,
         LocalDateTime createdAt,
         boolean active
-) {}
+) {
+}

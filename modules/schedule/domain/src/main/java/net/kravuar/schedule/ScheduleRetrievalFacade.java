@@ -8,6 +8,7 @@ import net.kravuar.schedule.domain.SchedulePattern;
 import net.kravuar.schedule.domain.Staff;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
+import net.kravuar.schedule.domain.commands.RetrieveScheduleExceptionDaysByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.weak.WorkingHours;
 import net.kravuar.schedule.ports.in.ScheduleRetrievalUseCase;
 import net.kravuar.schedule.ports.out.ScheduleRetrievalPort;
@@ -65,6 +66,16 @@ public class ScheduleRetrievalFacade implements ScheduleRetrievalUseCase {
                         command.getEnd()
                 )
         ));
+    }
+
+    @Override
+    public Map<LocalDate, ScheduleExceptionDay> findActiveExceptionDaysByStaffAndService(RetrieveScheduleExceptionDaysByStaffAndServiceCommand command) {
+        return scheduleRetrievalPort.findActiveExceptionDaysByStaffAndService(
+                command.getStaffId(),
+                command.getServiceId(),
+                command.getStart(),
+                command.getEnd()
+        );
     }
 
     private Map<LocalDate, List<WorkingHours>> toPerDay(List<Schedule> schedules, Map<LocalDate, ScheduleExceptionDay> exceptionDays, LocalDate from, LocalDate to) {

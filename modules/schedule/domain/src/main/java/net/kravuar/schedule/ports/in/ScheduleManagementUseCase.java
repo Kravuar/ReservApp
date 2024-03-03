@@ -12,7 +12,7 @@ import net.kravuar.schedule.domain.exceptions.StaffNotFoundException;
 @AppValidated
 public interface ScheduleManagementUseCase {
     /**
-     * Update schedule.
+     * Change schedule patterns.
      *
      * @param command command containing details of the update
      * @throws ScheduleNotFoundException if schedule wasn't found
@@ -21,7 +21,7 @@ public interface ScheduleManagementUseCase {
     Schedule changeSchedulePatterns(@Valid ChangeSchedulePatternsCommand command);
 
     /**
-     * Update schedule duration.
+     * Change schedule duration.
      *
      * @param command command containing details of the update
      * @throws ScheduleNotFoundException if schedule wasn't found

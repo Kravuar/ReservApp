@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.kravuar.schedule.domain.Staff;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
+import net.kravuar.schedule.domain.commands.RetrieveScheduleExceptionDaysByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.weak.WorkingHours;
 import net.kravuar.schedule.ports.in.ScheduleRetrievalUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/retrieval")
@@ -22,6 +24,7 @@ import java.util.Map;
 class ScheduleRetrievalController {
     private final ScheduleRetrievalUseCase scheduleRetrievalUseCase;
     private final DTOScheduleMapper dtoScheduleMapper;
+    private final DTOScheduleExceptionDayMapper dtoScheduleExceptionDayMapper;
 
     @GetMapping("/by-id/{scheduleId}/{activeOnly}")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfScheduleBusiness(#scheduleId, authentication.details.subject)")
@@ -29,6 +32,25 @@ class ScheduleRetrievalController {
         return dtoScheduleMapper.scheduleToDTO(
                 scheduleRetrievalUseCase.findScheduleById(scheduleId, activeOnly)
         );
+    }
+
+    @GetMapping("/exception-days/by-service-and-staff/{staffId}/{serviceId}/{from}/{to}")
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfServiceBusiness(#serviceId, authentication.details.subject)")
+    Map<LocalDate, ScheduleExceptionDayDTO> scheduleExceptionDaysByServiceAndStaff(@PathVariable("serviceId") long serviceId, @PathVariable("staffId") long staffId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+        return scheduleRetrievalUseCase.findActiveExceptionDaysByStaffAndService(
+                        new RetrieveScheduleExceptionDaysByStaffAndServiceCommand(
+                                staffId,
+                                serviceId,
+                                from,
+                                to
+                        )
+                ).entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                entry -> dtoScheduleExceptionDayMapper.scheduleExceptionDayToDTO(entry.getValue())
+                        )
+                );
     }
 
     @GetMapping("/by-service/{serviceId}/{from}/{to}")

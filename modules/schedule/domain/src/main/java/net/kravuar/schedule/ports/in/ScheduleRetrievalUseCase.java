@@ -1,9 +1,11 @@
 package net.kravuar.schedule.ports.in;
 
 import net.kravuar.schedule.domain.Schedule;
+import net.kravuar.schedule.domain.ScheduleExceptionDay;
 import net.kravuar.schedule.domain.Staff;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
+import net.kravuar.schedule.domain.commands.RetrieveScheduleExceptionDaysByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.exceptions.ScheduleNotFoundException;
 import net.kravuar.schedule.domain.weak.WorkingHours;
 
@@ -37,4 +39,12 @@ public interface ScheduleRetrievalUseCase {
      * @return {@code Map<Staff, Map<LocalDate, List<WorkingHours>>>} mapping date to working hours for each staff
      */
     Map<Staff, Map<LocalDate, List<WorkingHours>>> findActiveScheduleByServiceInPerDay(RetrieveScheduleByServiceCommand command);
+
+    /**
+     * Find schedule exception days by staff and service.
+     *
+     * @param command command containing details of the schedule retrieval
+     * @return {@code Map<LocalDate, ScheduleExceptionDay>} mapping date to schedule exception day information
+     */
+    Map<LocalDate, ScheduleExceptionDay> findActiveExceptionDaysByStaffAndService(RetrieveScheduleExceptionDaysByStaffAndServiceCommand command);
 }
