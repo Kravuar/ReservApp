@@ -132,11 +132,11 @@ class ServiceManagementFacadeTest {
         if (command.name() != null)
             verify(service).setName(eq(command.name()));
         else
-            verify(service, times(0)).setName(anyString());
+            verify(service, never()).setName(anyString());
         if (command.description() != null)
             verify(service).setDescription(eq(command.description()));
         else
-            verify(service, times(0)).setDescription(anyString());
+            verify(service, never()).setDescription(anyString());
     }
 
     @Test
