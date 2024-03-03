@@ -1,5 +1,6 @@
 package net.kravuar.schedule.domain.commands;
 
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class RetrieveScheduleExceptionDaysByStaffAndServiceCommand implements Pe
       Inclusive lower bound
      */
     @NotNull
+    @FutureOrPresent
     private final LocalDate start;
     /*
       Inclusive upper bound

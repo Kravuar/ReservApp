@@ -34,6 +34,14 @@ class ScheduleRetrievalController {
         );
     }
 
+    @GetMapping("/by-staff-and-service/{staffId}/{serviceId}")
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfServiceBusiness(#serviceId, authentication.details.subject)")
+    List<ScheduleDTO> byStaffAndService(@PathVariable("staffId") long staffId, @PathVariable("serviceId") long serviceId) {
+        return scheduleRetrievalUseCase.findActiveSchedulesByStaffAndService(staffId, serviceId).stream()
+                .map(dtoScheduleMapper::scheduleToDTO)
+                .toList();
+    }
+
     @GetMapping("/exception-days/by-service-and-staff/{staffId}/{serviceId}/{from}/{to}")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfServiceBusiness(#serviceId, authentication.details.subject)")
     Map<LocalDate, ScheduleExceptionDayDTO> scheduleExceptionDaysByServiceAndStaff(@PathVariable("serviceId") long serviceId, @PathVariable("staffId") long staffId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {

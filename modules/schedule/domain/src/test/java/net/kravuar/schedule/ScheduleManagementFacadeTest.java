@@ -37,7 +37,7 @@ class ScheduleManagementFacadeTest {
     SchedulePersistencePort schedulePersistencePort;
     @InjectMocks
     ScheduleManagementFacade scheduleManagement;
-    
+
     static final LocalDate START_DATE = LocalDate.of(2024, 1, 1);
 
     static List<WorkingHours> someWorkingHours() {
@@ -67,7 +67,7 @@ class ScheduleManagementFacadeTest {
     }
 
     static Staff someStaff() {
-        return new Staff(1L, someBusiness(),true);
+        return new Staff(1L, someBusiness(), true);
     }
 
     static Schedule twoOfFiveTwosSchedule(long daysToAdd) {

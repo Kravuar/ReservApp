@@ -13,7 +13,6 @@ record ScheduleDTO(
         StaffDTO staff,
         ServiceDTO service,
         List<SchedulePattern> patterns,
-        LocalDateTime createdAt,
-        boolean active
+        LocalDateTime createdAt
 ) {
 }

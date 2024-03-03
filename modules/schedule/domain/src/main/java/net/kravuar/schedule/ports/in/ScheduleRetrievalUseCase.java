@@ -25,6 +25,16 @@ public interface ScheduleRetrievalUseCase {
     Schedule findScheduleById(long scheduleId, boolean activeOnly);
 
     /**
+     * Find active schedules by staff and service.
+     *
+     * @param staffId id of the staff
+     * @param serviceId id of the service
+     * @return {@code List<Schedule>} of schedules associated the with provided {@code staffId} and {@code serviceId}
+     * @throws ScheduleNotFoundException if schedule wasn't found
+     */
+    List<Schedule> findActiveSchedulesByStaffAndService(long staffId, long serviceId);
+
+    /**
      * Find active schedule for a staff member and service in per day format.
      *
      * @param command command containing details of the schedule retrieval

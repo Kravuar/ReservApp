@@ -31,6 +31,16 @@ public class ScheduleRetrievalFacade implements ScheduleRetrievalUseCase {
     }
 
     @Override
+    public List<Schedule> findActiveSchedulesByStaffAndService(long staffId, long serviceId) {
+        return scheduleRetrievalPort.findActiveSchedulesByStaffAndService(
+                staffId,
+                serviceId,
+                LocalDate.now(),
+                LocalDate.MAX
+        );
+    }
+
+    @Override
     public Map<LocalDate, List<WorkingHours>> findActiveScheduleByStaffAndServiceInPerDay(RetrieveScheduleByStaffAndServiceCommand command) {
         List<Schedule> schedules = scheduleRetrievalPort.findActiveSchedulesByStaffAndService(
                         command.getStaffId(),
