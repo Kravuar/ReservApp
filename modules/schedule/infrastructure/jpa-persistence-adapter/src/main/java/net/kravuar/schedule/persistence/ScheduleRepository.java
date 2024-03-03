@@ -18,7 +18,7 @@ interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             "AND s.service.active = true " +
             "AND s.service.business.active = true " +
             "AND s.staff.active = true")
-    Optional<Schedule> findById(long scheduleId, boolean activeOnly);
+    Optional<Schedule> findById(@Param("scheduleId") long scheduleId, @Param("activeOnly") boolean activeOnly);
 
     @Query("SELECT s FROM Schedule s " +
             "WHERE s.service.id = :serviceId " +

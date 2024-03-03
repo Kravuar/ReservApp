@@ -16,7 +16,7 @@ class JPAStaffRetrievalAdapter implements StaffRetrievalPort {
 
     @Override
     public Staff findById(long staffId, boolean activeOnly) {
-        return staffRepository.findByService(staffId, activeOnly)
+        return staffRepository.findById(staffId, activeOnly)
                 .orElseThrow(StaffNotFoundException::new);
     }
 

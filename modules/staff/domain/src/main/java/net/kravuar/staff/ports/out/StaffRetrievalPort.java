@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface StaffRetrievalPort {
     /**
      * Find staff member by id.
-     * Only with active parent entities (business, service),
+     * Only with active parent entities (business),
      * otherwise schedule exception day should not be visible.
      *
      * @param staffId    id of the staff member to find
@@ -21,7 +21,7 @@ public interface StaffRetrievalPort {
 
     /**
      * Find all staff members by business.
-     * Only with active parent entities (business, service),
+     * Only with active parent entities (business),
      * otherwise schedule exception day should not be visible.
      *
      * @param businessId id of the business
@@ -32,7 +32,7 @@ public interface StaffRetrievalPort {
 
     /**
      * Check whether an active staff exists in business.
-     * Only with active parent entities (business, service),
+     * Only with active parent entities (business),
      * otherwise schedule exception day should not be visible.
      *
      * @param businessId id of the business
@@ -43,7 +43,7 @@ public interface StaffRetrievalPort {
 
     /**
      * Find staff by business and sub.
-     * Only with active parent entities (business, service),
+     * Only with active parent entities (business),
      * otherwise schedule exception day should not be visible.
      *
      * @param businessId id of the business

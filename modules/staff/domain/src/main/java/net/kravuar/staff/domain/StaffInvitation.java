@@ -2,6 +2,7 @@ package net.kravuar.staff.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -9,10 +10,11 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class StaffInvitation {
     private Long id;
-    private final String sub;
-    private final Business business;
+    private String sub;
+    private Business business;
     private final LocalDateTime createdAt = LocalDateTime.now();
     private Status status;
 
