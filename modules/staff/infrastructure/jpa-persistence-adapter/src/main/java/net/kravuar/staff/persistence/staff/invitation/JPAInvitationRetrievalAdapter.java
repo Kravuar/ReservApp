@@ -15,24 +15,23 @@ class JPAInvitationRetrievalAdapter implements InvitationRetrievalPort {
 
     @Override
     public StaffInvitation findById(long invitationId) {
-        return invitationRepository.findById(invitationId)
+        return invitationRepository.findFullyActiveById(invitationId)
                 .orElseThrow(InvitationNotFoundException::new);
     }
 
     @Override
-    public boolean existsWaitingByBusinessIdAndSub(long businessId, String sub) {
-        return invitationRepository.findByBusinessIdAndSub(businessId, sub)
-                .filter(invitation -> invitation.getStatus() == StaffInvitation.Status.WAITING)
+    public boolean existsWaitingByBusinessAndSub(long businessId, String sub) {
+        return invitationRepository.findWaitingByBusinessAndSub(businessId, sub)
                 .isPresent();
     }
 
     @Override
-    public List<StaffInvitation> findBySubject(String sub) {
+    public List<StaffInvitation> findAllBySubject(String sub) {
         return invitationRepository.findAllBySub(sub);
     }
 
     @Override
-    public List<StaffInvitation> findByBusinessId(long businessId) {
-        return invitationRepository.findAllByBusinessId(businessId);
+    public List<StaffInvitation> findAllByBusiness(long businessId) {
+        return invitationRepository.findAllByBusiness(businessId);
     }
 }

@@ -5,10 +5,8 @@ import net.kravuar.context.AppValidated;
 import net.kravuar.services.domain.Service;
 import net.kravuar.services.domain.commands.ServiceChangeActiveCommand;
 import net.kravuar.services.domain.commands.ServiceChangeDetailsCommand;
-import net.kravuar.services.domain.commands.ServiceChangeNameCommand;
 import net.kravuar.services.domain.commands.ServiceCreationCommand;
 import net.kravuar.services.domain.exceptions.BusinessNotFoundException;
-import net.kravuar.services.domain.exceptions.ServiceNameAlreadyTaken;
 import net.kravuar.services.domain.exceptions.ServiceNotFoundException;
 
 @AppValidated
@@ -19,18 +17,8 @@ public interface ServiceManagementUseCase {
      * @param command the command containing information for service creation
      * @return Newly created {@link Service}
      * @throws BusinessNotFoundException if an active business to associate service with wasn't found
-     * @throws ServiceNameAlreadyTaken   if service name already taken
      */
     Service create(@Valid ServiceCreationCommand command);
-
-    /**
-     * Changes the name of a {@link Service}.
-     *
-     * @param command the command containing information for changing the service name
-     * @throws ServiceNotFoundException if service wasn't found
-     * @throws ServiceNameAlreadyTaken  if service name already taken
-     */
-    void changeName(@Valid ServiceChangeNameCommand command);
 
     /**
      * Enables/disables a {@link Service}.

@@ -23,7 +23,7 @@ class AuthorizationHandler {
     }
 
     public boolean isOwnerOfServiceBusiness(long serviceId, String subject) {
-        Service service = serviceRetrieval.findById(serviceId);
+        Service service = serviceRetrieval.findActiveById(serviceId);
         return service
                 .getBusiness()
                 .getOwnerSub()

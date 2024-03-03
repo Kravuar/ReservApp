@@ -21,7 +21,7 @@ class ServiceRetrievalController {
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfBusiness(#businessId, authentication.details.subject)")
     List<ServiceDTO> myByBusiness(@PathVariable("businessId") long businessId) {
         return serviceRetrieval
-                .findAllByBusinessId(businessId, false).stream()
+                .findAllByActiveBusinessId(businessId, false).stream()
                 .map(dtoServiceMapper::toDTO)
                 .toList();
     }
@@ -35,7 +35,7 @@ class ServiceRetrievalController {
     @GetMapping("/by-business/{businessId}")
     List<ServiceDTO> byBusiness(@PathVariable("businessId") long businessId) {
         return serviceRetrieval
-                .findAllByBusinessId(businessId, true).stream()
+                .findAllByActiveBusinessId(businessId, true).stream()
                 .map(dtoServiceMapper::toDTO)
                 .toList();
     }

@@ -16,26 +16,21 @@ class JPAServiceRetrievalAdapter implements ServiceRetrievalPort {
     @Override
     public Service findById(long serviceId, boolean activeOnly) {
         return servicesRepository
-                .findByIdAndActive(serviceId, activeOnly)
+                .findById(serviceId, activeOnly)
                 .orElseThrow(ServiceNotFoundException::new);
     }
 
     @Override
-    public boolean existsActiveByName(String name) {
-        return servicesRepository.existsByNameAndActiveIsTrue(name);
-    }
-
-    @Override
-    public List<Service> findAllByBusinessId(long businessId, boolean activeOnly) {
+    public List<Service> findAllByActiveBusinessId(long businessId, boolean activeOnly) {
         return servicesRepository
-                .findAllByBusinessIdAndActive(businessId, activeOnly).stream()
+                .findAllByBusiness(businessId, activeOnly).stream()
                 .toList();
     }
 
     @Override
     public List<Service> findAllActive() {
         return servicesRepository
-                .findAllByActiveIsTrue().stream()
+                .findAllFullyActive().stream()
                 .toList();
     }
 }

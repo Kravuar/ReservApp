@@ -17,7 +17,7 @@ public interface StaffManagementUseCase {
      *
      * @param command the command containing information for {@link Staff} invitation
      * @return {@link StaffInvitation} created invitation
-     * @throws BusinessNotFoundException if an active business to associate staff with wasn't found
+     * @throws BusinessNotFoundException if business to associate staff with wasn't found
      * @throws AccountNotFoundException  if account to invite wasn't found
      * @throws IllegalStateException     if there's an active invitation/staff
      */

@@ -13,7 +13,7 @@ class AuthorizationHandler {
     private final StaffRetrievalUseCase staffRetrieval;
 
     public boolean isOwnerOfBusiness(long businessId, String subject) {
-        return businessRetrieval.findById(businessId, false).getOwnerSub().equals(subject);
+        return businessRetrieval.findById(businessId).getOwnerSub().equals(subject);
     }
 
     public boolean isStaffOrOwnerOfStaffBusiness(long staffId, String subject) {

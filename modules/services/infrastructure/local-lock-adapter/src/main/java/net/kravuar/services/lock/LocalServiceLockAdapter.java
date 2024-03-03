@@ -10,10 +10,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 @AppComponent
 class LocalServiceLockAdapter implements ServiceLockPort {
-    private final ConcurrentMap<String, ReentrantLock> nameLocks = CacheBuilder.newBuilder()
-            .concurrencyLevel(4)
-            .expireAfterWrite(1, TimeUnit.MINUTES)
-            .<String, ReentrantLock>build().asMap();
     private final ConcurrentMap<Long, ReentrantLock> idLocks = CacheBuilder.newBuilder()
             .concurrencyLevel(4)
             .expireAfterWrite(1, TimeUnit.MINUTES)
@@ -22,15 +18,6 @@ class LocalServiceLockAdapter implements ServiceLockPort {
     @Override
     public void lock(long serviceId, boolean acquire) {
         var lock = idLocks.computeIfAbsent(serviceId, (k) -> new ReentrantLock());
-        if (acquire)
-            lock.lock();
-        else if (lock.isHeldByCurrentThread())
-            lock.unlock();
-    }
-
-    @Override
-    public void lock(String name, boolean acquire) {
-        var lock = nameLocks.computeIfAbsent(name, (k) -> new ReentrantLock());
         if (acquire)
             lock.lock();
         else if (lock.isHeldByCurrentThread())

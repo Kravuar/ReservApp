@@ -32,11 +32,11 @@ public class StaffManagementFacade implements StaffManagementUseCase {
         try {
             staffLockPort.lock(command.businessId(), command.sub(), true);
 
-            Business business = businessRetrievalPort.findById(command.businessId(), true);
+            Business business = businessRetrievalPort.findById(command.businessId());
 
-            if (staffRetrievalPort.existsActiveByBusinessIdAndSub(command.businessId(), command.sub()))
+            if (staffRetrievalPort.existsActiveByBusinessAndSub(command.businessId(), command.sub()))
                 throw new IllegalStateException("Staff already exists");
-            if (invitationRetrievalPort.existsWaitingByBusinessIdAndSub(command.businessId(), command.sub()))
+            if (invitationRetrievalPort.existsWaitingByBusinessAndSub(command.businessId(), command.sub()))
                 throw new IllegalStateException("Invitation already exists");
             if (!accountExistenceCheckPort.exists(command.sub()))
                 throw new AccountNotFoundException();
@@ -72,9 +72,10 @@ public class StaffManagementFacade implements StaffManagementUseCase {
             );
             invitationPersistencePort.save(invitation);
             if (command.accept()) {
-                Staff staff = staffRetrievalPort.findByBusinessIdAndSub(
+                Staff staff = staffRetrievalPort.findByBusinessAndSub(
                         invitation.getBusiness().getId(),
                         invitation.getSub(),
+                        false,
                         false
                 ).orElse(new Staff(
                         null,
@@ -94,16 +95,29 @@ public class StaffManagementFacade implements StaffManagementUseCase {
 
     @Override
     public void changeDetails(StaffChangeDetailsCommand command) {
-        Staff staff = staffRetrievalPort.findById(command.staffId(), false);
-        staff.setDescription(command.description());
-        staffPersistencePort.save(staff);
+        try {
+            staffLockPort.lock(command.staffId(), true);
+
+            Staff staff = staffRetrievalPort.findById(command.staffId(), true);
+            if (command.description() != null)
+                staff.setDescription(command.description());
+            staffPersistencePort.save(staff);
+        } finally {
+            staffLockPort.lock(command.staffId(), false);
+        }
     }
 
     @Override
     public void removeStaff(RemoveStaffCommand command) {
-        Staff staff = staffRetrievalPort.findById(command.staffId(), true);
-        staff.setActive(false);
-        staffPersistencePort.save(staff);
-        staffNotificationPort.notifyStaffActiveChanged(staff);
+        try {
+            staffLockPort.lock(command.staffId(), true);
+
+            Staff staff = staffRetrievalPort.findById(command.staffId(), true);
+            staff.setActive(false);
+            staffPersistencePort.save(staff);
+            staffNotificationPort.notifyStaffActiveChanged(staff);
+        } finally {
+            staffLockPort.lock(command.staffId(), false);
+        }
     }
 }

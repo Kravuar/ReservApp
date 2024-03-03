@@ -8,30 +8,24 @@ import java.util.List;
 public interface ServiceRetrievalPort {
     /**
      * Find active service by serviceId.
+     * Only with active parent entities (business),
+     * otherwise schedule exception day should not be visible.
      *
      * @param serviceId  id of the service to find
-     * @param activeOnly whether to search active only
+     * @param activeOnly whether to search active service only
      * @return {@link Service} associated the with provided {@code serviceId}
      * @throws ServiceNotFoundException if service wasn't found
      */
     Service findById(long serviceId, boolean activeOnly);
 
     /**
-     * Check whether an active service exists by name.
-     *
-     * @param name name to check
-     * @return {@code true} if exists, {@code false} otherwise
-     */
-    boolean existsActiveByName(String name);
-
-    /**
-     * Find all services by associated business.
+     * Find all services by associated active business.
      *
      * @param businessId id of the business
-     * @param activeOnly whether to search active only
+     * @param activeOnly whether to search active services only
      * @return {@code List<Service>} of services associated the with provided {@code businessId}
      */
-    List<Service> findAllByBusinessId(long businessId, boolean activeOnly);
+    List<Service> findAllByActiveBusinessId(long businessId, boolean activeOnly);
 
     /**
      * Find all active services.

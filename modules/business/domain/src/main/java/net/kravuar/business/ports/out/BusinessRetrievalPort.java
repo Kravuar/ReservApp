@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface BusinessRetrievalPort {
     /**
-     * Find business by businessId.
+     * Find business by id.
      *
      * @param businessId id of the business to find
      * @param activeOnly whether to search active only

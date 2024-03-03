@@ -19,7 +19,6 @@ public class Schedule implements Period<LocalDate> {
     private final Staff staff;
     private final Service service;
     private List<SchedulePattern> patterns;
-    private List<ScheduleExceptionDay> exceptionDays;
 
     private final LocalDateTime createdAt = LocalDateTime.now();
     private boolean active;

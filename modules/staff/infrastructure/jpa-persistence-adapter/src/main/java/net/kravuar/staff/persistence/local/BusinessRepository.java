@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 interface BusinessRepository extends JpaRepository<Business, Long> {
-    Optional<Business> findByIdAndActive(long businessId, boolean activeOnly);
+    Optional<Business> findByIdAndActiveIsTrue(long businessId);
 }

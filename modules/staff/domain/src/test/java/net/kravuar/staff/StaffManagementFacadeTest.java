@@ -15,6 +15,8 @@ import net.kravuar.staff.ports.out.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -59,13 +61,13 @@ class StaffManagementFacadeTest {
 
         doReturn(business)
                 .when(businessRetrievalPort)
-                .findById(eq(command.businessId()), eq(true));
+                .findById(eq(command.businessId()));
         doReturn(false)
                 .when(staffRetrievalPort)
-                .existsActiveByBusinessIdAndSub(eq(command.businessId()), eq(command.sub()));
+                .existsActiveByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
         doReturn(false)
                 .when(invitationRetrievalPort)
-                .existsWaitingByBusinessIdAndSub(eq(command.businessId()), eq(command.sub()));
+                .existsWaitingByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
         doReturn(true)
                 .when(accountExistenceCheckPort)
                 .exists(eq(command.sub()));
@@ -79,9 +81,9 @@ class StaffManagementFacadeTest {
         // Then
         verify(staffLockPort, times(1)).lock(eq(command.businessId()), eq(command.sub()), eq(true));
         verify(staffLockPort, times(1)).lock(eq(command.businessId()), eq(command.sub()), eq(false));
-        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()), eq(true));
-        verify(staffRetrievalPort, times(1)).existsActiveByBusinessIdAndSub(eq(command.businessId()), eq(command.sub()));
-        verify(invitationRetrievalPort, times(1)).existsWaitingByBusinessIdAndSub(eq(command.businessId()), eq(command.sub()));
+        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()));
+        verify(staffRetrievalPort, times(1)).existsActiveByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
+        verify(invitationRetrievalPort, times(1)).existsWaitingByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
         verify(accountExistenceCheckPort, times(1)).exists(eq(command.sub()));
         verify(invitationPersistencePort, times(1)).save(any(StaffInvitation.class));
         assertThat(invitation).isNotNull();
@@ -97,14 +99,16 @@ class StaffManagementFacadeTest {
 
         doReturn(true)
                 .when(staffRetrievalPort)
-                .existsActiveByBusinessIdAndSub(eq(command.businessId()), eq(command.sub()));
+                .existsActiveByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
 
         // When & Then
         assertThatThrownBy(() -> staffManagement.sendInvitation(command))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("Staff already exists");
-        verify(staffRetrievalPort, times(1)).existsActiveByBusinessIdAndSub(eq(command.businessId()), eq(command.sub()));
-        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()), eq(true));
+        verify(staffLockPort, times(1)).lock(eq(command.businessId()), eq(command.sub()), eq(true));
+        verify(staffLockPort, times(1)).lock(eq(command.businessId()), eq(command.sub()), eq(false));
+        verify(staffRetrievalPort, times(1)).existsActiveByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
+        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()));
         verifyNoInteractions(invitationRetrievalPort, accountExistenceCheckPort, invitationPersistencePort);
     }
 
@@ -118,15 +122,17 @@ class StaffManagementFacadeTest {
 
         doReturn(true)
                 .when(invitationRetrievalPort)
-                .existsWaitingByBusinessIdAndSub(eq(command.businessId()), eq(command.sub()));
+                .existsWaitingByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
 
         // When & Then
         assertThatThrownBy(() -> staffManagement.sendInvitation(command))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("Invitation already exists");
-        verify(invitationRetrievalPort, times(1)).existsWaitingByBusinessIdAndSub(eq(command.businessId()), eq(command.sub()));
-        verify(staffRetrievalPort, times(1)).existsActiveByBusinessIdAndSub(eq(command.businessId()), eq(command.sub()));
-        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()), eq(true));
+        verify(staffLockPort, times(1)).lock(eq(command.businessId()), eq(command.sub()), eq(true));
+        verify(staffLockPort, times(1)).lock(eq(command.businessId()), eq(command.sub()), eq(false));
+        verify(invitationRetrievalPort, times(1)).existsWaitingByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
+        verify(staffRetrievalPort, times(1)).existsActiveByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
+        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()));
         verifyNoInteractions(accountExistenceCheckPort, invitationPersistencePort);
     }
 
@@ -145,10 +151,12 @@ class StaffManagementFacadeTest {
         // When & Then
         assertThatThrownBy(() -> staffManagement.sendInvitation(command))
                 .isInstanceOf(AccountNotFoundException.class);
+        verify(staffLockPort, times(1)).lock(eq(command.businessId()), eq(command.sub()), eq(true));
+        verify(staffLockPort, times(1)).lock(eq(command.businessId()), eq(command.sub()), eq(false));
         verify(accountExistenceCheckPort, times(1)).exists(eq(command.sub()));
-        verify(invitationRetrievalPort, times(1)).existsWaitingByBusinessIdAndSub(eq(command.businessId()), eq(command.sub()));
-        verify(staffRetrievalPort, times(1)).existsActiveByBusinessIdAndSub(eq(command.businessId()), eq(command.sub()));
-        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()), eq(true));
+        verify(invitationRetrievalPort, times(1)).existsWaitingByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
+        verify(staffRetrievalPort, times(1)).existsActiveByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
+        verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()));
         verifyNoInteractions(invitationPersistencePort);
     }
 
@@ -184,9 +192,10 @@ class StaffManagementFacadeTest {
         if (command.accept())
             doReturn(Optional.of(staff))
                     .when(staffRetrievalPort)
-                    .findByBusinessIdAndSub(
+                    .findByBusinessAndSub(
                             eq(businessId),
                             eq(sub),
+                            eq(false),
                             eq(false)
                     );
 
@@ -210,6 +219,8 @@ class StaffManagementFacadeTest {
                         ? StaffInvitation.Status.ACCEPTED
                         : StaffInvitation.Status.DECLINED)
         ));
+        verify(staffLockPort, times(1)).lock(eq(businessId), eq(sub), eq(true));
+        verify(staffLockPort, times(1)).lock(eq(businessId), eq(sub), eq(false));
         verify(invitationRetrievalPort, times(1)).findById(eq(command.invitationId()));
         verify(invitationPersistencePort, times(1)).save(same(invitation));
         if (command.accept()) {
@@ -217,7 +228,7 @@ class StaffManagementFacadeTest {
             verify(staffPersistencePort, times(1)).save(any(Staff.class));
             verify(staffNotificationPort, times(1)).notifyNewStaff(any(Staff.class));
         } else {
-            verify(staffRetrievalPort, never()).findByBusinessIdAndSub(anyLong(), any(String.class), eq(false));
+            verify(staffRetrievalPort, never()).findByBusinessAndSub(anyLong(), anyString(), eq(false), eq(false));
             verify(staffPersistencePort, never()).save(any(Staff.class));
             verify(staffNotificationPort, never()).notifyNewStaff(any(Staff.class));
         }
@@ -231,15 +242,20 @@ class StaffManagementFacadeTest {
                 true
         );
         StaffInvitation invitation = mock(StaffInvitation.class);
+        Business business = mock(Business.class);
+        long businessId = 1;
         String sub = "sub";
 
+        doReturn(businessId)
+                .when(business)
+                .getId();
         doReturn(invitation)
                 .when(invitationRetrievalPort)
                 .findById(eq(command.invitationId()));
         doReturn(StaffInvitation.Status.ACCEPTED)
                 .when(invitation)
                 .getStatus();
-        doReturn(mock(Business.class))
+        doReturn(business)
                 .when(invitation)
                 .getBusiness();
         doReturn(sub)
@@ -259,6 +275,8 @@ class StaffManagementFacadeTest {
                 eq(sub),
                 eq(false)
         );
+        verify(staffLockPort, times(1)).lock(eq(businessId), eq(sub), eq(true));
+        verify(staffLockPort, times(1)).lock(eq(businessId), eq(sub), eq(false));
         verify(invitationRetrievalPort, times(1)).findById(eq(command.invitationId()));
         verify(invitation, times(1)).getStatus();
         verifyNoInteractions(invitationPersistencePort, staffRetrievalPort, staffPersistencePort, staffNotificationPort);
@@ -282,24 +300,35 @@ class StaffManagementFacadeTest {
         verifyNoInteractions(staffLockPort, invitationPersistencePort, staffRetrievalPort, staffPersistencePort, staffNotificationPort);
     }
 
-    @Test
-    void givenValidStaffChangeDetailsCommand_whenChangeDetails_thenDetailsChanged() {
+    @ParameterizedTest
+    @NullSource
+    @CsvSource(value = {
+            "New Description"
+    })
+    void givenValidStaffChangeDetailsCommand_whenChangeDetails_thenDetailsChanged(String description) {
         // Given
         StaffChangeDetailsCommand command = new StaffChangeDetailsCommand(
                 1,
-                "New Description"
+                description
         );
         Staff staff = mock(Staff.class);
 
-        doReturn(staff).when(staffRetrievalPort).findById(eq(command.staffId()), eq(false));
+        doReturn(staff)
+                .when(staffRetrievalPort)
+                .findById(eq(command.staffId()), eq(true));
 
         // When
         staffManagement.changeDetails(command);
 
         // Then
-        verify(staffRetrievalPort, times(1)).findById(eq(command.staffId()), eq(false));
+        verify(staffLockPort, times(1)).lock(eq(command.staffId()), eq(true));
+        verify(staffLockPort, times(1)).lock(eq(command.staffId()), eq(false));
+        verify(staffRetrievalPort, times(1)).findById(eq(command.staffId()), eq(true));
         verify(staffPersistencePort, times(1)).save(eq(staff));
-        verify(staff, times(1)).setDescription(eq(command.description()));
+        if (command.description() != null)
+            verify(staff, times(1)).setDescription(eq(command.description()));
+        else
+            verify(staff, times(0)).setDescription(anyString());
     }
 
     @Test
@@ -312,12 +341,14 @@ class StaffManagementFacadeTest {
 
         doThrow(StaffNotFoundException.class)
                 .when(staffRetrievalPort)
-                .findById(eq(command.staffId()), eq(false));
+                .findById(eq(command.staffId()), eq(true));
 
         // When & Then
         assertThatThrownBy(() -> staffManagement.changeDetails(command))
                 .isInstanceOf(StaffNotFoundException.class);
-        verify(staffRetrievalPort, times(1)).findById(eq(command.staffId()), eq(false));
+        verify(staffLockPort, times(1)).lock(eq(command.staffId()), eq(true));
+        verify(staffLockPort, times(1)).lock(eq(command.staffId()), eq(false));
+        verify(staffRetrievalPort, times(1)).findById(eq(command.staffId()), eq(true));
         verify(staffPersistencePort, never()).save(any(Staff.class));
     }
 

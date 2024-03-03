@@ -1,38 +1,32 @@
 package net.kravuar.schedule.ports.out;
 
 import net.kravuar.schedule.domain.Schedule;
+import net.kravuar.schedule.domain.ScheduleExceptionDay;
 import net.kravuar.schedule.domain.Staff;
 import net.kravuar.schedule.domain.exceptions.ScheduleNotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface ScheduleRetrievalPort {
     /**
-     * Find schedule by schedule id.
+     * Find schedule by id.
+     * Only with active parent entities (business, service and staff),
+     * otherwise schedule should not be visible.
      *
      * @param scheduleId id of the schedule to find
-     * @param activeOnly whether to search activeOnly
+     * @param activeOnly whether to search active schedule only
      * @return {@link Schedule} associated the with provided {@code scheduleId}
      * @throws ScheduleNotFoundException if schedule wasn't found
      */
     Schedule findById(long scheduleId, boolean activeOnly);
 
     /**
-     * Find active schedules by staff.
-     * Find all that have at least 1 bound between {@code from} and {@code to},
-     * or both bounds out of the range.
-     *
-     * @param staffId id of the staff
-     * @param from    lower bound
-     * @param to      upper bound
-     * @return {@code List<Schedule>} of schedules associated the with provided {@code staffId}
-     */
-    List<Schedule> findActiveByStaffId(long staffId, LocalDate from, LocalDate to);
-
-    /**
      * Find active schedules by staff and service.
+     * Only with active parent entities (business, service and staff),
+     * otherwise schedule exception day should not be visible.
      * Find all that have at least 1 bound between {@code from} and {@code to},
      * or both bounds out of the range.
      *
@@ -42,17 +36,59 @@ public interface ScheduleRetrievalPort {
      * @param to        upper bound
      * @return {@code List<Schedule>} of schedules associated the with provided {@code staffId} and {@code serviceId}
      */
-    List<Schedule> findActiveByStaffIdAndServiceId(long staffId, long serviceId, LocalDate from, LocalDate to);
+    List<Schedule> findActiveSchedulesByStaffAndService(long staffId, long serviceId, LocalDate from, LocalDate to);
 
     /**
-     * Find active schedules by service.
+     * Find active schedules of staff members of service.
+     * Only with active parent entities (business, service and staff),
+     * otherwise schedule exception day should not be visible.
      * Find all that have at least 1 bound between {@code from} and {@code to},
      * or both bounds out of the range.
      *
      * @param serviceId id of the service
      * @param from      lower bound
      * @param to        upper bound
-     * @return {@code Map<Staff, List<Schedule>>} of schedules for each staff associated the with provided @code serviceId}
+     * @return {@code Map<Staff, List<Schedule>>} of schedules for each staff associated the with provided {@code serviceId}
      */
-    Map<Staff, List<Schedule>> findActiveByServiceId(long serviceId, LocalDate from, LocalDate to);
+    Map<Staff, List<Schedule>> findActiveSchedulesByService(long serviceId, LocalDate from, LocalDate to);
+
+    /**
+     * Find schedule exception day by staff, service and date.
+     * Only with active parent entities (business, service and staff),
+     * otherwise schedule exception day should not be visible.
+     *
+     * @param serviceId id of the service
+     * @param staffId   id of the staff
+     * @param date      exception day date
+     * @return {@code Optional<ScheduleExceptionDay>} search result
+     * associated the with provided {@code staffId}, {@code serviceId} and {@code date},
+     */
+    Optional<ScheduleExceptionDay> findActiveExceptionDayByStaffAndService(long staffId, long serviceId, LocalDate date);
+
+    /**
+     * Find schedule exception days by staff and service.
+     * Only with active parent entities (business, service and staff),
+     * otherwise schedule exception day should not be visible.
+     *
+     * @param staffId   id of the staff
+     * @param serviceId id of the service
+     * @param from      lower bound
+     * @param to        upper bound (inclusive)
+     * @return {@code Map<LocalDate, ScheduleExceptionDay>} of schedule exception days
+     * associated the with provided {@code staffId} and {@code serviceId},
+     */
+    Map<LocalDate, ScheduleExceptionDay> findActiveExceptionDaysByStaffAndService(long staffId, long serviceId, LocalDate from, LocalDate to);
+
+    /**
+     * Find schedule exception days by service.
+     * Only with active parent entities (business, service and staff),
+     * otherwise schedule exception day should not be visible.
+     *
+     * @param serviceId id of the service
+     * @param from      lower bound
+     * @param to        upper bound (inclusive)
+     * @return {@code Map<Staff, Map<LocalDate, ScheduleExceptionDay>>} of schedule exception days
+     * associated the with provided {@code serviceId},
+     */
+    Map<Staff, Map<LocalDate, ScheduleExceptionDay>> findActiveExceptionDaysByService(long serviceId, LocalDate from, LocalDate to);
 }

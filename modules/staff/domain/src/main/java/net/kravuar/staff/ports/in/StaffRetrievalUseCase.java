@@ -22,7 +22,7 @@ public interface StaffRetrievalUseCase {
      * Find all staff members by business.
      *
      * @param businessId id of the business
-     * @param activeOnly whether to search active only
+     * @param activeOnly whether to search active staff only
      * @return {@code List<Staff>} of all staff members associated with the provided {@code businessId}
      */
     List<Staff> findAllStaffByBusiness(long businessId, boolean activeOnly);

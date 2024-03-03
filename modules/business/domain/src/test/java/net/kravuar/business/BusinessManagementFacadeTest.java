@@ -242,10 +242,10 @@ class BusinessManagementFacadeTest {
         verify(businessRetrievalPort, times(1)).findById(eq(command.businessId()), eq(false));
         verify(businessPersistencePort, never()).save(any(Business.class));
         verify(businessNotificationPort, never()).notifyBusinessActiveChanged(any(Business.class));
-        verify(businessRetrievalPort, never()).existsActiveByName(any(String.class));
+        verify(businessRetrievalPort, never()).existsActiveByName(anyString());
         verify(businessLockPort, times(1)).lock(eq(command.businessId()), eq(true));
         verify(businessLockPort, times(1)).lock(eq(command.businessId()), eq(false));
-        verify(businessLockPort, never()).lock(any(String.class), eq(true));
+        verify(businessLockPort, never()).lock(anyString(), eq(true));
     }
 
     @Test

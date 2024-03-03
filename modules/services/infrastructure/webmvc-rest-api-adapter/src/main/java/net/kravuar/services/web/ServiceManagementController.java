@@ -3,7 +3,6 @@ package net.kravuar.services.web;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.services.domain.commands.ServiceChangeActiveCommand;
 import net.kravuar.services.domain.commands.ServiceChangeDetailsCommand;
-import net.kravuar.services.domain.commands.ServiceChangeNameCommand;
 import net.kravuar.services.domain.commands.ServiceCreationCommand;
 import net.kravuar.services.ports.in.ServiceManagementUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,15 +21,9 @@ class ServiceManagementController {
         return dtoServiceMapper.toDTO(serviceManagement.create(command));
     }
 
-    @PostMapping("/change-name")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfService(#command.serviceId(), authentication.details.subject)")
-    public void changeName(@RequestBody ServiceChangeNameCommand command) {
-        serviceManagement.changeName(command);
-    }
-
     @PutMapping("/change-active")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfService(#command.serviceId(), authentication.details.subject)")
-    public void changeName(@RequestBody ServiceChangeActiveCommand command) {
+    public void changeActive(@RequestBody ServiceChangeActiveCommand command) {
         serviceManagement.changeActive(command);
     }
 

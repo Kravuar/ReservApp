@@ -13,7 +13,7 @@ class JPAServiceRetrievalAdapter implements ServiceRetrievalPort {
 
     @Override
     public Service findActiveById(long serviceId) {
-        return serviceRepository.findByIdAndActiveIsTrue(serviceId)
+        return serviceRepository.findFullyActiveById(serviceId)
                 .orElseThrow(ServiceNotFoundException::new);
     }
 }

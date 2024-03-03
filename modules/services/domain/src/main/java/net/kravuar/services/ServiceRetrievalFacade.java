@@ -19,8 +19,8 @@ public class ServiceRetrievalFacade implements ServiceRetrievalUseCase {
     }
 
     @Override
-    public List<Service> findAllByBusinessId(long businessId, boolean activeOnly) {
-        return serviceRetrievalPort.findAllByBusinessId(businessId, activeOnly);
+    public List<Service> findAllByActiveBusinessId(long businessId, boolean activeOnly) {
+        return serviceRetrievalPort.findAllByActiveBusinessId(businessId, activeOnly);
     }
 
     @Override

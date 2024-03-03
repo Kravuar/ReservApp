@@ -4,13 +4,13 @@ import net.kravuar.services.domain.Business;
 import net.kravuar.services.domain.Service;
 import net.kravuar.services.domain.commands.ServiceChangeActiveCommand;
 import net.kravuar.services.domain.commands.ServiceChangeDetailsCommand;
-import net.kravuar.services.domain.commands.ServiceChangeNameCommand;
 import net.kravuar.services.domain.commands.ServiceCreationCommand;
-import net.kravuar.services.domain.exceptions.ServiceNameAlreadyTaken;
 import net.kravuar.services.domain.exceptions.ServiceNotFoundException;
 import net.kravuar.services.ports.out.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -47,10 +47,7 @@ class ServiceManagementFacadeTest {
 
         doReturn(mock(Business.class))
                 .when(businessRetrievalPort)
-                .findById(anyLong(), anyBoolean());
-        doReturn(false)
-                .when(serviceRetrievalPort)
-                .existsActiveByName(eq(command.name()));
+                .findActiveById(anyLong());
         doReturn(mock(Service.class))
                 .when(servicePersistencePort)
                 .save(any(Service.class));
@@ -59,116 +56,9 @@ class ServiceManagementFacadeTest {
         Service newService = serviceManagement.create(command);
 
         // Then
-        verify(serviceLockPort, times(1)).lock(eq(command.name()), eq(true));
-        verify(serviceLockPort, times(1)).lock(eq(command.name()), eq(false));
-        verify(serviceRetrievalPort, times(1)).existsActiveByName(eq(command.name()));
         verify(servicePersistencePort, times(1)).save(any(Service.class));
         verify(serviceNotificationPort, times(1)).notifyNewService(any(Service.class));
         assertThat(newService).isNotNull();
-    }
-
-    @Test
-    void givenExistingServiceName_whenCreate_thenServiceNameAlreadyTakenExceptionThrown() {
-        // Given
-        ServiceCreationCommand command = new ServiceCreationCommand(
-                1,
-                "Existing Service",
-                "Description"
-        );
-
-        doReturn(true)
-                .when(serviceRetrievalPort)
-                .existsActiveByName(eq(command.name()));
-
-        // When & Then
-        assertThatThrownBy(() -> serviceManagement.create(command))
-                .isInstanceOf(ServiceNameAlreadyTaken.class);
-        verify(serviceRetrievalPort, times(1)).existsActiveByName(eq(command.name()));
-        verify(servicePersistencePort, never()).save(any(Service.class));
-        verify(serviceNotificationPort, never()).notifyNewService(any(Service.class));
-        verify(serviceLockPort, times(1)).lock(eq(command.name()), eq(true));
-        verify(serviceLockPort, times(1)).lock(eq(command.name()), eq(false));
-    }
-
-    @Test
-    void givenValidServiceChangeNameCommand_whenChangeName_thenNameChanged() {
-        // Given
-        ServiceChangeNameCommand command = new ServiceChangeNameCommand(
-                1,
-                "New Name"
-        );
-        Service service = mock(Service.class);
-
-        doReturn(service)
-                .when(serviceRetrievalPort)
-                .findById(eq(command.serviceId()), eq(false));
-        doReturn(false)
-                .when(serviceRetrievalPort)
-                .existsActiveByName(eq(command.newName()));
-
-        // When
-        serviceManagement.changeName(command);
-
-        // Then
-        verify(serviceLockPort, times(1)).lock(eq(command.serviceId()), eq(true));
-        verify(serviceLockPort, times(1)).lock(eq(command.newName()), eq(true));
-        verify(serviceRetrievalPort, times(1)).findById(eq(command.serviceId()), eq(false));
-        verify(serviceRetrievalPort, times(1)).existsActiveByName(eq(command.newName()));
-        verify(servicePersistencePort, times(1)).save(eq(service));
-        verify(serviceLockPort, times(1)).lock(eq(command.newName()), eq(false));
-        verify(serviceLockPort, times(1)).lock(eq(command.serviceId()), eq(false));
-    }
-
-    @Test
-    void givenExistingServiceName_whenChangeName_thenServiceNameAlreadyTakenExceptionThrown() {
-        // Given
-        ServiceChangeNameCommand command = new ServiceChangeNameCommand(
-                1,
-                "Existing Name"
-        );
-
-        doReturn(true)
-                .when(serviceRetrievalPort)
-                .existsActiveByName(eq(command.newName()));
-
-        // When & Then
-        assertThatThrownBy(() -> serviceManagement.changeName(command))
-                .isInstanceOf(ServiceNameAlreadyTaken.class);
-        verify(serviceRetrievalPort, times(1)).existsActiveByName(eq(command.newName()));
-        verify(servicePersistencePort, never()).save(any(Service.class));
-        verify(serviceNotificationPort, never()).notifyNewService(any(Service.class));
-        verify(serviceLockPort, times(1)).lock(eq(command.newName()), eq(true));
-        verify(serviceLockPort, times(1)).lock(eq(command.serviceId()), eq(true));
-        verify(serviceLockPort, times(1)).lock(eq(command.newName()), eq(false));
-        verify(serviceLockPort, times(1)).lock(eq(command.serviceId()), eq(false));
-    }
-
-    @Test
-    void givenNonExistingServiceId_whenChangeName_thenServiceNotFoundExceptionThrown() {
-        // Given
-        ServiceChangeNameCommand command = new ServiceChangeNameCommand(
-                -1,
-                "New Name"
-        );
-
-        doReturn(false)
-                .when(serviceRetrievalPort)
-                .existsActiveByName(eq(command.newName()));
-        doThrow(ServiceNotFoundException.class)
-                .when(serviceRetrievalPort)
-                .findById(eq(command.serviceId()), eq(false));
-
-        // When & Then
-        assertThatThrownBy(() -> serviceManagement.changeName(command))
-                .isInstanceOf(ServiceNotFoundException.class);
-        verify(serviceRetrievalPort, times(1)).findById(eq(command.serviceId()), eq(false));
-        verify(serviceRetrievalPort, times(1)).existsActiveByName(eq(command.newName()));
-        verify(servicePersistencePort, never()).save(any(Service.class));
-        verify(serviceNotificationPort, never()).notifyNewService(any(Service.class));
-        verify(serviceLockPort, times(1)).lock(command.newName(), true);
-        verify(serviceLockPort, times(1)).lock(command.serviceId(), true);
-        verify(serviceLockPort, times(1)).lock(command.newName(), false);
-        verify(serviceLockPort, times(1)).lock(command.serviceId(), false);
     }
 
     @Test
@@ -176,11 +66,7 @@ class ServiceManagementFacadeTest {
         // Given
         ServiceChangeActiveCommand command = new ServiceChangeActiveCommand(1, true);
         Service service = mock(Service.class);
-        String serviceName = "Name";
 
-        doReturn(serviceName)
-                .when(service)
-                .getName();
         doReturn(service)
                 .when(serviceRetrievalPort)
                 .findById(eq(command.serviceId()), eq(false));
@@ -196,39 +82,7 @@ class ServiceManagementFacadeTest {
         verify(servicePersistencePort, times(1)).save(same(service));
         verify(serviceNotificationPort, times(1)).notifyServiceActiveChanged(same(service));
         verify(serviceLockPort, times(1)).lock(eq(command.serviceId()), eq(true));
-        verify(serviceLockPort, times(1)).lock(eq(serviceName), eq(true));
-        verify(serviceLockPort, times(1)).lock(eq(serviceName), eq(false));
         verify(serviceLockPort, times(1)).lock(eq(command.serviceId()), eq(false));
-    }
-
-    @Test
-    void givenExistingActiveServiceName_whenChangeActive_thenServiceNameAlreadyTakenExceptionThrown() {
-        // Given
-        ServiceChangeActiveCommand command = new ServiceChangeActiveCommand(1, true);
-        Service service = mock(Service.class);
-        String serviceName = "Name";
-
-        doReturn(serviceName)
-                .when(service)
-                .getName();
-        doReturn(service)
-                .when(serviceRetrievalPort)
-                .findById(eq(command.serviceId()), eq(false));
-        doReturn(true)
-                .when(serviceRetrievalPort)
-                .existsActiveByName(eq(serviceName));
-
-        // When & Then
-        assertThatThrownBy(() -> serviceManagement.changeActive(command))
-                .isInstanceOf(ServiceNameAlreadyTaken.class);
-        verify(serviceRetrievalPort, times(1)).findById(eq(command.serviceId()), eq(false));
-        verify(servicePersistencePort, never()).save(same(service));
-        verify(serviceNotificationPort, never()).notifyServiceActiveChanged(same(service));
-        verify(serviceRetrievalPort, times(1)).existsActiveByName(eq(serviceName));
-        verify(serviceLockPort, times(1)).lock(eq(command.serviceId()), eq(true));
-        verify(serviceLockPort, times(1)).lock(eq(command.serviceId()), eq(true));
-        verify(serviceLockPort, times(1)).lock(eq(serviceName), eq(false));
-        verify(serviceLockPort, times(1)).lock(eq(serviceName), eq(false));
     }
 
     @Test
@@ -249,22 +103,29 @@ class ServiceManagementFacadeTest {
         verify(serviceRetrievalPort, times(1)).findById(eq(command.serviceId()), eq(false));
         verify(servicePersistencePort, never()).save(any(Service.class));
         verify(serviceNotificationPort, never()).notifyServiceActiveChanged(any(Service.class));
-        verify(serviceRetrievalPort, never()).existsActiveByName(any(String.class));
         verify(serviceLockPort, times(1)).lock(eq(command.serviceId()), eq(true));
         verify(serviceLockPort, times(1)).lock(eq(command.serviceId()), eq(false));
-        verify(serviceLockPort, never()).lock(any(String.class), eq(true));
     }
 
-    @Test
-    void givenValidServiceChangeDetailsCommand_whenChangeDetails_thenDetailsChanged() {
+    @ParameterizedTest
+    @CsvSource({
+            "New Name, New Description",
+            ", New Description",
+            "New Name,",
+            ","
+    })
+    void givenValidServiceChangeDetailsCommand_whenChangeDetails_thenOnlySpecifiedDetailsChanged(String name, String description) {
         // Given
         ServiceChangeDetailsCommand command = new ServiceChangeDetailsCommand(
                 1,
-                "New Description"
+                name,
+                description
         );
         Service service = mock(Service.class);
 
-        doReturn(service).when(serviceRetrievalPort).findById(eq(command.serviceId()), eq(false));
+        doReturn(service)
+                .when(serviceRetrievalPort)
+                .findById(eq(command.serviceId()), eq(false));
 
         // When
         serviceManagement.changeDetails(command);
@@ -272,7 +133,14 @@ class ServiceManagementFacadeTest {
         // Then
         verify(serviceRetrievalPort, times(1)).findById(eq(command.serviceId()), eq(false));
         verify(servicePersistencePort, times(1)).save(eq(service));
-        verify(service, times(1)).setDescription(eq(command.description()));
+        if (command.name() != null)
+            verify(service, times(1)).setName(eq(command.name()));
+        else
+            verify(service, times(0)).setName(anyString());
+        if (command.description() != null)
+            verify(service, times(1)).setDescription(eq(command.description()));
+        else
+            verify(service, times(0)).setDescription(anyString());
     }
 
     @Test
@@ -280,6 +148,7 @@ class ServiceManagementFacadeTest {
         // Given
         ServiceChangeDetailsCommand command = new ServiceChangeDetailsCommand(
                 -1,
+                "New Name",
                 "New Description"
         );
 

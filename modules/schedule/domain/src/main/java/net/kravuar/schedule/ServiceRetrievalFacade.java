@@ -12,7 +12,7 @@ public class ServiceRetrievalFacade implements ServiceRetrievalUseCase {
     private final ServiceRetrievalPort serviceRetrievalPort;
 
     @Override
-    public Service findById(long serviceId) {
+    public Service findActiveById(long serviceId) {
         return serviceRetrievalPort.findActiveById(serviceId);
     }
 }

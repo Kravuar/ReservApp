@@ -2,14 +2,8 @@ package net.kravuar.schedule;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
-import net.kravuar.schedule.domain.Schedule;
-import net.kravuar.schedule.domain.SchedulePattern;
-import net.kravuar.schedule.domain.Service;
-import net.kravuar.schedule.domain.Staff;
-import net.kravuar.schedule.domain.commands.ChangeScheduleDurationCommand;
-import net.kravuar.schedule.domain.commands.ChangeSchedulePatternsCommand;
-import net.kravuar.schedule.domain.commands.CreateScheduleCommand;
-import net.kravuar.schedule.domain.commands.RemoveScheduleCommand;
+import net.kravuar.schedule.domain.*;
+import net.kravuar.schedule.domain.commands.*;
 import net.kravuar.schedule.ports.in.ScheduleManagementUseCase;
 import net.kravuar.schedule.ports.out.*;
 
@@ -77,7 +71,7 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
                             true
                     );
 
-                    List<Schedule> overlapped = scheduleRetrievalPort.findActiveByStaffIdAndServiceId(
+                    List<Schedule> overlapped = scheduleRetrievalPort.findActiveSchedulesByStaffAndService(
                             schedule.getStaff().getId(),
                             schedule.getService().getId(),
                             schedule.getStart(),
@@ -120,11 +114,10 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
                     staff,
                     service,
                     command.getPatterns(),
-                    command.getExceptionDays(),
                     true
             );
 
-            List<Schedule> overlapped = scheduleRetrievalPort.findActiveByStaffIdAndServiceId(
+            List<Schedule> overlapped = scheduleRetrievalPort.findActiveSchedulesByStaffAndService(
                     newSchedule.getStaff().getId(),
                     newSchedule.getService().getId(),
                     newSchedule.getStart(),
@@ -137,6 +130,26 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
         } finally {
             scheduleLockPort.lockByStaffAndService(command.getStaffId(), command.getServiceId(), false);
         }
+    }
+
+    @Override
+    public ScheduleExceptionDay addScheduleExceptionDay(CreateScheduleExceptionDayCommand command) {
+        Service service = serviceRetrievalPort.findActiveById(command.serviceId());
+        Staff staff = staffRetrievalPort.findActiveById(command.staffId());
+
+        ScheduleExceptionDay exceptionDay = scheduleRetrievalPort.findActiveExceptionDayByStaffAndService(
+                command.staffId(),
+                command.serviceId(),
+                command.date()
+        ).orElse(new ScheduleExceptionDay(
+                null,
+                command.date(),
+                staff,
+                service,
+                command.workingHours()
+        ));
+
+        return schedulePersistencePort.save(exceptionDay);
     }
 
     @Override

@@ -31,13 +31,21 @@ public class ScheduleRetrievalFacade implements ScheduleRetrievalUseCase {
 
     @Override
     public Map<LocalDate, List<WorkingHours>> findActiveScheduleByStaffAndServiceInPerDay(RetrieveScheduleByStaffAndServiceCommand command) {
-        return toPerDay(scheduleRetrievalPort
-                        .findActiveByStaffIdAndServiceId(
-                                command.getStaffId(),
-                                command.getServiceId(),
-                                command.getStart(),
-                                command.getEnd()
-                        ),
+        List<Schedule> schedules = scheduleRetrievalPort.findActiveSchedulesByStaffAndService(
+                        command.getStaffId(),
+                        command.getServiceId(),
+                        command.getStart(),
+                        command.getEnd()
+                );
+        Map<LocalDate, ScheduleExceptionDay> exceptionDays = scheduleRetrievalPort.findActiveExceptionDaysByStaffAndService(
+                command.getStaffId(),
+                command.getServiceId(),
+                command.getStart(),
+                command.getEnd()
+        );
+        return toPerDay(
+                schedules,
+                exceptionDays,
                 command.getStart(),
                 command.getEnd()
         );
@@ -45,44 +53,46 @@ public class ScheduleRetrievalFacade implements ScheduleRetrievalUseCase {
 
     @Override
     public Map<Staff, Map<LocalDate, List<WorkingHours>>> findActiveScheduleByServiceInPerDay(RetrieveScheduleByServiceCommand command) {
-        Map<Staff, List<Schedule>> schedules = scheduleRetrievalPort.findActiveByServiceId(command.getServiceId(), command.getStart(), command.getEnd());
+        Map<Staff, List<Schedule>> schedules = scheduleRetrievalPort.findActiveSchedulesByService(command.getServiceId(), command.getStart(), command.getEnd());
+        Map<Staff, Map<LocalDate, ScheduleExceptionDay>> exceptionDays = scheduleRetrievalPort.findActiveExceptionDaysByService(command.getServiceId(), command.getStart(), command.getEnd());
+
         return schedules.entrySet().stream().collect(Collectors.toMap(
                 Map.Entry::getKey,
-                entry -> toPerDay(entry.getValue(), command.getStart(), command.getEnd())
+                entry -> toPerDay(
+                        entry.getValue(),
+                        exceptionDays.get(entry.getKey()),
+                        command.getStart(),
+                        command.getEnd()
+                )
         ));
     }
 
-    private Map<LocalDate, List<WorkingHours>> toPerDay(List<Schedule> schedules, LocalDate from, LocalDate to) {
+    private Map<LocalDate, List<WorkingHours>> toPerDay(List<Schedule> schedules, Map<LocalDate, ScheduleExceptionDay> exceptionDays, LocalDate from, LocalDate to) {
         NavigableMap<LocalDate, Schedule> schedulesMap = new TreeMap<>(schedules.stream()
                 .collect(Collectors.toMap(
                         Schedule::getStart,
                         Function.identity())
                 ));
-        if (schedules.isEmpty())
-            return Collections.emptyMap();
 
         return from
                 .datesUntil(to.plusDays(1))
-                .collect(toPerDay(schedulesMap));
+                .collect(toPerDay(schedulesMap, exceptionDays));
     }
 
-    private Collector<LocalDate, ?, Map<LocalDate, List<WorkingHours>>> toPerDay(NavigableMap<LocalDate, Schedule> schedules) {
+    private Collector<LocalDate, ?, Map<LocalDate, List<WorkingHours>>> toPerDay(NavigableMap<LocalDate, Schedule> schedules, Map<LocalDate, ScheduleExceptionDay> exceptionDays) {
         return Collectors.toMap(
                 Function.identity(),
                 currentDay -> {
+                    ScheduleExceptionDay exceptionDay = exceptionDays.get(currentDay);
+                    if (exceptionDay != null)
+                        return exceptionDay.getWorkingHours();
+
                     // Get the schedule for particular day
                     Schedule currentSchedule = schedules
                             .floorEntry(currentDay)
                             .getValue();
 
-                    // Check if its exceptional day (take latest exception update)
-                    Optional<ScheduleExceptionDay> latestExceptionDay = currentSchedule
-                            .getExceptionDays().stream()
-                            .filter(exceptionDay -> exceptionDay.getDate().equals(currentDay))
-                            .findAny();
-                    if (latestExceptionDay.isPresent())
-                        return latestExceptionDay.get().getWorkingHours();
-                    else if (currentSchedule.getPatterns().isEmpty()) // Note: validation layer won't allow this though
+                    if (currentSchedule.getPatterns().isEmpty()) // Note: validation layer won't allow this though
                         return Collections.emptyList();
                     else {
                         // Not exceptional day, find from schedule

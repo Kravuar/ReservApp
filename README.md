@@ -24,3 +24,4 @@
 11. Remove duplication in application properties?
 12. Use error codes instead of messages in exceptions
 13. Do I need a lock and synchronization at all for simple actions like update description, activeness...?
+14. Define schema.sql with constraints, indexes and other staff

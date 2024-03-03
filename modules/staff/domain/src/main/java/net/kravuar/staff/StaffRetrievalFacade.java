@@ -23,7 +23,7 @@ public class StaffRetrievalFacade implements StaffRetrievalUseCase {
 
     @Override
     public List<Staff> findAllStaffByBusiness(long businessId, boolean activeOnly) {
-        return staffRetrievalPort.findAllStaffByBusinessId(businessId, activeOnly);
+        return staffRetrievalPort.findAllByBusiness(businessId, activeOnly);
     }
 
     @Override
@@ -33,11 +33,11 @@ public class StaffRetrievalFacade implements StaffRetrievalUseCase {
 
     @Override
     public List<StaffInvitation> findStaffInvitationsBySubject(String sub) {
-        return invitationRetrievalPort.findBySubject(sub);
+        return invitationRetrievalPort.findAllBySubject(sub);
     }
 
     @Override
     public List<StaffInvitation> findStaffInvitationsByBusiness(long businessId) {
-        return invitationRetrievalPort.findByBusinessId(businessId);
+        return invitationRetrievalPort.findAllByBusiness(businessId);
     }
 }

@@ -3,11 +3,10 @@ package net.kravuar.schedule.ports.in;
 import jakarta.validation.Valid;
 import net.kravuar.context.AppValidated;
 import net.kravuar.schedule.domain.Schedule;
-import net.kravuar.schedule.domain.commands.ChangeScheduleDurationCommand;
-import net.kravuar.schedule.domain.commands.ChangeSchedulePatternsCommand;
-import net.kravuar.schedule.domain.commands.CreateScheduleCommand;
-import net.kravuar.schedule.domain.commands.RemoveScheduleCommand;
+import net.kravuar.schedule.domain.ScheduleExceptionDay;
+import net.kravuar.schedule.domain.commands.*;
 import net.kravuar.schedule.domain.exceptions.ScheduleNotFoundException;
+import net.kravuar.schedule.domain.exceptions.ServiceNotFoundException;
 import net.kravuar.schedule.domain.exceptions.StaffNotFoundException;
 
 @AppValidated
@@ -36,10 +35,20 @@ public interface ScheduleManagementUseCase {
      *
      * @param command command containing details of the schedule creation
      * @throws StaffNotFoundException if staff wasn't found
+     * @throws ServiceNotFoundException if service wasn't found
      * @throws IllegalStateException  if schedule overlaps with other staff schedules or
      *                                does not have sufficient duration for provided patterns
      */
     Schedule createSchedule(@Valid CreateScheduleCommand command);
+
+    /**
+     * Create or update schedule exception day for a staff member and service.
+     *
+     * @param command command containing details of the schedule exception day creation
+     * @throws StaffNotFoundException if staff wasn't found
+     * @throws ServiceNotFoundException if service wasn't found
+     */
+    ScheduleExceptionDay addScheduleExceptionDay(@Valid CreateScheduleExceptionDayCommand command);
 
     /**
      * Removes schedule for a staff member.

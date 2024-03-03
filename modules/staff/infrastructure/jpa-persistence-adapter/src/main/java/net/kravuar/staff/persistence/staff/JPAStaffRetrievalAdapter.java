@@ -16,24 +16,32 @@ class JPAStaffRetrievalAdapter implements StaffRetrievalPort {
 
     @Override
     public Staff findById(long staffId, boolean activeOnly) {
-        return staffRepository.findByIdAndActive(staffId, activeOnly)
+        return staffRepository.findByService(staffId, activeOnly)
                 .orElseThrow(StaffNotFoundException::new);
     }
 
     @Override
-    public List<Staff> findAllStaffByBusinessId(long businessId, boolean activeOnly) {
-        return staffRepository.findAllByBusinessIdAndActive(businessId, activeOnly);
+    public List<Staff> findAllByBusiness(long businessId, boolean activeOnly) {
+        return staffRepository.findAllByBusiness(businessId, activeOnly);
     }
 
     @Override
-    public boolean existsActiveByBusinessIdAndSub(long businessId, String sub) {
-        return staffRepository.findByBusinessIdAndSub(businessId, sub)
-                .filter(Staff::isActive)
-                .isPresent();
+    public boolean existsActiveByBusinessAndSub(long businessId, String sub) {
+        return findByBusinessAndSub(
+                businessId,
+                sub,
+                true,
+                true
+        ).isPresent();
     }
 
     @Override
-    public Optional<Staff> findByBusinessIdAndSub(long businessId, String sub, boolean activeOnly) {
-        return staffRepository.findByBusinessIdAndSub(businessId, sub);
+    public Optional<Staff> findByBusinessAndSub(long businessId, String sub, boolean activeOnly, boolean activeBusinessOnly) {
+        return staffRepository.findByBusinessAndSub(
+                businessId,
+                sub,
+                activeOnly,
+                activeBusinessOnly
+        );
     }
 }
