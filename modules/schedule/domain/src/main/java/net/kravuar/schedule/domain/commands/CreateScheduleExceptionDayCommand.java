@@ -4,10 +4,10 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import net.kravuar.schedule.domain.util.period.PeriodsNotIntersect;
-import net.kravuar.schedule.domain.weak.WorkingHours;
+import net.kravuar.schedule.domain.ReservationSlot;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.SortedSet;
 
 public record CreateScheduleExceptionDayCommand(
         long staffId,
@@ -17,5 +17,6 @@ public record CreateScheduleExceptionDayCommand(
         LocalDate date,
         @NotNull
         @PeriodsNotIntersect
-        List<@NotNull @Valid WorkingHours> workingHours
-) {}
+        SortedSet<@NotNull @Valid ReservationSlot> reservationSlots
+) {
+}

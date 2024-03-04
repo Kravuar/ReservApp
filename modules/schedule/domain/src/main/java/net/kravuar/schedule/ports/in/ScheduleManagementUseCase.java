@@ -34,10 +34,10 @@ public interface ScheduleManagementUseCase {
      * Create schedule for a staff member.
      *
      * @param command command containing details of the schedule creation
-     * @throws StaffNotFoundException if staff wasn't found
+     * @throws StaffNotFoundException   if staff wasn't found
      * @throws ServiceNotFoundException if service wasn't found
-     * @throws IllegalStateException  if schedule overlaps with other staff schedules or
-     *                                does not have sufficient duration for provided patterns
+     * @throws IllegalStateException    if schedule overlaps with other staff schedules or
+     *                                  does not have sufficient duration for provided patterns
      */
     Schedule createSchedule(@Valid CreateScheduleCommand command);
 
@@ -45,7 +45,7 @@ public interface ScheduleManagementUseCase {
      * Create or update schedule exception day for a staff member and service.
      *
      * @param command command containing details of the schedule exception day creation
-     * @throws StaffNotFoundException if staff wasn't found
+     * @throws StaffNotFoundException   if staff wasn't found
      * @throws ServiceNotFoundException if service wasn't found
      */
     ScheduleExceptionDay addOrUpdateScheduleExceptionDay(@Valid CreateScheduleExceptionDayCommand command);

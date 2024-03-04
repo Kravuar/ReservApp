@@ -12,6 +12,6 @@ public class JPASchedulePersistenceAdapter implements SchedulePersistencePort {
 
     @Override
     public Schedule save(Schedule schedule) {
-         return scheduleRepository.save(schedule);
+        return scheduleRepository.save(schedule);
     }
 }

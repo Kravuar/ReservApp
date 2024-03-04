@@ -5,6 +5,7 @@ import net.kravuar.schedule.domain.exceptions.ReservationNotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.SortedMap;
 
 public interface ReservationRetrievalUseCase {
     /**
@@ -20,12 +21,12 @@ public interface ReservationRetrievalUseCase {
      * Find all active reservations by staff within a date range.
      *
      * @param staffId id of the staff
-     * @param from     start date of the range
-     * @param to       end date of the range (inclusive)
-     * @return {@code List<Reservation>} of reservations associated with the provided {@code staffId}
+     * @param from    start date of the range
+     * @param to      end date of the range (inclusive)
+     * @return {@code SortedMap<LocalDate, List<Reservation>>} of reservations associated with the provided {@code staffId}
      * within the specified date range
      */
-    List<Reservation> findAllByStaff(long staffId, LocalDate from, LocalDate to);
+    SortedMap<LocalDate, List<Reservation>> findAllByStaff(long staffId, LocalDate from, LocalDate to);
 
     /**
      * Find all active reservations by client within a date range.
@@ -33,8 +34,8 @@ public interface ReservationRetrievalUseCase {
      * @param clientSub unique identifier of the client
      * @param from      start date of the range
      * @param to        end date of the range (inclusive)
-     * @return {@code List<Reservation>} of reservations associated with the provided {@code clientSub}
+     * @return {@code SortedMap<LocalDate, List<Reservation>>} of reservations associated with the provided {@code clientSub}
      * within the specified date range
      */
-    List<Reservation> findAllByClient(String clientSub, LocalDate from, LocalDate to);
+    SortedMap<LocalDate, List<Reservation>> findAllByClient(String clientSub, LocalDate from, LocalDate to);
 }

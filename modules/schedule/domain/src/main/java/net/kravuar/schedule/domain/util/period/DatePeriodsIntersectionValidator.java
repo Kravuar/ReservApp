@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
+// TODO: Test this
 public class DatePeriodsIntersectionValidator implements ConstraintValidator<StartBeforeEnd, Collection<Period<ChronoLocalDate>>> {
     @Override
     public boolean isValid(Collection<Period<ChronoLocalDate>> periods, ConstraintValidatorContext context) {

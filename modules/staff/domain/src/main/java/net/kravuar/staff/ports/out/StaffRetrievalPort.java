@@ -46,9 +46,9 @@ public interface StaffRetrievalPort {
      * Only with active parent entities (business),
      * otherwise schedule exception day should not be visible.
      *
-     * @param businessId id of the business
-     * @param sub        subject of the staff
-     * @param activeOnly whether to search active staff only
+     * @param businessId         id of the business
+     * @param sub                subject of the staff
+     * @param activeOnly         whether to search active staff only
      * @param activeBusinessOnly whether to search by active business only
      * @return {@code Optional<Staff>} object of staff associated with the provided {@code businessId} and {@code sub}
      */

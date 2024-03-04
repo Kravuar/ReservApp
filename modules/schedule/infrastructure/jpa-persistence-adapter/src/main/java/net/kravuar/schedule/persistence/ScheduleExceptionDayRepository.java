@@ -20,6 +20,7 @@ interface ScheduleExceptionDayRepository extends JpaRepository<ScheduleException
             "AND s.service.business.active = true " +
             "AND s.staff.active = true")
     Optional<ScheduleExceptionDay> findFullyActiveByStaffAndService(@Param("staffId") long staffId, @Param("serviceId") long serviceId, @Param("date") LocalDate date);
+
     @Query("SELECT s FROM ScheduleExceptionDay s " +
             "WHERE s.staff.id = :staffId " +
             "AND s.service.id = :serviceId " +

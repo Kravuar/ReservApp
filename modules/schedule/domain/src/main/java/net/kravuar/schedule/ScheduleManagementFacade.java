@@ -148,7 +148,7 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
                     null
             ));
 
-            exceptionDay.setWorkingHours(command.workingHours());
+            exceptionDay.setReservationSlots(command.reservationSlots());
 
             return schedulePersistencePort.save(exceptionDay);
         } finally {

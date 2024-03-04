@@ -7,11 +7,11 @@ import net.kravuar.schedule.domain.commands.RetrieveScheduleByServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleExceptionDaysByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.exceptions.ScheduleNotFoundException;
-import net.kravuar.schedule.domain.weak.WorkingHours;
+import net.kravuar.schedule.domain.ReservationSlot;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public interface ScheduleRetrievalUseCase {
     /**
@@ -25,9 +25,28 @@ public interface ScheduleRetrievalUseCase {
     Schedule findScheduleById(long scheduleId, boolean activeOnly);
 
     /**
+     * Find nearest free reservation slot by service.
+     *
+     * @param serviceId id of the service
+     * @param dateTime  dateTime to which to find nearest slot
+     * @return {@code Optional<ReservationSlot>} of nearest found reservation slot associated with provided {@code serviceId}
+     */
+    Optional<ReservationSlot> findNearestFreeByService(long serviceId, LocalDateTime dateTime);
+
+    /**
+     * Find nearest free reservation slot by service and staff.
+     *
+     * @param serviceId id of the service
+     * @param staffId   id of the staff
+     * @param dateTime  dateTime to which to find nearest slot
+     * @return {@code Optional<ReservationSlot>} of nearest found reservation slot associated with provided {@code serviceId} and {@code staffId}
+     */
+    Optional<ReservationSlot> findNearestFreeByStaffAndService(long staffId, long serviceId, LocalDateTime dateTime);
+
+    /**
      * Find active schedules by staff and service.
      *
-     * @param staffId id of the staff
+     * @param staffId   id of the staff
      * @param serviceId id of the service
      * @return {@code List<Schedule>} of schedules associated the with provided {@code staffId} and {@code serviceId}
      * @throws ScheduleNotFoundException if schedule wasn't found
@@ -38,17 +57,17 @@ public interface ScheduleRetrievalUseCase {
      * Find active schedule for a staff member and service in per day format.
      *
      * @param command command containing details of the schedule retrieval
-     * @return {@code Map<LocalDate, List<WorkingHours>>} mapping date to working hours
+     * @return {@code NavigableMap<LocalDate, SortedSet<ReservationSlot>>} mapping date to reservation slots
      */
-    Map<LocalDate, List<WorkingHours>> findActiveScheduleByStaffAndServiceInPerDay(RetrieveScheduleByStaffAndServiceCommand command);
+    NavigableMap<LocalDate, SortedSet<ReservationSlot>> findActiveScheduleByStaffAndServiceInPerDay(RetrieveScheduleByStaffAndServiceCommand command);
 
     /**
      * Find active schedule for a service in per day format.
      *
      * @param command command containing details of the schedule retrieval
-     * @return {@code Map<Staff, Map<LocalDate, List<WorkingHours>>>} mapping date to working hours for each staff
+     * @return {@code Map<Staff, NavigableMap<LocalDate, SortedSet<ReservationSlot>>>} mapping date to reservation slots for each staff
      */
-    Map<Staff, Map<LocalDate, List<WorkingHours>>> findActiveScheduleByServiceInPerDay(RetrieveScheduleByServiceCommand command);
+    Map<Staff, NavigableMap<LocalDate, SortedSet<ReservationSlot>>> findActiveScheduleByServiceInPerDay(RetrieveScheduleByServiceCommand command);
 
     /**
      * Find schedule exception days by staff and service.
@@ -56,5 +75,5 @@ public interface ScheduleRetrievalUseCase {
      * @param command command containing details of the schedule retrieval
      * @return {@code Map<LocalDate, ScheduleExceptionDay>} mapping date to schedule exception day information
      */
-    Map<LocalDate, ScheduleExceptionDay> findActiveExceptionDaysByStaffAndService(RetrieveScheduleExceptionDaysByStaffAndServiceCommand command);
+    NavigableMap<LocalDate, ScheduleExceptionDay> findActiveExceptionDaysByStaffAndService(RetrieveScheduleExceptionDaysByStaffAndServiceCommand command);
 }

@@ -12,8 +12,8 @@ import lombok.Setter;
 public class Service {
     private Long id;
     private Business business;
-    private String name;
     private boolean active;
 
+    private String name;
     private String description;
 }

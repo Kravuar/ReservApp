@@ -59,9 +59,10 @@
                 <column nullable="false"/>
             </basic>
 
-            <element-collection target-class="net.kravuar.schedule.domain.weak.WorkingHours" name="workingHours" fetch="EAGER">
+            <element-collection target-class="net.kravuar.schedule.domain.ReservationSlot" name="reservationSlots"
+                                fetch="EAGER">
                 <column nullable="false"/>
-                <collection-table name="exceptionDaysHours"/>
+                <collection-table name="exceptionDaysSlots"/>
             </element-collection>
         </attributes>
     </entity>
@@ -80,9 +81,11 @@
                 <column nullable="false"/>
             </basic>
 
-            <element-collection target-class="net.kravuar.schedule.domain.weak.WorkingHours" name="workingHours" fetch="EAGER">
+            <!-- TODO: make it an entity -->
+            <element-collection target-class="net.kravuar.schedule.domain.ReservationSlot" name="reservationSlots"
+                                fetch="EAGER">
                 <column nullable="false"/>
-                <collection-table name="patternHours"/>
+                <collection-table name="patternSlots"/>
             </element-collection>
         </attributes>
     </entity>
@@ -130,5 +133,5 @@
         </attributes>
     </entity>
 
-    <embeddable class="net.kravuar.schedule.domain.weak.WorkingHours" access="FIELD"/>
+    <embeddable class="net.kravuar.schedule.domain.ReservationSlot" access="FIELD"/>
 </entity-mappings>

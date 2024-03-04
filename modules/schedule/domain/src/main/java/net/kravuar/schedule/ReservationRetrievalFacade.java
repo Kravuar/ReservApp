@@ -8,6 +8,7 @@ import net.kravuar.schedule.ports.out.ReservationRetrievalPort;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NavigableMap;
 
 @AppComponent
 @RequiredArgsConstructor
@@ -20,12 +21,12 @@ public class ReservationRetrievalFacade implements ReservationRetrievalUseCase {
     }
 
     @Override
-    public List<Reservation> findAllByStaff(long staffId, LocalDate from, LocalDate to) {
+    public NavigableMap<LocalDate, List<Reservation>> findAllByStaff(long staffId, LocalDate from, LocalDate to) {
         return reservationRetrievalPort.findAllByStaff(staffId, from, to, true);
     }
 
     @Override
-    public List<Reservation> findAllByClient(String clientSub, LocalDate from, LocalDate to) {
+    public NavigableMap<LocalDate, List<Reservation>> findAllByClient(String clientSub, LocalDate from, LocalDate to) {
         return reservationRetrievalPort.findAllActiveByClient(clientSub, from, to);
     }
 }

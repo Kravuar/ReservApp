@@ -2,7 +2,7 @@ package net.kravuar.schedule;
 
 import net.kravuar.schedule.domain.*;
 import net.kravuar.schedule.domain.commands.*;
-import net.kravuar.schedule.domain.weak.WorkingHours;
+import net.kravuar.schedule.domain.ReservationSlot;
 import net.kravuar.schedule.ports.out.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,10 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -40,12 +37,12 @@ class ScheduleManagementFacadeTest {
 
     static final LocalDate START_DATE = LocalDate.of(2024, 1, 1);
 
-    static List<WorkingHours> someWorkingHours() {
-        return List.of(new WorkingHours(LocalTime.NOON, LocalTime.MIDNIGHT, 1, 1));
+    static SortedSet<ReservationSlot> someReservationSlots() {
+        return new TreeSet<>(List.of(new ReservationSlot(LocalTime.NOON, LocalTime.MIDNIGHT, 1, 1)));
     }
 
     static SchedulePattern fiveTwoPattern() {
-        return new SchedulePattern(1L, 5, 2, someWorkingHours());
+        return new SchedulePattern(1L, 5, 2, someReservationSlots());
     }
 
     static ScheduleExceptionDay someExceptionDay() {
@@ -54,7 +51,7 @@ class ScheduleManagementFacadeTest {
                 START_DATE,
                 someStaff(),
                 someService(),
-                someWorkingHours()
+                someReservationSlots()
         );
     }
 
@@ -359,7 +356,7 @@ class ScheduleManagementFacadeTest {
                 1,
                 1,
                 START_DATE,
-                someWorkingHours()
+                someReservationSlots()
         );
         Staff staff = someStaff();
         Service service = someService();
@@ -384,7 +381,7 @@ class ScheduleManagementFacadeTest {
         assertThat(added.getStaff()).isSameAs(staff);
         assertThat(added.getService()).isSameAs(service);
         assertThat(added.getDate()).isEqualTo(command.date());
-        assertThat(added.getWorkingHours()).isEqualTo(command.workingHours());
+        assertThat(added.getReservationSlots()).isEqualTo(command.reservationSlots());
         verify(schedulePersistencePort).save(any(ScheduleExceptionDay.class));
     }
 
@@ -395,7 +392,7 @@ class ScheduleManagementFacadeTest {
                 1,
                 1,
                 START_DATE,
-                someWorkingHours()
+                someReservationSlots()
         );
         Staff staff = someStaff();
         Service service = someService();
@@ -415,7 +412,7 @@ class ScheduleManagementFacadeTest {
         scheduleManagement.addOrUpdateScheduleExceptionDay(command);
 
         // Then
-        assertThat(exceptionDay.getWorkingHours()).isEqualTo(command.workingHours());
+        assertThat(exceptionDay.getReservationSlots()).isEqualTo(command.reservationSlots());
         verify(schedulePersistencePort).save(same(exceptionDay));
     }
 

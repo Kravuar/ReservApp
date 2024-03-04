@@ -8,9 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.kravuar.schedule.domain.util.period.PeriodsNotIntersect;
-import net.kravuar.schedule.domain.weak.WorkingHours;
 
-import java.util.List;
+import java.util.SortedSet;
 
 @Getter
 @AllArgsConstructor
@@ -23,5 +22,5 @@ public class SchedulePattern {
     private int pauseDays;
     @NotNull
     @PeriodsNotIntersect
-    private List<@NotNull @Valid WorkingHours> workingHours;
+    private SortedSet<@NotNull @Valid ReservationSlot> reservationSlots;
 }

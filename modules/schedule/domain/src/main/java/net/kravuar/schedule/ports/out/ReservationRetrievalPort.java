@@ -5,6 +5,7 @@ import net.kravuar.schedule.domain.exceptions.ReservationNotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NavigableMap;
 
 public interface ReservationRetrievalPort {
     /**
@@ -21,14 +22,14 @@ public interface ReservationRetrievalPort {
     /**
      * Find all active reservations by staff within a date range.
      *
-     * @param staffId id of the staff
-     * @param from     start date of the range
-     * @param to       end date of the range (inclusive)
+     * @param staffId         id of the staff
+     * @param from            start date of the range
+     * @param to              end date of the range (inclusive)
      * @param fullyActiveOnly whether to search fully active reservations only (with active parent entities)
-     * @return {@code List<Reservation>} of reservations associated with the provided {@code staffId}
+     * @return {@code NavigableMap<LocalDate, List<Reservation>>} mapping dates to reservations associated with the provided {@code staffId}
      * within the specified date range
      */
-    List<Reservation> findAllByStaff(long staffId, LocalDate from, LocalDate to, boolean fullyActiveOnly);
+    NavigableMap<LocalDate, List<Reservation>> findAllByStaff(long staffId, LocalDate from, LocalDate to, boolean fullyActiveOnly);
 
     /**
      * Find all active reservations by client within a date range.
@@ -38,8 +39,8 @@ public interface ReservationRetrievalPort {
      * @param clientSub unique identifier of the client
      * @param from      start date of the range
      * @param to        end date of the range (inclusive)
-     * @return {@code List<Reservation>} of reservations associated with the provided {@code clientSub}
+     * @return {@code NavigableMap<LocalDate, Reservation>} mapping dates to reservations associated with the provided {@code clientSub}
      * within the specified date range
      */
-    List<Reservation> findAllActiveByClient(String clientSub, LocalDate from, LocalDate to);
+    NavigableMap<LocalDate, List<Reservation>> findAllActiveByClient(String clientSub, LocalDate from, LocalDate to);
 }

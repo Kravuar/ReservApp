@@ -3,11 +3,14 @@ package net.kravuar.schedule;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
 import net.kravuar.schedule.domain.Reservation;
+import net.kravuar.schedule.domain.ReservationSlot;
 import net.kravuar.schedule.domain.Service;
 import net.kravuar.schedule.domain.Staff;
 import net.kravuar.schedule.domain.commands.CreateReservationCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
-import net.kravuar.schedule.domain.weak.WorkingHours;
+import net.kravuar.schedule.domain.exceptions.ReservationOutOfSlotsException;
+import net.kravuar.schedule.domain.exceptions.ReservationOverlappingException;
+import net.kravuar.schedule.domain.exceptions.ReservationSlotNotFoundException;
 import net.kravuar.schedule.ports.in.ReservationManagementUseCase;
 import net.kravuar.schedule.ports.in.ScheduleRetrievalUseCase;
 import net.kravuar.schedule.ports.out.*;
@@ -16,6 +19,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @AppComponent
 @RequiredArgsConstructor
@@ -38,41 +43,61 @@ public class ReservationManagementFacade implements ReservationManagementUseCase
 
             LocalDate date = command.dateTime().toLocalDate();
             LocalTime time = command.dateTime().toLocalTime();
-            List<WorkingHours> workingHours = scheduleRetrievalUseCase.findActiveScheduleByStaffAndServiceInPerDay(
-                    new RetrieveScheduleByStaffAndServiceCommand(
-                            command.staffId(),
-                            command.serviceId(),
-                            date,
-                            date
-                    )
-            ).getOrDefault(date, Collections.emptyList());
 
-            WorkingHours reservationHours = workingHours.stream()
-                    .filter(hours -> time.isAfter(hours.getStart()) && time.isBefore(hours.getEnd()))
+            // Find all slots by day, pick one, that matches reservation time
+            ReservationSlot reservationSlot = scheduleRetrievalUseCase.findActiveScheduleByStaffAndServiceInPerDay(
+                            new RetrieveScheduleByStaffAndServiceCommand(
+                                    command.staffId(),
+                                    command.serviceId(),
+                                    date,
+                                    date
+                            )
+                    ).getOrDefault(date, Collections.emptySortedSet()).stream()
+                    .filter(slot -> slot.getStart().equals(time))
                     .findAny()
-                    .orElseThrow(() -> new IllegalStateException("No working hours available for reservation"));
-            // TODO: Check if service duration fits in with this reservation (reservation.time + duration < hours.end)
+                    .orElseThrow(ReservationSlotNotFoundException::new);
 
             // Non fully active as well, so that, if some parent entity went inactive before we fetch reservations
             // we will still see them, which will prevent placing multiple reservations at the same time (due to
-            // existing is not visible at the moment)
+            // existing is not visible at the moment).
             List<Reservation> existingReservations = reservationRetrievalPort.findAllByStaff(
                     command.staffId(),
                     command.dateTime().toLocalDate(),
                     command.dateTime().toLocalDate(),
                     false
-            );
-            // TODO: if single slot - should not overlap with any other reservation
-            // TODO: if multi-slot - should not exceed, and should start at the same time as existing (or be the one who dictates the start, if no other present)
+            ).getOrDefault(date, Collections.emptyList());
 
             Reservation reservation = new Reservation(
                     null,
-                    command.dateTime(),
+                    reservationSlot,
+                    date,
                     command.sub(),
                     staff,
                     service,
                     true
             );
+
+            Map<Boolean, List<Reservation>> partitionedBySameService = existingReservations.stream()
+                    .collect(Collectors.partitioningBy(
+                            existing -> existing.getService().getId().equals(service.getId())
+                    ));
+
+            // Should not exceed reservation slot size if overlaps
+            List<Reservation> sameServiceAndSlotReservations = partitionedBySameService.get(true).stream()
+                    .filter(sameServiceReservation -> sameServiceReservation.getSlot().getStart().equals(reservationSlot.getStart()))
+                    .toList();
+            int takenSlots = sameServiceAndSlotReservations.size();
+            if (reservationSlot.getMaxReservations() == takenSlots) // ?Maybe >= check is safer somehow?
+                throw new ReservationOutOfSlotsException();
+
+            // Should not overlap with ANY from other service
+            List<Reservation> otherServicesReservations = partitionedBySameService.get(true);
+            for (Reservation otherServiceReservation: otherServicesReservations) {
+                ReservationSlot otherSlot = otherServiceReservation.getSlot();
+                if (otherSlot.getStart().isBefore(reservationSlot.getStart())
+                        && otherSlot.getEnd().isAfter(reservationSlot.getStart()))
+                    throw new ReservationOverlappingException();
+            }
 
             return reservationPersistencePort.save(reservation);
         } finally {

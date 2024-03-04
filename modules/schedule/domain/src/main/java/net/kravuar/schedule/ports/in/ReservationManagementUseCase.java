@@ -14,9 +14,9 @@ public interface ReservationManagementUseCase {
      *
      * @param command command containing details of the reservation creation
      * @return {@link Reservation} created reservation
-     * @throws StaffNotFoundException   if staff wasn't found
-     * @throws IllegalStateException   if reservation overlaps with other reservations
-     * of the staff or if there are no available reservation slots
+     * @throws StaffNotFoundException if staff wasn't found
+     * @throws IllegalStateException  if reservation overlaps with other reservations
+     *                                of the staff or if there are no available reservation slots
      */
     Reservation createReservation(@Valid CreateReservationCommand command);
 

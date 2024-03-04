@@ -8,6 +8,7 @@ import net.kravuar.schedule.domain.exceptions.ScheduleNotFoundException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
 import java.util.Optional;
 
 public interface ScheduleRetrievalPort {
@@ -77,7 +78,7 @@ public interface ScheduleRetrievalPort {
      * @return {@code Map<LocalDate, ScheduleExceptionDay>} of schedule exception days
      * associated the with provided {@code staffId} and {@code serviceId},
      */
-    Map<LocalDate, ScheduleExceptionDay> findActiveExceptionDaysByStaffAndService(long staffId, long serviceId, LocalDate from, LocalDate to);
+    NavigableMap<LocalDate, ScheduleExceptionDay> findActiveExceptionDaysByStaffAndService(long staffId, long serviceId, LocalDate from, LocalDate to);
 
     /**
      * Find schedule exception days by service.
@@ -90,5 +91,5 @@ public interface ScheduleRetrievalPort {
      * @return {@code Map<Staff, Map<LocalDate, ScheduleExceptionDay>>} of schedule exception days
      * associated the with provided {@code serviceId},
      */
-    Map<Staff, Map<LocalDate, ScheduleExceptionDay>> findActiveExceptionDaysByService(long serviceId, LocalDate from, LocalDate to);
+    Map<Staff, NavigableMap<LocalDate, ScheduleExceptionDay>> findActiveExceptionDaysByService(long serviceId, LocalDate from, LocalDate to);
 }

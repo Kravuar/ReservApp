@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.kravuar.schedule.domain.weak.WorkingHours;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.SortedSet;
 
 @Getter
 @Setter
@@ -18,5 +17,5 @@ public class ScheduleExceptionDay {
     private LocalDate date;
     private Staff staff;
     private Service service;
-    private List<WorkingHours> workingHours;
+    private SortedSet<ReservationSlot> reservationSlots;
 }
