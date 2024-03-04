@@ -104,6 +104,7 @@ class ScheduleManagementFacadeTest {
         verify(schedule).setPatterns(anyList());
         verify(schedulePersistencePort).save(same(schedule));
         verify(scheduleLockPort).lock(eq(command.scheduleId()), eq(false));
+        verify(scheduleLockPort).lock(eq(schedule.getStaff().getId()), eq(false));
     }
 
     @Test
@@ -126,6 +127,7 @@ class ScheduleManagementFacadeTest {
                 .isInstanceOf(IllegalStateException.class);
         verifyNoMoreInteractions(schedulePersistencePort);
         verify(scheduleLockPort).lock(eq(command.scheduleId()), eq(false));
+        verify(scheduleLockPort).lock(eq(schedule.getStaff().getId()), eq(false));
     }
 
     @Test
@@ -150,6 +152,7 @@ class ScheduleManagementFacadeTest {
 
         verifyNoMoreInteractions(schedulePersistencePort);
         verify(scheduleLockPort).lock(eq(command.getScheduleId()), eq(false));
+        verify(scheduleLockPort).lock(eq(schedule.getStaff().getId()), eq(false));
     }
 
     @Test
@@ -176,6 +179,7 @@ class ScheduleManagementFacadeTest {
         verify(schedule).setEnd(command.getEnd());
         verify(schedulePersistencePort).save(schedule);
         verify(scheduleLockPort).lock(eq(command.getScheduleId()), eq(false));
+        verify(scheduleLockPort).lock(eq(schedule.getStaff().getId()), eq(false));
     }
 
     @Test
@@ -204,7 +208,7 @@ class ScheduleManagementFacadeTest {
         verify(schedule).setStart(command.getStart());
         verify(schedule).setEnd(command.getEnd());
         verify(schedulePersistencePort).save(schedule);
-        verify(scheduleLockPort).lockByStaffAndService(anyLong(), anyLong(), eq(false));
+        verify(scheduleLockPort).lockByStaff(anyLong(), eq(false));
         verify(scheduleLockPort).lock(anyLong(), eq(false));
     }
 
@@ -235,7 +239,7 @@ class ScheduleManagementFacadeTest {
         verifyNoMoreInteractions(schedulePersistencePort);
         verify(schedule, never()).setStart(command.getStart());
         verify(schedule, never()).setEnd(command.getEnd());
-        verify(scheduleLockPort).lockByStaffAndService(anyLong(), anyLong(), eq(false));
+        verify(scheduleLockPort).lockByStaff(anyLong(), eq(false));
         verify(scheduleLockPort).lock(anyLong(), eq(false));
     }
 
@@ -265,7 +269,7 @@ class ScheduleManagementFacadeTest {
         verify(schedule).setStart(command.getStart());
         verify(schedule).setEnd(command.getEnd());
         verify(schedulePersistencePort).save(schedule);
-        verify(scheduleLockPort).lockByStaffAndService(anyLong(), anyLong(), eq(false));
+        verify(scheduleLockPort).lockByStaff(anyLong(), eq(false));
         verify(scheduleLockPort).lock(anyLong(), eq(false));
     }
 
@@ -297,7 +301,7 @@ class ScheduleManagementFacadeTest {
 
         // Then
         verify(schedulePersistencePort).save(any(Schedule.class));
-        verify(scheduleLockPort).lockByStaffAndService(eq(command.getStaffId()), eq(command.getServiceId()), eq(false));
+        verify(scheduleLockPort).lockByStaff(eq(command.getStaffId()), eq(false));
     }
 
     @Test
@@ -315,7 +319,7 @@ class ScheduleManagementFacadeTest {
         assertThatThrownBy(() -> scheduleManagement.createSchedule(command))
                 .isInstanceOf(IllegalStateException.class);
         verifyNoMoreInteractions(schedulePersistencePort);
-        verify(scheduleLockPort).lockByStaffAndService(eq(command.getStaffId()), eq(command.getServiceId()), eq(false));
+        verify(scheduleLockPort).lockByStaff(eq(command.getStaffId()), eq(false));
     }
 
     @Test
@@ -345,7 +349,7 @@ class ScheduleManagementFacadeTest {
         assertThatThrownBy(() -> scheduleManagement.createSchedule(command))
                 .isInstanceOf(IllegalStateException.class);
         verifyNoMoreInteractions(schedulePersistencePort);
-        verify(scheduleLockPort).lockByStaffAndService(eq(command.getStaffId()), eq(command.getServiceId()), eq(false));
+        verify(scheduleLockPort).lockByStaff(eq(command.getStaffId()), eq(false));
     }
 
     @Test

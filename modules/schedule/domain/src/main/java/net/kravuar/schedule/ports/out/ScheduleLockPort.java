@@ -10,11 +10,10 @@ public interface ScheduleLockPort {
     void lock(long scheduleId, boolean acquire);
 
     /**
-     * Lock action on the staff schedules.
+     * Lock action on all staff schedules.
      *
      * @param staffId schedules staff id to lock on
-     * @param serviceId service id to lock on
      * @param acquire whether to acquire/release lock
      */
-    void lockByStaffAndService(long staffId, long serviceId, boolean acquire);
+    void lockByStaff(long staffId, boolean acquire);
 }

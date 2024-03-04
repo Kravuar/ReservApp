@@ -14,10 +14,10 @@ class LocalScheduleLockAdapter implements ScheduleLockPort {
             .concurrencyLevel(4)
             .expireAfterWrite(1, TimeUnit.MINUTES)
             .<Long, ReentrantLock>build().asMap();
-    private final ConcurrentMap<StaffServiceKey, ReentrantLock> staffLocks = CacheBuilder.newBuilder()
+    private final ConcurrentMap<Long, ReentrantLock> staffLocks = CacheBuilder.newBuilder()
             .concurrencyLevel(4)
             .expireAfterWrite(1, TimeUnit.MINUTES)
-            .<StaffServiceKey, ReentrantLock>build().asMap();
+            .<Long, ReentrantLock>build().asMap();
 
     @Override
     public void lock(long scheduleId, boolean acquire) {
@@ -29,15 +29,11 @@ class LocalScheduleLockAdapter implements ScheduleLockPort {
     }
 
     @Override
-    public void lockByStaffAndService(long staffId, long serviceId, boolean acquire) {
-        var key = new StaffServiceKey(staffId, serviceId);
-        var lock = staffLocks.computeIfAbsent(key, (k) -> new ReentrantLock());
+    public void lockByStaff(long staffId, boolean acquire) {
+        var lock = staffLocks.computeIfAbsent(staffId, (k) -> new ReentrantLock());
         if (acquire)
             lock.lock();
         else if (lock.isHeldByCurrentThread())
             lock.unlock();
-    }
-
-    record StaffServiceKey(long staffId, long serviceId) {
     }
 }
