@@ -8,7 +8,7 @@ import org.springframework.kafka.config.TopicBuilder;
 
 @Configuration
 @RequiredArgsConstructor
-class KafkaConfig {
+class KafkaNotificationConfig {
     private final KafkaProps kafkaProps;
 
     @Bean

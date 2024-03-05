@@ -99,8 +99,8 @@ services:
         MODULE_PATH: 'accounts'
         BUILD_MODULE_PATH: 'accounts/accounts-app'
     environment:
-      OKTA_CLIENT_ORGURL: ${OKTA_ORG_URL}
-      OKTA_CLIENT_TOKEN: ${OKTA_API_TOKEN}
+      OKTA_CLIENT_ORGURL: ${OKTA_CLIENT_ORGURL}
+      OKTA_CLIENT_TOKEN: ${OKTA_CLIENT_TOKEN}
     expose:
       - "8082"
     networks:
@@ -176,6 +176,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: 'staff-pass'
 
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${OKTA_ISSUER_URI}
+      OKTA_CLIENT_ORGURL: ${OKTA_CLIENT_ORGURL}
+      OKTA_CLIENT_TOKEN: ${OKTA_CLIENT_TOKEN}
 
       SPRING_KAFKA_BOOTSTRAP_SERVERS: 'http://kafka:9092'
       SPRING_KAFKA_CONSUMER_GROUP_ID: "staff_group"
@@ -219,9 +221,9 @@ services:
     expose:
       - "8085"
     environment:
-      SPRING_DATASOURCE_URL: 'jdbc:mysql://staff-db:3306/staff-db'
+      SPRING_DATASOURCE_URL: 'jdbc:mysql://schedule-db:3306/schedule-db'
       SPRING_DATASOURCE_USERNAME: 'root'
-      SPRING_DATASOURCE_PASSWORD: 'staff-pass'
+      SPRING_DATASOURCE_PASSWORD: 'schedule-pass'
 
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${OKTA_ISSUER_URI}
 

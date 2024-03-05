@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 
 // TODO: Test this
-public class TimePeriodsIntersectionValidator implements ConstraintValidator<StartBeforeEnd, Collection<Period<LocalTime>>> {
+public class TimePeriodsIntersectionValidator implements ConstraintValidator<PeriodsNotIntersect, Collection<Period<LocalTime>>> {
     @Override
     public boolean isValid(Collection<Period<LocalTime>> periods, ConstraintValidatorContext context) {
         LocalTime previousEnd = null;

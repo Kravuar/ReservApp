@@ -26,8 +26,8 @@ public class JPAReservationRetrievalAdapter implements ReservationRetrievalPort 
     @Override
     public NavigableMap<LocalDate, List<Reservation>> findAllActiveByStaff(long staffId, LocalDate from, LocalDate to, boolean fullyActiveOnly) {
         List<Reservation> reservations = fullyActiveOnly
-                ? reservationRepository.findAllActiveByStaff(staffId, from, to)
-                : reservationRepository.findAllByStaff(staffId, from, to);
+                ? reservationRepository.findAllFullyActiveByStaff(staffId, from, to)
+                : reservationRepository.findAllActiveByStaff(staffId, from, to);
         return reservations.stream()
                 .collect(Collectors.groupingBy(
                         Reservation::getDate,

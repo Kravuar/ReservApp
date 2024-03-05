@@ -17,3 +17,4 @@
 9. <span style="color:blue">(POLISHING)</span> Remove duplication in application properties, exception handling and some other stuff
 10. <span style="color:green">(MINOR)</span> Use error codes instead of messages in exceptions
 11. <span style="color:orange">(MEDIUM)</span> Define schema.sql with constraints, indexes and other staff
+12. <span style="color:green">(MINOR)</span> Eureka and other spring cloud staff

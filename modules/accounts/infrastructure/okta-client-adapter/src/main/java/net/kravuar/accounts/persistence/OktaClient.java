@@ -13,16 +13,10 @@ import net.kravuar.context.AppComponent;
 
 @AppComponent
 class OktaClient implements AccountPersistencePort {
-    private final UserApi client;
-
-    OktaClient() {
-        String url = System.getenv().get("OKTA_CLIENT_ORGURL");
-        String token = System.getenv().get("OKTA_CLIENT_TOKEN");
-        this.client = new UserApi(Clients.builder()
-                .setOrgUrl(url)
-                .setClientCredentials(new TokenClientCredentials(token))
-                .build());
-    }
+    private final UserApi client = new UserApi(Clients.builder()
+            .setOrgUrl(System.getenv().get("OKTA_CLIENT_ORGURL"))
+            .setClientCredentials(new TokenClientCredentials(System.getenv().get("OKTA_CLIENT_TOKEN")))
+            .build());
 
     @Override
     public Account save(Account account) {

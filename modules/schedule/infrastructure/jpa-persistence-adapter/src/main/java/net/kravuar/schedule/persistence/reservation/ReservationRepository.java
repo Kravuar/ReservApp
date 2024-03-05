@@ -12,26 +12,26 @@ import java.util.List;
 @Repository
 interface ReservationRepository extends JpaRepository<Reservation, Long> {
     @Query("SELECT r FROM Reservation r " +
-            "WHERE r.sub = :sub " +
+            "WHERE r.clientSub = :sub " +
             "AND r.date BETWEEN :from AND :to " +
-            "AND r.active = :true " +
+            "AND r.active = true " +
             "AND r.service.active = true " +
             "AND r.service.business.active = true " +
-            "AND r.sub.active = true")
+            "AND r.staff.active = true")
     List<Reservation> findAllActiveBySub(@Param("sub") String sub, @Param("from") LocalDate from, @Param("to") LocalDate to);
 
     @Query("SELECT r FROM Reservation r " +
             "WHERE r.staff.id = :staffId " +
             "AND r.date BETWEEN :from AND :to " +
-            "AND r.active = :true " +
+            "AND r.active = true " +
             "AND r.service.active = true " +
             "AND r.service.business.active = true " +
             "AND r.staff.active = true")
-    List<Reservation> findAllActiveByStaff(@Param("staffId") long staffId, @Param("from") LocalDate from, @Param("to") LocalDate to);
+    List<Reservation> findAllFullyActiveByStaff(@Param("staffId") long staffId, @Param("from") LocalDate from, @Param("to") LocalDate to);
 
     @Query("SELECT r FROM Reservation r " +
             "WHERE r.staff.id = :staffId " +
             "AND r.date BETWEEN :from AND :to " +
-            "AND r.active = :true")
-    List<Reservation> findAllByStaff(@Param("staffId") long staffId, @Param("from") LocalDate from, @Param("to") LocalDate to);
+            "AND r.active = true")
+    List<Reservation> findAllActiveByStaff(@Param("staffId") long staffId, @Param("from") LocalDate from, @Param("to") LocalDate to);
 }
