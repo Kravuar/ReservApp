@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.kravuar.schedule.domain.util.period.Period;
+import net.kravuar.schedule.domain.weak.ReservationSlot;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

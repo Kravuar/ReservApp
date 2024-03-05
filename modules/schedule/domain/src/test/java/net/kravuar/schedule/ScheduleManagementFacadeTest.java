@@ -2,6 +2,7 @@ package net.kravuar.schedule;
 
 import net.kravuar.schedule.domain.*;
 import net.kravuar.schedule.domain.commands.*;
+import net.kravuar.schedule.domain.weak.ReservationSlot;
 import net.kravuar.schedule.ports.out.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,7 +64,7 @@ class ScheduleManagementFacadeTest {
     }
 
     static Staff someStaff() {
-        return new Staff(1L, someBusiness(), true);
+        return new Staff(1L, someBusiness(), "sub", true);
     }
 
     static Schedule twoOfFiveTwosSchedule(long daysToAdd) {

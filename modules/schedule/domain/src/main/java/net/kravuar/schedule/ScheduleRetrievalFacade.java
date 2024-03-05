@@ -2,7 +2,7 @@ package net.kravuar.schedule;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
-import net.kravuar.schedule.domain.ReservationSlot;
+import net.kravuar.schedule.domain.weak.ReservationSlot;
 import net.kravuar.schedule.domain.Schedule;
 import net.kravuar.schedule.domain.ScheduleExceptionDay;
 import net.kravuar.schedule.domain.Staff;

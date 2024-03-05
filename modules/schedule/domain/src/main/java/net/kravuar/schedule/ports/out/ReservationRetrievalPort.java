@@ -29,7 +29,7 @@ public interface ReservationRetrievalPort {
      * @return {@code NavigableMap<LocalDate, List<Reservation>>} mapping dates to reservations associated with the provided {@code staffId}
      * within the specified date range
      */
-    NavigableMap<LocalDate, List<Reservation>> findAllByStaff(long staffId, LocalDate from, LocalDate to, boolean fullyActiveOnly);
+    NavigableMap<LocalDate, List<Reservation>> findAllActiveByStaff(long staffId, LocalDate from, LocalDate to, boolean fullyActiveOnly);
 
     /**
      * Find all active reservations by client within a date range.

@@ -12,5 +12,6 @@ import lombok.Setter;
 public class Staff {
     private Long id;
     private Business business;
+    private String sub;
     private boolean active;
 }

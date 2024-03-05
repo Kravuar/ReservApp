@@ -7,6 +7,41 @@
 
     <description>Mapping for domain Schedule</description>
 
+    <entity class="net.kravuar.schedule.domain.Reservation" access="FIELD">
+        <table name="reservation"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+
+            <basic name="date">
+                <column nullable="false"/>
+            </basic>
+            <basic name="start">
+                <column nullable="false"/>
+            </basic>
+            <basic name="end">
+                <column nullable="false"/>
+            </basic>
+            <basic name="clientSub">
+                <column nullable="false"/>
+            </basic>
+            <basic name="active">
+                <column nullable="false"/>
+            </basic>
+            <basic name="createdAt">
+                <column nullable="false"/>
+            </basic>
+
+            <many-to-one name="staff" fetch="LAZY" optional="false">
+                <join-column name="staffId"/>
+            </many-to-one>
+            <many-to-one name="service" fetch="LAZY" optional="false">
+                <join-column name="serviceId"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+
     <entity class="net.kravuar.schedule.domain.Schedule" access="FIELD">
         <table name="schedule"/>
         <attributes>
@@ -50,7 +85,7 @@
                 <column nullable="false"/>
             </basic>
 
-            <element-collection target-class="net.kravuar.schedule.domain.ReservationSlot" name="reservationSlots"
+            <element-collection target-class="net.kravuar.schedule.domain.weak.ReservationSlot" name="reservationSlots"
                                 fetch="EAGER">
                 <column nullable="false"/>
                 <collection-table name="exceptionDaysSlots"/>
@@ -72,7 +107,7 @@
                 <column nullable="false"/>
             </basic>
 
-            <element-collection target-class="net.kravuar.schedule.domain.ReservationSlot" name="reservationSlots"
+            <element-collection target-class="net.kravuar.schedule.domain.weak.ReservationSlot" name="reservationSlots"
                                 fetch="EAGER">
                 <column nullable="false"/>
                 <collection-table name="patternSlots"/>
@@ -87,6 +122,9 @@
                 <generated-value strategy="IDENTITY"/>
             </id>
             <basic name="active">
+                <column nullable="false"/>
+            </basic>
+            <basic name="sub">
                 <column nullable="false"/>
             </basic>
             <many-to-one name="business" fetch="LAZY" optional="false">
@@ -123,5 +161,5 @@
         </attributes>
     </entity>
 
-    <embeddable class="net.kravuar.schedule.domain.ReservationSlot" access="FIELD"/>
+    <embeddable class="net.kravuar.schedule.domain.weak.ReservationSlot" access="FIELD"/>
 </entity-mappings>

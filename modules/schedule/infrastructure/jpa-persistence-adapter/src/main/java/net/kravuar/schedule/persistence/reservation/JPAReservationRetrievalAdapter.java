@@ -1,0 +1,48 @@
+package net.kravuar.schedule.persistence.reservation;
+
+import lombok.RequiredArgsConstructor;
+import net.kravuar.schedule.domain.Reservation;
+import net.kravuar.schedule.domain.exceptions.ReservationNotFoundException;
+import net.kravuar.schedule.ports.out.ReservationRetrievalPort;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.NavigableMap;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+
+@Component
+@RequiredArgsConstructor
+public class JPAReservationRetrievalAdapter implements ReservationRetrievalPort {
+    private final ReservationRepository reservationRepository;
+
+    @Override
+    public Reservation findActiveById(long reservationId) {
+        return reservationRepository.findById(reservationId)
+                .orElseThrow(ReservationNotFoundException::new);
+    }
+
+    @Override
+    public NavigableMap<LocalDate, List<Reservation>> findAllActiveByStaff(long staffId, LocalDate from, LocalDate to, boolean fullyActiveOnly) {
+        List<Reservation> reservations = fullyActiveOnly
+                ? reservationRepository.findAllActiveByStaff(staffId, from, to)
+                : reservationRepository.findAllByStaff(staffId, from, to);
+        return reservations.stream()
+                .collect(Collectors.groupingBy(
+                        Reservation::getDate,
+                        TreeMap::new,
+                        Collectors.toList()
+                ));
+    }
+
+    @Override
+    public NavigableMap<LocalDate, List<Reservation>> findAllActiveByClient(String clientSub, LocalDate from, LocalDate to) {
+        return reservationRepository.findAllActiveBySub(clientSub, from, to).stream()
+                .collect(Collectors.groupingBy(
+                        Reservation::getDate,
+                        TreeMap::new,
+                        Collectors.toList()
+                ));
+    }
+}

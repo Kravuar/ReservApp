@@ -1,5 +1,6 @@
 package net.kravuar.schedule.domain;
 
+import net.kravuar.schedule.domain.weak.ReservationSlot;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

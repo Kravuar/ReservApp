@@ -3,7 +3,7 @@ package net.kravuar.schedule;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
 import net.kravuar.schedule.domain.Reservation;
-import net.kravuar.schedule.domain.ReservationSlot;
+import net.kravuar.schedule.domain.weak.ReservationSlot;
 import net.kravuar.schedule.domain.Service;
 import net.kravuar.schedule.domain.Staff;
 import net.kravuar.schedule.domain.commands.CreateReservationCommand;
@@ -71,7 +71,7 @@ public class ReservationManagementFacade implements ReservationManagementUseCase
             // Non fully active as well, so that, if some parent entity went inactive before we fetch reservations
             // we will still see them, which will prevent placing multiple reservations at the same time (due to
             // existing is not visible at the moment).
-            List<Reservation> existingReservations = reservationRetrievalPort.findAllByStaff(
+            List<Reservation> existingReservations = reservationRetrievalPort.findAllActiveByStaff(
                     command.staffId(),
                     command.dateTime().toLocalDate(),
                     command.dateTime().toLocalDate(),

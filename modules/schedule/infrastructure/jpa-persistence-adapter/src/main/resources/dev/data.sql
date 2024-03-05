@@ -20,11 +20,11 @@ VALUES (1, 1, true),
        (2, 2, true),
        (3, 2, false);
 
-INSERT INTO staff (id, business_id, active)
-VALUES (1, 1, true),
-       (2, 2, true),
-       (3, 2, true),
-       (4, 2, true);
+INSERT INTO staff (id, business_id, sub, active)
+VALUES (1, 1, "iamStaff111" true),
+       (2, 2, "iamStaff222" true),
+       (3, 2, "iamStaff333" true),
+       (4, 2, "iamStaff444" true);
 
 INSERT INTO schedule (start, end, staff_id, service_id, created_at, active)
 VALUES ('2025-03-02', '2025-03-05', 1, 1, '2024-03-02T08:00:00', true),

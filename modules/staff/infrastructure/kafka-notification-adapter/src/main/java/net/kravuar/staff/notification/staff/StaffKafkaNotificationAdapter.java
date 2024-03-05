@@ -21,6 +21,7 @@ class StaffKafkaNotificationAdapter implements StaffNotificationPort {
                 new StaffCreationDTO(
                         staff.getId(),
                         staff.getBusiness().getId(),
+                        staff.getSub(),
                         staff.isActive()
                 ));
     }

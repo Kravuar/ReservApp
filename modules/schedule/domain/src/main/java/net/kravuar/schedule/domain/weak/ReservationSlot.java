@@ -1,4 +1,4 @@
-package net.kravuar.schedule.domain;
+package net.kravuar.schedule.domain.weak;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

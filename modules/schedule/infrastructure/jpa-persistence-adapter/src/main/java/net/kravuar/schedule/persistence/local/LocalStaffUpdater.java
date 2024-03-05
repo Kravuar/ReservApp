@@ -25,6 +25,7 @@ class LocalStaffUpdater {
                 new Staff(
                         creationDTO.staffId(),
                         business,
+                        creationDTO.sub(),
                         creationDTO.active()
                 )
         );

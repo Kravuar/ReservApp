@@ -1,6 +1,6 @@
 package net.kravuar.schedule.web;
 
-import net.kravuar.schedule.domain.ReservationSlot;
+import net.kravuar.schedule.domain.weak.ReservationSlot;
 
 import java.time.LocalDate;
 import java.util.SortedSet;

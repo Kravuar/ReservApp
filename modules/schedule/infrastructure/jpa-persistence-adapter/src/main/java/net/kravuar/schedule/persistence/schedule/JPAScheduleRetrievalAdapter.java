@@ -1,4 +1,4 @@
-package net.kravuar.schedule.persistence;
+package net.kravuar.schedule.persistence.schedule;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.schedule.domain.Schedule;

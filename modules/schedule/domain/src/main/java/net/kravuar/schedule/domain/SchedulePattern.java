@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.kravuar.schedule.domain.util.period.PeriodsNotIntersect;
+import net.kravuar.schedule.domain.weak.ReservationSlot;
 
 import java.util.Collections;
 import java.util.SortedSet;

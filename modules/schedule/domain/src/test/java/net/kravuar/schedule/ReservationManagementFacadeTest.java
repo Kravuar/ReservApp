@@ -6,6 +6,7 @@ import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCom
 import net.kravuar.schedule.domain.exceptions.ReservationOutOfSlotsException;
 import net.kravuar.schedule.domain.exceptions.ReservationOverlappingException;
 import net.kravuar.schedule.domain.exceptions.ReservationSlotNotFoundException;
+import net.kravuar.schedule.domain.weak.ReservationSlot;
 import net.kravuar.schedule.ports.in.ScheduleRetrievalUseCase;
 import net.kravuar.schedule.ports.out.*;
 import org.junit.jupiter.api.Test;
@@ -56,7 +57,7 @@ class ReservationManagementFacadeTest {
     }
 
     static Staff someStaff() {
-        return new Staff(1L, someBusiness(), true);
+        return new Staff(1L, someBusiness(), "sub", true);
     }
 
     @Test
@@ -98,7 +99,7 @@ class ReservationManagementFacadeTest {
                 .findActiveScheduleByStaffAndServiceInPerDay(any());
         doReturn(existingReservations)
                 .when(reservationRetrievalPort)
-                .findAllByStaff(anyLong(), eq(date), eq(date), eq(false));
+                .findAllActiveByStaff(anyLong(), eq(date), eq(date), eq(false));
         doAnswer(invocation -> invocation.getArgument(0))
                 .when(reservationPersistencePort)
                 .save(any());
@@ -191,7 +192,7 @@ class ReservationManagementFacadeTest {
                 .findActiveScheduleByStaffAndServiceInPerDay(any(RetrieveScheduleByStaffAndServiceCommand.class));
         doReturn(existingReservations)
                 .when(reservationRetrievalPort)
-                .findAllByStaff(anyLong(), eq(date), eq(date), eq(false));
+                .findAllActiveByStaff(anyLong(), eq(date), eq(date), eq(false));
         doAnswer(invocation -> invocation.getArgument(0))
                 .when(reservationPersistencePort)
                 .save(any());
@@ -255,7 +256,7 @@ class ReservationManagementFacadeTest {
                 .findActiveScheduleByStaffAndServiceInPerDay(any(RetrieveScheduleByStaffAndServiceCommand.class));
         doReturn(existingReservations)
                 .when(reservationRetrievalPort)
-                .findAllByStaff(anyLong(), eq(date), eq(date), eq(false));
+                .findAllActiveByStaff(anyLong(), eq(date), eq(date), eq(false));
 
         // When & Then
         assertThatThrownBy(() -> reservationManagement.createReservation(command))
@@ -309,7 +310,7 @@ class ReservationManagementFacadeTest {
                 .findActiveScheduleByStaffAndServiceInPerDay(any(RetrieveScheduleByStaffAndServiceCommand.class));
         doReturn(existingReservations)
                 .when(reservationRetrievalPort)
-                .findAllByStaff(anyLong(), eq(date), eq(date), eq(false));
+                .findAllActiveByStaff(anyLong(), eq(date), eq(date), eq(false));
 
         // When & Then
         assertThatThrownBy(() -> reservationManagement.createReservation(command))

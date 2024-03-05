@@ -1,7 +1,7 @@
 package net.kravuar.schedule.web;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.schedule.domain.ReservationSlot;
+import net.kravuar.schedule.domain.weak.ReservationSlot;
 import net.kravuar.schedule.domain.Staff;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;

@@ -3,7 +3,7 @@ package net.kravuar.schedule.domain.commands;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
-import net.kravuar.schedule.domain.ReservationSlot;
+import net.kravuar.schedule.domain.weak.ReservationSlot;
 import net.kravuar.schedule.domain.util.period.PeriodsNotIntersect;
 
 import java.time.LocalDate;
