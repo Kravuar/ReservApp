@@ -26,8 +26,8 @@ public class ServiceManagementFacade implements ServiceManagementUseCase {
                 new Service(
                         null,
                         business,
-                        command.name(),
                         true,
+                        command.name(),
                         command.description()
                 )
         );

@@ -26,9 +26,7 @@ interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             "AND s.service.active = true " +
             "AND s.service.business.active = true " +
             "AND s.staff.active = true " +
-            "AND ((s.start >= :from AND s.start <= :to) " +
-            "OR (s.end >= :from AND s.end <= :to) " +
-            "OR (s.start <= :from AND s.end >= :to))")
+            "AND ((s.start <= :to AND :from <= s.end))")
     List<Schedule> findAllByService(@Param("serviceId") long serviceId, @Param("from") LocalDate from, @Param("to") LocalDate to);
 
     @Query("SELECT s FROM Schedule s " +
@@ -38,8 +36,6 @@ interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             "AND s.service.active = true " +
             "AND s.service.business.active = true " +
             "AND s.staff.active = true " +
-            "AND ((s.start >= :from AND s.start <= :to) " +
-            "OR (s.end >= :from AND s.end <= :to) " +
-            "OR (s.start <= :from AND s.end >= :to))")
+            "AND ((s.start <= :to AND :from <= s.end))")
     List<Schedule> findAllByStaffAndService(@Param("staffId") long staffId, @Param("serviceId") long serviceId, @Param("from") LocalDate from, @Param("to") LocalDate to);
 }

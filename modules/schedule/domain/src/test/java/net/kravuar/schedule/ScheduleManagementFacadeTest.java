@@ -2,7 +2,6 @@ package net.kravuar.schedule;
 
 import net.kravuar.schedule.domain.*;
 import net.kravuar.schedule.domain.commands.*;
-import net.kravuar.schedule.domain.ReservationSlot;
 import net.kravuar.schedule.ports.out.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,7 +59,7 @@ class ScheduleManagementFacadeTest {
     }
 
     static Service someService() {
-        return new Service(1L, new Business(1L, "owner", true), true);
+        return new Service(1L, someBusiness(), true);
     }
 
     static Staff someStaff() {

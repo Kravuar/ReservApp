@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -14,8 +15,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Reservation {
     private Long id;
-    private ReservationSlot slot;
     private LocalDate date;
+    private LocalTime start;
+    private LocalTime end;
     private String clientSub;
     private Staff staff;
     private Service service;

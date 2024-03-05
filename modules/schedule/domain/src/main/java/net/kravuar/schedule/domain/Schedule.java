@@ -45,11 +45,14 @@ public class Schedule implements Period<LocalDate> {
                                         return exceptionDay.getReservationSlots();
 
                                     // Get the schedule for particular day
-                                    Schedule currentSchedule = schedulesMap
-                                            .floorEntry(currentDay)
-                                            .getValue();
+                                    Map.Entry<LocalDate, Schedule> entry = schedulesMap.floorEntry(currentDay);
+                                    if (entry == null)
+                                        return Collections.emptySortedSet();
 
-                                    if (currentSchedule.getPatterns().isEmpty())
+                                    Schedule currentSchedule = entry.getValue();
+
+                                    // No patterns, or schedule ends before currentDay
+                                    if (currentSchedule.getPatterns().isEmpty() || currentSchedule.getEnd().isBefore(currentDay))
                                         return Collections.emptySortedSet();
                                     else {
                                         // Not exceptional day, find from schedule
@@ -74,12 +77,21 @@ public class Schedule implements Period<LocalDate> {
 
                                         int cycleDaysToPass = daysPassedFromSchedule % patternsCycleDuration;
                                         int patternIdx = 0;
+                                        int patternDuration = 0;
                                         while (cycleDaysToPass > 0) {
                                             SchedulePattern pattern = currentSchedule.getPatterns().get(patternIdx);
-                                            cycleDaysToPass -= pattern.getRepeatDays() + pattern.getPauseDays();
-                                            ++patternIdx;
+                                            patternDuration = pattern.getRepeatDays() + pattern.getPauseDays();
+                                            cycleDaysToPass -= patternDuration;
+                                            if (cycleDaysToPass >= 0)
+                                                ++patternIdx;
                                         }
-                                        return currentSchedule.getPatterns().get(patternIdx).getReservationSlots();
+                                        // cycleDaysToPass will contain non-positive index of day after while loop
+                                        // zero means first day of pattern
+                                        // +1 as days count from 1, not 0
+                                        int day = cycleDaysToPass < 0
+                                            ? cycleDaysToPass + patternDuration + 1
+                                            : cycleDaysToPass + 1 ;
+                                        return currentSchedule.getPatterns().get(patternIdx).getReservationSlotsForDay(day);
                                     }
                                 },
                                 (existing, collision) -> existing,

@@ -3,7 +3,10 @@ package net.kravuar.schedule.domain;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import net.kravuar.schedule.domain.util.period.Period;
 import net.kravuar.schedule.domain.util.period.StartBeforeEnd;
 
@@ -15,7 +18,6 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class ReservationSlot implements Period<LocalTime>, Comparable<ReservationSlot> {
-    private Long id;
     @NotNull
     private LocalTime start;
     @NotNull

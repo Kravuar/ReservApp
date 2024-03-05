@@ -9,9 +9,7 @@ import net.kravuar.schedule.ports.out.ScheduleRetrievalPort;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -56,7 +54,7 @@ public class JPAScheduleRetrievalAdapter implements ScheduleRetrievalPort {
     }
 
     @Override
-    public Map<LocalDate, ScheduleExceptionDay> findActiveExceptionDaysByStaffAndService(long staffId, long serviceId, LocalDate from, LocalDate to) {
+    public NavigableMap<LocalDate, ScheduleExceptionDay> findActiveExceptionDaysByStaffAndService(long staffId, long serviceId, LocalDate from, LocalDate to) {
         return exceptionDayRepository.findAllFullyActiveByStaffAndService(
                 staffId,
                 serviceId,
@@ -64,12 +62,14 @@ public class JPAScheduleRetrievalAdapter implements ScheduleRetrievalPort {
                 to
         ).stream().collect(Collectors.toMap(
                 ScheduleExceptionDay::getDate,
-                Function.identity()
+                Function.identity(),
+                (existing, overlap) -> existing,
+                TreeMap::new
         ));
     }
 
     @Override
-    public Map<Staff, Map<LocalDate, ScheduleExceptionDay>> findActiveExceptionDaysByService(long serviceId, LocalDate from, LocalDate to) {
+    public Map<Staff, NavigableMap<LocalDate, ScheduleExceptionDay>> findActiveExceptionDaysByService(long serviceId, LocalDate from, LocalDate to) {
         return exceptionDayRepository.findAllFullyActiveByService(
                 serviceId,
                 from,
@@ -78,7 +78,9 @@ public class JPAScheduleRetrievalAdapter implements ScheduleRetrievalPort {
                 ScheduleExceptionDay::getStaff,
                 Collectors.toMap(
                         ScheduleExceptionDay::getDate,
-                        Function.identity()
+                        Function.identity(),
+                        (existing, overlap) -> existing,
+                        TreeMap::new
                 )
         ));
     }

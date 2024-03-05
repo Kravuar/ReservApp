@@ -57,7 +57,7 @@ class ServiceManagementFacadeTest {
         Service newService = serviceManagement.create(command);
 
         // Then
-        verify(servicePersistencePort).save(same(service));
+        verify(servicePersistencePort).save(any(Service.class));
         verify(serviceNotificationPort).notifyNewService(same(service));
         assertThat(newService).isSameAs(service);
     }

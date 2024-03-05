@@ -57,6 +57,17 @@ public class ReservationManagementFacade implements ReservationManagementUseCase
                     .findAny()
                     .orElseThrow(ReservationSlotNotFoundException::new);
 
+            Reservation reservation = new Reservation(
+                    null,
+                    date,
+                    reservationSlot.getStart(),
+                    reservationSlot.getEnd(),
+                    command.sub(),
+                    staff,
+                    service,
+                    true
+            );
+
             // Non fully active as well, so that, if some parent entity went inactive before we fetch reservations
             // we will still see them, which will prevent placing multiple reservations at the same time (due to
             // existing is not visible at the moment).
@@ -66,38 +77,25 @@ public class ReservationManagementFacade implements ReservationManagementUseCase
                     command.dateTime().toLocalDate(),
                     false
             ).getOrDefault(date, Collections.emptyList());
-
-            Reservation reservation = new Reservation(
-                    null,
-                    reservationSlot,
-                    date,
-                    command.sub(),
-                    staff,
-                    service,
-                    true
-            );
-
             Map<Boolean, List<Reservation>> partitionedBySameService = existingReservations.stream()
                     .collect(Collectors.partitioningBy(
                             existing -> existing.getService().getId().equals(service.getId())
                     ));
 
-            // Should not exceed reservation slot size if overlaps
+            // Should not exceed reservation slot size if overlaps in same service
             List<Reservation> sameServiceAndSlotReservations = partitionedBySameService.get(true).stream()
-                    .filter(sameServiceReservation -> sameServiceReservation.getSlot().getStart().equals(reservationSlot.getStart()))
+                    .filter(sameServiceReservation -> sameServiceReservation.getStart().equals(reservationSlot.getStart()))
                     .toList();
             int takenSlots = sameServiceAndSlotReservations.size();
-            if (reservationSlot.getMaxReservations() == takenSlots) // ?Maybe >= check is safer somehow?
+            if (takenSlots >= reservationSlot.getMaxReservations()) // ?Maybe >= check is safer than == somehow?
                 throw new ReservationOutOfSlotsException();
 
             // Should not overlap with ANY from other service
-            List<Reservation> otherServicesReservations = partitionedBySameService.get(true);
-            for (Reservation otherServiceReservation: otherServicesReservations) {
-                ReservationSlot otherSlot = otherServiceReservation.getSlot();
-                if (otherSlot.getStart().isBefore(reservationSlot.getStart())
-                        && otherSlot.getEnd().isAfter(reservationSlot.getStart()))
+            // Given [x1:x2] [y1:y2], overlaps when: x1 <= y2 && y1 <= x2
+            List<Reservation> otherServicesReservations = partitionedBySameService.get(false);
+            for (Reservation otherServiceReservation: otherServicesReservations)
+                if (reservation.getStart().isBefore(otherServiceReservation.getEnd()) && otherServiceReservation.getStart().isBefore(reservationSlot.getEnd()))
                     throw new ReservationOverlappingException();
-            }
 
             return reservationPersistencePort.save(reservation);
         } finally {
@@ -107,6 +105,20 @@ public class ReservationManagementFacade implements ReservationManagementUseCase
 
     @Override
     public void cancelReservation(long reservationId) {
+        try {
+            scheduleLockPort.lock(reservationId, true);
 
+            Reservation reservation = reservationRetrievalPort.findActiveById(reservationId);
+            try {
+                scheduleLockPort.lockByStaff(reservation.getStaff().getId(), true);
+
+                reservation.setActive(false);
+                reservationPersistencePort.save(reservation);
+            } finally {
+                scheduleLockPort.lockByStaff(reservation.getStaff().getId(), false);
+            }
+        } finally {
+            scheduleLockPort.lock(reservationId, false);
+        }
     }
 }

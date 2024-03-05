@@ -1,5 +1,6 @@
 package net.kravuar.schedule.ports.in;
 
+import net.kravuar.schedule.domain.ReservationSlot;
 import net.kravuar.schedule.domain.Schedule;
 import net.kravuar.schedule.domain.ScheduleExceptionDay;
 import net.kravuar.schedule.domain.Staff;
@@ -7,11 +8,12 @@ import net.kravuar.schedule.domain.commands.RetrieveScheduleByServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleExceptionDaysByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.exceptions.ScheduleNotFoundException;
-import net.kravuar.schedule.domain.ReservationSlot;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.SortedSet;
 
 public interface ScheduleRetrievalUseCase {
     /**
@@ -23,25 +25,6 @@ public interface ScheduleRetrievalUseCase {
      * @throws ScheduleNotFoundException if schedule wasn't found
      */
     Schedule findScheduleById(long scheduleId, boolean activeOnly);
-
-    /**
-     * Find nearest free reservation slot by service.
-     *
-     * @param serviceId id of the service
-     * @param dateTime  dateTime to which to find nearest slot
-     * @return {@code Optional<ReservationSlot>} of nearest found reservation slot associated with provided {@code serviceId}
-     */
-    Optional<ReservationSlot> findNearestFreeByService(long serviceId, LocalDateTime dateTime);
-
-    /**
-     * Find nearest free reservation slot by service and staff.
-     *
-     * @param serviceId id of the service
-     * @param staffId   id of the staff
-     * @param dateTime  dateTime to which to find nearest slot
-     * @return {@code Optional<ReservationSlot>} of nearest found reservation slot associated with provided {@code serviceId} and {@code staffId}
-     */
-    Optional<ReservationSlot> findNearestFreeByStaffAndService(long staffId, long serviceId, LocalDateTime dateTime);
 
     /**
      * Find active schedules by staff and service.

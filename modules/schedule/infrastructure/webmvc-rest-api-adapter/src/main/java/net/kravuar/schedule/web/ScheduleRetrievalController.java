@@ -1,11 +1,11 @@
 package net.kravuar.schedule.web;
 
 import lombok.RequiredArgsConstructor;
+import net.kravuar.schedule.domain.ReservationSlot;
 import net.kravuar.schedule.domain.Staff;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleExceptionDaysByStaffAndServiceCommand;
-import net.kravuar.schedule.domain.ReservationSlot;
 import net.kravuar.schedule.ports.in.ScheduleRetrievalUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
+import java.util.SortedSet;
 import java.util.stream.Collectors;
 
 @RestController
@@ -62,7 +64,7 @@ class ScheduleRetrievalController {
     }
 
     @GetMapping("/by-service/{serviceId}/{from}/{to}")
-    Map<Staff, Map<LocalDate, SortedSet<ReservationSlot>>> byService(@PathVariable("serviceId") long serviceId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+    Map<Staff, NavigableMap<LocalDate, SortedSet<ReservationSlot>>> byService(@PathVariable("serviceId") long serviceId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return scheduleRetrievalUseCase.findActiveScheduleByServiceInPerDay(new RetrieveScheduleByServiceCommand(
                 serviceId,
                 from,

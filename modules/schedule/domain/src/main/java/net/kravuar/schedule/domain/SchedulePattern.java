@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.kravuar.schedule.domain.util.period.PeriodsNotIntersect;
 
+import java.util.Collections;
 import java.util.SortedSet;
 
 @Getter
@@ -23,4 +24,12 @@ public class SchedulePattern {
     @NotNull
     @PeriodsNotIntersect
     private SortedSet<@NotNull @Valid ReservationSlot> reservationSlots;
+
+    public SortedSet<ReservationSlot> getReservationSlotsForDay(int day) {
+        if (day < 1 || day > repeatDays + pauseDays)
+            throw new IllegalArgumentException("Does not fall into pattern duration");
+        if (day > repeatDays && pauseDays > 0)
+            return Collections.emptySortedSet();
+        return reservationSlots;
+    }
 }
