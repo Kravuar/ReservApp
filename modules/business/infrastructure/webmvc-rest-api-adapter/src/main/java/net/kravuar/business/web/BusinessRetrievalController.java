@@ -28,13 +28,13 @@ class BusinessRetrievalController {
                 .toList();
     }
 
-    @GetMapping("/my/byId/{businessId}")
+    @GetMapping("/my/by-id/{businessId}")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwner(#businessId, authentication.details.subject)")
     BusinessDTO myById(@PathVariable("businessId") long businessId) {
         return dtoMapper.toDTO(businessRetrieval.findById(businessId, false));
     }
 
-    @GetMapping("/byId/{businessId}")
+    @GetMapping("/by-id/{businessId}")
     BusinessDTO byId(@PathVariable("businessId") long businessId) {
         return dtoMapper.toDTO(businessRetrieval.findById(businessId, true));
     }

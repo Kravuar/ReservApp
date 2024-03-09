@@ -26,7 +26,7 @@ class ServiceRetrievalController {
                 .toList();
     }
 
-    @GetMapping("/my/byId/{serviceId}")
+    @GetMapping("/my/by-id/{serviceId}")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfService(#serviceId, authentication.details.subject)")
     ServiceDTO myById(@PathVariable("serviceId") long serviceId) {
         return dtoServiceMapper.toDTO(serviceRetrieval.findById(serviceId, false));
@@ -40,7 +40,7 @@ class ServiceRetrievalController {
                 .toList();
     }
 
-    @GetMapping("/byId/{serviceId}")
+    @GetMapping("/by-id/{serviceId}")
     ServiceDTO byId(@PathVariable("serviceId") long serviceId) {
         return dtoServiceMapper.toDTO(serviceRetrieval.findById(serviceId, true));
     }
