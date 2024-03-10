@@ -38,4 +38,15 @@ public interface ReservationRetrievalUseCase {
      * within the specified date range
      */
     SortedMap<LocalDate, List<Reservation>> findAllByClient(String clientSub, LocalDate from, LocalDate to);
+
+    /**
+     * Find all active reservations by service within a date range.
+     *
+     * @param serviceId id of the service
+     * @param from      start date of the range
+     * @param to        end date of the range (inclusive)
+     * @return {@code SortedMap<LocalDate, List<Reservation>>} of reservations associated with the provided {@code serviceId}
+     * within the specified date range
+     */
+    SortedMap<LocalDate, List<Reservation>> findAllByService(long serviceId, LocalDate from, LocalDate to);
 }

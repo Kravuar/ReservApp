@@ -21,7 +21,21 @@ VALUES (1, 1, true),
        (3, 1, true),
        (4, 3, true),
        (5, 2, true),
-       (6, 2, false);
+       (6, 2, false),
+       (7, 2, true),
+       (8, 2, true),
+       (9, 2, true),
+       (10, 2, true),
+       (11, 2, true),
+       (12, 2, true),
+       (13, 2, true),
+       (14, 2, true),
+       (15, 2, true),
+       (16, 2, true),
+       (17, 2, true),
+       (18, 2, true),
+       (19, 3, true),
+       (20, 1, true);
 
 INSERT INTO staff (id, business_id, sub, active)
 VALUES (1, 1, "iamStaff111", true),
@@ -99,7 +113,6 @@ VALUES (1, '08:00:00', '09:00:00', 20.0, 1),
        (8, '14:55:00', '15:55:00', 24.0, 3),
        (8, '16:25:00', '17:25:00', 24.0, 3);
 
-
 INSERT INTO exception_days_slots (schedule_exception_day_id, start, end, cost, max_reservations)
 VALUES (1, '08:25:00', '09:25:00', 50.0, 1),
        (1, '09:55:00', '10:55:00', 50.0, 1),
@@ -107,3 +120,7 @@ VALUES (1, '08:25:00', '09:25:00', 50.0, 1),
        (2, '13:25:00', '14:25:00', 100.0, 1),
        (2, '14:55:00', '15:55:00', 100.0, 1),
        (2, '16:25:00', '17:25:00', 100.0, 1);
+
+INSERT INTO reservation (date, start, end, client_sub, staff_id, service_id, active, created_at)
+VALUES ('2025-03-03', '09:30:00', '10:30:00', 'abobus', 1, 1, true, '2024-03-02T08:00:00'),
+       ('2025-03-08', '11:30:00', '12:30:00', 'bebobus', 1, 1, true, '2024-03-02T08:00:00');

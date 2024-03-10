@@ -40,6 +40,17 @@ class ReservationRetrievalController {
                 ));
     }
 
+    @GetMapping("/by-service/{serviceId}/{from}/{to}")
+    Map<LocalDate, List<AnonymousReservationDTO>> byService(@PathVariable("serviceId") long serviceId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+        return reservationRetrievalUseCase.findAllByService(serviceId, from, to).entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().stream()
+                                .map(dtoReservationMapper::reservationToAnonymousDTO)
+                                .toList()
+                ));
+    }
+
     @GetMapping("/by-client-sub/{sub}/{from}/{to}")
     @PreAuthorize("isAuthenticated() && #sub.equals(authentication.details.subject)")
     Map<LocalDate, List<ReservationDTO>> byClient(@PathVariable("sub") String sub, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {

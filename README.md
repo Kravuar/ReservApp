@@ -18,3 +18,4 @@
 10. <span style="color:green">(MINOR)</span> Use error codes instead of messages in exceptions
 11. <span style="color:orange">(MEDIUM)</span> Define schema.sql with constraints, indexes and other staff
 12. <span style="color:green">(MINOR)</span> Eureka and other spring cloud staff
+13. <span style="color:green">(MINOR)</span> Something wrong with noop notification port for service module

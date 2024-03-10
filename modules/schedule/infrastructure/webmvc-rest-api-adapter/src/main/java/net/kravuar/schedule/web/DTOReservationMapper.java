@@ -6,4 +6,5 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring", uses = {DTOStaffMapper.class, DTOServiceMapper.class})
 interface DTOReservationMapper {
     ReservationDTO reservationToDTO(Reservation reservation);
+    AnonymousReservationDTO reservationToAnonymousDTO(Reservation reservation);
 }

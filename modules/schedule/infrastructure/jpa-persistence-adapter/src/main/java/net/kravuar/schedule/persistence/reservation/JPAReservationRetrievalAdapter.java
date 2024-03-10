@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NavigableMap;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,16 @@ public class JPAReservationRetrievalAdapter implements ReservationRetrievalPort 
     @Override
     public NavigableMap<LocalDate, List<Reservation>> findAllActiveByClient(String clientSub, LocalDate from, LocalDate to) {
         return reservationRepository.findAllActiveBySub(clientSub, from, to).stream()
+                .collect(Collectors.groupingBy(
+                        Reservation::getDate,
+                        TreeMap::new,
+                        Collectors.toList()
+                ));
+    }
+
+    @Override
+    public SortedMap<LocalDate, List<Reservation>> findAllByService(long serviceId, LocalDate from, LocalDate to) {
+        return reservationRepository.findAllActiveByService(serviceId, from, to).stream()
                 .collect(Collectors.groupingBy(
                         Reservation::getDate,
                         TreeMap::new,
