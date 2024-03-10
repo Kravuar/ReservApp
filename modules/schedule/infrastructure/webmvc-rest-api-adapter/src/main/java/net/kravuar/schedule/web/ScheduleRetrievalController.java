@@ -1,7 +1,6 @@
 package net.kravuar.schedule.web;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.schedule.domain.Staff;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleExceptionDaysByStaffAndServiceCommand;
@@ -14,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.NavigableMap;
-import java.util.SortedSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,6 +22,7 @@ import java.util.stream.Collectors;
 class ScheduleRetrievalController {
     private final ScheduleRetrievalUseCase scheduleRetrievalUseCase;
     private final DTOScheduleMapper dtoScheduleMapper;
+    private final DTOStaffMapper dtoStaffMapper;
     private final DTOScheduleExceptionDayMapper dtoScheduleExceptionDayMapper;
 
     @GetMapping("/by-id/{scheduleId}/{activeOnly}")
@@ -64,11 +61,14 @@ class ScheduleRetrievalController {
     }
 
     @GetMapping("/by-service/{serviceId}/{from}/{to}")
-    Map<Staff, NavigableMap<LocalDate, SortedSet<ReservationSlot>>> byService(@PathVariable("serviceId") long serviceId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+    Map<StaffDTO, NavigableMap<LocalDate, SortedSet<ReservationSlot>>> byService(@PathVariable("serviceId") long serviceId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return scheduleRetrievalUseCase.findActiveScheduleByServiceInPerDay(new RetrieveScheduleByServiceCommand(
                 serviceId,
                 from,
                 to
+        )).entrySet().stream().collect(Collectors.toMap(
+                entry -> dtoStaffMapper.staffToDTO(entry.getKey()),
+                Map.Entry::getValue
         ));
     }
 
