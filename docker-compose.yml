@@ -11,8 +11,8 @@ services:
         BUILD_MODULE_PATH: 'gateway'
     ports:
       - "8080:8080"
-    environment:
-      GATEWAY_ALLOWED_ORIGINS: 'http://localhost:3000'
+#    environment:
+#      GATEWAY_ALLOWED_ORIGINS: 'http://localhost:3000'
     networks:
       - infrastructure-network
   zookeeper:
@@ -42,7 +42,30 @@ services:
     networks:
       - kafka-network
       - infrastructure-network
-
+  grafana:
+    build: './monitoring/config/grafana'
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./monitoring/grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      monitoring:
+        aliases:
+          - prometheus
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus:/prometheus
+    networks:
+      monitoring:
+        aliases:
+          - prometheus
 
 
   ##############################
@@ -262,6 +285,7 @@ networks:
   staff-network:
   schedule-network:
   kafka-network:
+  monitoring:
 
 volumes:
   business-db-data:

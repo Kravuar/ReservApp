@@ -18,4 +18,7 @@ VALUES (1, 'ownerSub', true),
 INSERT INTO service (business_id, name, active)
 VALUES (1, "cog an bol torture", true),
        (2, "bebr creation", true),
+       (1, "blink on ya", true),
+       (3, "jelly beanssss", true),
+       (2, "goofy ahh cut", true),
        (2, "akwodawkd", false);

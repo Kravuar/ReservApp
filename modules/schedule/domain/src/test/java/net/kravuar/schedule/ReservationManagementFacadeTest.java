@@ -1,6 +1,9 @@
 package net.kravuar.schedule;
 
-import net.kravuar.schedule.domain.*;
+import net.kravuar.schedule.domain.Business;
+import net.kravuar.schedule.domain.Reservation;
+import net.kravuar.schedule.domain.Service;
+import net.kravuar.schedule.domain.Staff;
 import net.kravuar.schedule.domain.commands.CreateReservationCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.exceptions.ReservationOutOfSlotsException;

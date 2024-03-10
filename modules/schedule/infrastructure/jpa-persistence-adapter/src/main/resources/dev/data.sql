@@ -18,7 +18,10 @@ VALUES (1, 'ownerSub', true),
 INSERT INTO service (id, business_id, active)
 VALUES (1, 1, true),
        (2, 2, true),
-       (3, 2, false);
+       (3, 1, true),
+       (4, 3, true),
+       (5, 2, true),
+       (6, 2, false);
 
 INSERT INTO staff (id, business_id, sub, active)
 VALUES (1, 1, "iamStaff111", true),

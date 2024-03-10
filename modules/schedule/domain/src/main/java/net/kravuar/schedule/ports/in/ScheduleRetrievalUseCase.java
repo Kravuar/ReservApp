@@ -1,6 +1,5 @@
 package net.kravuar.schedule.ports.in;
 
-import net.kravuar.schedule.domain.weak.ReservationSlot;
 import net.kravuar.schedule.domain.Schedule;
 import net.kravuar.schedule.domain.ScheduleExceptionDay;
 import net.kravuar.schedule.domain.Staff;
@@ -8,6 +7,7 @@ import net.kravuar.schedule.domain.commands.RetrieveScheduleByServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleExceptionDaysByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.exceptions.ScheduleNotFoundException;
+import net.kravuar.schedule.domain.weak.ReservationSlot;
 
 import java.time.LocalDate;
 import java.util.List;

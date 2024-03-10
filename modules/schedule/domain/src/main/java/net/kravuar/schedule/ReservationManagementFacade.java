@@ -3,7 +3,6 @@ package net.kravuar.schedule;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
 import net.kravuar.schedule.domain.Reservation;
-import net.kravuar.schedule.domain.weak.ReservationSlot;
 import net.kravuar.schedule.domain.Service;
 import net.kravuar.schedule.domain.Staff;
 import net.kravuar.schedule.domain.commands.CreateReservationCommand;
@@ -11,6 +10,7 @@ import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCom
 import net.kravuar.schedule.domain.exceptions.ReservationOutOfSlotsException;
 import net.kravuar.schedule.domain.exceptions.ReservationOverlappingException;
 import net.kravuar.schedule.domain.exceptions.ReservationSlotNotFoundException;
+import net.kravuar.schedule.domain.weak.ReservationSlot;
 import net.kravuar.schedule.ports.in.ReservationManagementUseCase;
 import net.kravuar.schedule.ports.in.ScheduleRetrievalUseCase;
 import net.kravuar.schedule.ports.out.*;

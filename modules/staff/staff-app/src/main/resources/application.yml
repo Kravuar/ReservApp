@@ -6,3 +6,17 @@ server:
   servlet:
     context-path: /staff/api-v1
   port: 8084 # TODO: Hardcoded
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
