@@ -61,15 +61,17 @@ class ScheduleRetrievalController {
     }
 
     @GetMapping("/by-service/{serviceId}/{from}/{to}")
-    Map<StaffDTO, NavigableMap<LocalDate, SortedSet<ReservationSlot>>> byService(@PathVariable("serviceId") long serviceId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+    List<ScheduleByServiceDTO> byService(@PathVariable("serviceId") long serviceId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return scheduleRetrievalUseCase.findActiveScheduleByServiceInPerDay(new RetrieveScheduleByServiceCommand(
                 serviceId,
                 from,
                 to
-        )).entrySet().stream().collect(Collectors.toMap(
-                entry -> dtoStaffMapper.staffToDTO(entry.getKey()),
-                Map.Entry::getValue
-        ));
+        )).entrySet().stream()
+                .map(entry -> new ScheduleByServiceDTO(
+                        dtoStaffMapper.staffToDTO(entry.getKey()),
+                        entry.getValue()
+                ))
+                .toList();
     }
 
     @GetMapping("/by-service-and-staff/{serviceId}/{staffId}/{from}/{to}")
