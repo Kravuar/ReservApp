@@ -25,6 +25,8 @@ class ScheduleManagementFacadeTest {
     @Mock
     ScheduleRetrievalPort scheduleRetrievalPort;
     @Mock
+    ReservationRetrievalPort reservationRetrievalPort;
+    @Mock
     StaffRetrievalPort staffRetrievalPort;
     @Mock
     ServiceRetrievalPort serviceRetrievalPort;
@@ -90,6 +92,9 @@ class ScheduleManagementFacadeTest {
         // Duration = 15
         Schedule schedule = spy(twoOfFiveTwosSchedule(15));
 
+        doReturn(Collections.emptyNavigableMap())
+                .when(reservationRetrievalPort)
+                .findAllActiveByStaff(anyLong(), any(LocalDate.class), any(LocalDate.class), eq(true));
         doReturn(schedule)
                 .when(scheduleRetrievalPort)
                 .findById(eq(command.scheduleId()), eq(true));
@@ -100,6 +105,34 @@ class ScheduleManagementFacadeTest {
         // Then
         verify(schedule).setPatterns(anyList());
         verify(schedulePersistencePort).save(same(schedule));
+        verify(scheduleLockPort).lock(eq(command.scheduleId()), eq(false));
+        verify(scheduleLockPort).lock(eq(schedule.getStaff().getId()), eq(false));
+    }
+
+    @Test
+    void givenValidSchedulePatternsChangeCommand_butReservationsExist_whenChangeSchedulePatterns_thenThrowsIllegalStateException() {
+        // Given
+        // Duration = 14
+        ChangeSchedulePatternsCommand command = new ChangeSchedulePatternsCommand(
+                1,
+                List.of(fiveTwoPattern(), fiveTwoPattern())
+        );
+        // Duration = 15
+        Schedule schedule = spy(twoOfFiveTwosSchedule(15));
+
+        doReturn(new TreeMap<>(Map.of(LocalDate.now(), List.of())))
+                .when(reservationRetrievalPort)
+                .findAllActiveByStaff(anyLong(), any(LocalDate.class), any(LocalDate.class), eq(true));
+        doReturn(schedule)
+                .when(scheduleRetrievalPort)
+                .findById(eq(command.scheduleId()), eq(true));
+
+        // When & Then
+        assertThatThrownBy(() -> scheduleManagement.changeSchedulePatterns(command))
+                .isInstanceOf(IllegalStateException.class);
+
+        // Then
+        verifyNoMoreInteractions(schedulePersistencePort);
         verify(scheduleLockPort).lock(eq(command.scheduleId()), eq(false));
         verify(scheduleLockPort).lock(eq(schedule.getStaff().getId()), eq(false));
     }
@@ -153,7 +186,7 @@ class ScheduleManagementFacadeTest {
     }
 
     @Test
-    void givenSmallerDurationAndPatternsDoNotExceed_thenSucceedNoOverlapCheck() {
+    void givenSmallerDuration_andPatternsDoNotExceed_thenSucceedNoOverlapCheck() {
         // Given
         // Duration = 15
         ChangeScheduleDurationCommand command = new ChangeScheduleDurationCommand(
@@ -164,6 +197,9 @@ class ScheduleManagementFacadeTest {
         // Duration = 99
         Schedule schedule = spy(twoOfFiveTwosSchedule(99));
 
+        doReturn(Collections.emptyNavigableMap())
+                .when(reservationRetrievalPort)
+                .findAllActiveByStaff(anyLong(), any(LocalDate.class), any(LocalDate.class), eq(true));
         doReturn(schedule)
                 .when(scheduleRetrievalPort)
                 .findById(eq(command.getScheduleId()), eq(true));
@@ -180,6 +216,35 @@ class ScheduleManagementFacadeTest {
     }
 
     @Test
+    void givenValidDurationChangeCommand_butReservationsExist_thenThrowsIllegalStateException() {
+        // Given
+        // Duration = 15
+        ChangeScheduleDurationCommand command = new ChangeScheduleDurationCommand(
+                1,
+                START_DATE,
+                START_DATE.plusDays(15)
+        );
+        // Duration = 99
+        Schedule schedule = spy(twoOfFiveTwosSchedule(99));
+
+        doReturn(new TreeMap<>(Map.of(LocalDate.now(), List.of())))
+                .when(reservationRetrievalPort)
+                .findAllActiveByStaff(anyLong(), any(LocalDate.class), any(LocalDate.class), eq(true));
+        doReturn(schedule)
+                .when(scheduleRetrievalPort)
+                .findById(eq(command.getScheduleId()), eq(true));
+
+        // When & Then
+        assertThatThrownBy(() -> scheduleManagement.changeScheduleDuration(command))
+                .isInstanceOf(IllegalStateException.class);
+
+        // Then
+        verifyNoMoreInteractions(schedulePersistencePort);
+        verify(scheduleLockPort).lock(eq(command.getScheduleId()), eq(false));
+        verify(scheduleLockPort).lock(eq(schedule.getStaff().getId()), eq(false));
+    }
+
+    @Test
     void givenBiggerDurationAndNoOverlap_thenSucceed() {
         // Given
         // Duration = 15
@@ -191,6 +256,9 @@ class ScheduleManagementFacadeTest {
         // Duration = 14
         Schedule schedule = spy(twoOfFiveTwosSchedule(14));
 
+        doReturn(Collections.emptyNavigableMap())
+                .when(reservationRetrievalPort)
+                .findAllActiveByStaff(anyLong(), any(LocalDate.class), any(LocalDate.class), eq(true));
         doReturn(schedule)
                 .when(scheduleRetrievalPort)
                 .findById(eq(command.getScheduleId()), eq(true));
@@ -221,6 +289,9 @@ class ScheduleManagementFacadeTest {
         // Duration = 14
         Schedule schedule = spy(twoOfFiveTwosSchedule(14));
 
+        doReturn(Collections.emptyNavigableMap())
+                .when(reservationRetrievalPort)
+                .findAllActiveByStaff(anyLong(), any(LocalDate.class), any(LocalDate.class), eq(true));
         doReturn(schedule)
                 .when(scheduleRetrievalPort)
                 .findById(eq(command.getScheduleId()), eq(true));
@@ -252,6 +323,9 @@ class ScheduleManagementFacadeTest {
         // Duration = 14
         Schedule schedule = spy(twoOfFiveTwosSchedule(14));
 
+        doReturn(Collections.emptyNavigableMap())
+                .when(reservationRetrievalPort)
+                .findAllActiveByStaff(anyLong(), any(LocalDate.class), any(LocalDate.class), eq(true));
         doReturn(schedule)
                 .when(scheduleRetrievalPort)
                 .findById(eq(command.getScheduleId()), eq(true));
@@ -361,6 +435,9 @@ class ScheduleManagementFacadeTest {
         Staff staff = someStaff();
         Service service = someService();
 
+        doReturn(Collections.emptyNavigableMap())
+                .when(reservationRetrievalPort)
+                .findAllActiveByStaff(anyLong(), any(LocalDate.class), any(LocalDate.class), eq(true));
         doReturn(staff)
                 .when(staffRetrievalPort)
                 .findActiveById(eq(command.staffId()));
@@ -383,6 +460,42 @@ class ScheduleManagementFacadeTest {
         assertThat(added.getDate()).isEqualTo(command.date());
         assertThat(added.getReservationSlots()).isEqualTo(command.reservationSlots());
         verify(schedulePersistencePort).save(any(ScheduleExceptionDay.class));
+        verify(scheduleLockPort).lockByStaff(eq(command.staffId()), eq(false));
+    }
+
+    @Test
+    void givenValidCreateScheduleExceptionDayCommand_butReservationsExist_thenThrowsIllegalStateException() {
+        // Given
+        CreateScheduleExceptionDayCommand command = new CreateScheduleExceptionDayCommand(
+                1,
+                1,
+                START_DATE,
+                someReservationSlots()
+        );
+        Staff staff = someStaff();
+        Service service = someService();
+
+        doReturn(new TreeMap<>(Map.of(LocalDate.now(), List.of())))
+                .when(reservationRetrievalPort)
+                .findAllActiveByStaff(anyLong(), any(LocalDate.class), any(LocalDate.class), eq(true));
+        doReturn(staff)
+                .when(staffRetrievalPort)
+                .findActiveById(eq(command.staffId()));
+        doReturn(service)
+                .when(serviceRetrievalPort)
+                .findActiveById(eq(command.serviceId()));
+        doReturn(Optional.empty())
+                .when(scheduleRetrievalPort)
+                .findActiveExceptionDayByStaffAndService(eq(command.staffId()), eq(command.serviceId()), eq(command.date()));
+
+
+        // When & Then
+        assertThatThrownBy(() -> scheduleManagement.addOrUpdateScheduleExceptionDay(command))
+                .isInstanceOf(IllegalStateException.class);
+
+        // Then
+        verifyNoMoreInteractions(schedulePersistencePort);
+        verify(scheduleLockPort).lockByStaff(eq(command.staffId()), eq(false));
     }
 
     @Test
@@ -398,6 +511,9 @@ class ScheduleManagementFacadeTest {
         Service service = someService();
         ScheduleExceptionDay exceptionDay = someExceptionDay();
 
+        doReturn(Collections.emptyNavigableMap())
+                .when(reservationRetrievalPort)
+                .findAllActiveByStaff(anyLong(), any(LocalDate.class), any(LocalDate.class), eq(true));
         doReturn(staff)
                 .when(staffRetrievalPort)
                 .findActiveById(eq(command.staffId()));
@@ -422,6 +538,9 @@ class ScheduleManagementFacadeTest {
         RemoveScheduleCommand command = new RemoveScheduleCommand(1);
         Schedule schedule = spy(twoOfFiveTwosSchedule(1));
 
+        doReturn(Collections.emptyNavigableMap())
+                .when(reservationRetrievalPort)
+                .findAllActiveByStaff(anyLong(), any(LocalDate.class), any(LocalDate.class), eq(true));
         doReturn(schedule)
                 .when(scheduleRetrievalPort)
                 .findById(anyLong(), eq(true));
@@ -433,5 +552,28 @@ class ScheduleManagementFacadeTest {
         assertThat(schedule.isActive()).isFalse();
         verify(schedule).setActive(eq(false));
         verify(schedulePersistencePort).save(same(schedule));
+    }
+
+    @Test
+    void givenExistingSchedule_butReservationsExist_thenThrowsIllegalStateException() {
+        // Given
+        RemoveScheduleCommand command = new RemoveScheduleCommand(1);
+        Schedule schedule = spy(twoOfFiveTwosSchedule(1));
+
+        doReturn(new TreeMap<>(Map.of(LocalDate.now(), List.of())))
+                .when(reservationRetrievalPort)
+                .findAllActiveByStaff(anyLong(), any(LocalDate.class), any(LocalDate.class), eq(true));
+        doReturn(schedule)
+                .when(scheduleRetrievalPort)
+                .findById(anyLong(), eq(true));
+
+        // When & Then
+        assertThatThrownBy(() -> scheduleManagement.removeSchedule(command))
+                .isInstanceOf(IllegalStateException.class);
+
+        // Then
+        verifyNoMoreInteractions(schedulePersistencePort);
+        verify(scheduleLockPort).lock(eq(command.scheduleId()), eq(false));
+        verify(scheduleLockPort).lockByStaff(eq(schedule.getStaff().getId()), eq(false));
     }
 }

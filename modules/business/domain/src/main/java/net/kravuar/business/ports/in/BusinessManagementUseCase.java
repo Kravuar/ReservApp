@@ -13,7 +13,7 @@ import net.kravuar.context.AppValidated;
 @AppValidated
 public interface BusinessManagementUseCase {
     /**
-     * Creates of a {@link Business}.
+     * Create a {@link Business}.
      *
      * @param command the command containing information for business creation
      * @return Newly created {@link Business}

@@ -1,0 +1,21 @@
+@startuml
+skinparam sequenceMessageAlign center
+
+actor Пользователь
+participant "Клиент\n(OAuth2 Client)" as Клиент
+participant "Сервер авторизации\n(OAuth2 Server)" as Auth
+participant "Приложение\n(OAuth2 Resource Server)" as Приложение
+
+Приложение -> Auth: Получение публичного ключа
+Пользователь -> Клиент: Запрос на аутентификацию
+Клиент -> Auth: PKCE Auth Flow
+Auth --> Пользователь: Аутентификация пользователя
+Пользователь --> Auth: Пользовательские данные
+Auth --> Клиент: Access Token
+note over Клиент, Auth: Access Token сохранён на клиенте
+Пользователь -> Клиент: Запрос к приложению
+Клиент -> Приложение: Запрос с Access Token
+Приложение --> Приложение: Валидация Access Token с помощью Public Key
+Приложение --> Клиент: Ответ, основываясь на результате валидации
+Клиент--> Пользователь: Ответ
+@enduml

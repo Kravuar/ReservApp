@@ -19,6 +19,7 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
     private final ServiceRetrievalPort serviceRetrievalPort;
     private final ScheduleLockPort scheduleLockPort;
     private final SchedulePersistencePort schedulePersistencePort;
+    private final ReservationRetrievalPort reservationRetrievalPort;
 
     @Override
     public Schedule changeSchedulePatterns(ChangeSchedulePatternsCommand command) {
@@ -35,7 +36,12 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
 
             try {
                 scheduleLockPort.lockByStaff(schedule.getStaff().getId(), true);
-                // TODO: throw if affected reservations
+
+                throwIfReservationsExist(
+                        schedule.getStaff().getId(),
+                        schedule.getStart(),
+                        schedule.getEnd()
+                );
 
                 schedule.setPatterns(command.patterns());
                 return schedulePersistencePort.save(schedule);
@@ -57,7 +63,7 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
                     true
             );
 
-            boolean mayOverlap = schedule.getStart().isAfter(command.getStart())
+            boolean extended = schedule.getStart().isAfter(command.getStart())
                     || schedule.getEnd().isBefore(command.getEnd());
 
             if (scheduleSizeInsufficient(schedule.getPatterns(), command.getStart(), command.getEnd()))
@@ -65,9 +71,14 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
 
             try {
                 scheduleLockPort.lockByStaff(schedule.getStaff().getId(), true);
-                // TODO: throw if would affect reservations
 
-                if (mayOverlap) {
+                throwIfReservationsExist(
+                        schedule.getStaff().getId(),
+                        schedule.getStart(),
+                        schedule.getEnd()
+                );
+
+                if (extended) {
                     List<Schedule> overlapped = scheduleRetrievalPort.findActiveSchedulesByStaffAndService(
                             schedule.getStaff().getId(),
                             schedule.getService().getId(),
@@ -148,6 +159,12 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
                     null
             ));
 
+            throwIfReservationsExist(
+                    exceptionDay.getStaff().getId(),
+                    exceptionDay.getDate(),
+                    exceptionDay.getDate()
+            );
+
             exceptionDay.setReservationSlots(command.reservationSlots());
 
             return schedulePersistencePort.save(exceptionDay);
@@ -169,13 +186,19 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
             try {
                 scheduleLockPort.lockByStaff(schedule.getStaff().getId(), true);
 
+                throwIfReservationsExist(
+                        schedule.getStaff().getId(),
+                        schedule.getStart(),
+                        schedule.getEnd()
+                );
+
                 schedule.setActive(false);
                 schedulePersistencePort.save(schedule);
             } finally {
                 scheduleLockPort.lockByStaff(schedule.getStaff().getId(), false);
             }
         } finally {
-            scheduleLockPort.lockByStaff(command.scheduleId(), false);
+            scheduleLockPort.lock(command.scheduleId(), false);
         }
     }
 
@@ -190,5 +213,17 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
                 .plusDays(1)
                 .minusDays(cycleDuration.toDays())
                 .isNegative();
+    }
+
+    private void throwIfReservationsExist(long staffId, LocalDate start, LocalDate end) {
+        // Throw if affected reservations
+        if (!reservationRetrievalPort.findAllActiveByStaff(
+                staffId,
+                start,
+                end,
+                true
+        ).isEmpty()) {
+            throw new IllegalStateException("Schedule change would affect existing reservations");
+        }
     }
 }

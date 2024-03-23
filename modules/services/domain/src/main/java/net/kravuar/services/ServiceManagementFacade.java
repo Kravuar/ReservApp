@@ -22,7 +22,7 @@ public class ServiceManagementFacade implements ServiceManagementUseCase {
     @Override
     public Service create(ServiceCreationCommand command) {
         Business business = businessRetrievalPort.findActiveById(command.businessId());
-        Service existing = servicePersistencePort.save(
+        Service service = servicePersistencePort.save(
                 new Service(
                         null,
                         business,
@@ -31,8 +31,8 @@ public class ServiceManagementFacade implements ServiceManagementUseCase {
                         command.description()
                 )
         );
-        serviceNotificationPort.notifyNewService(existing);
-        return existing;
+        serviceNotificationPort.notifyNewService(service);
+        return service;
     }
 
     @Override

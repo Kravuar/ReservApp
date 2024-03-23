@@ -16,6 +16,8 @@
    as the still active lock will be deleted from cache, and new one will be created for same key on the upcoming request
 9. <span style="color:blue">(POLISHING)</span> Remove duplication in application properties, exception handling and some other stuff
 10. <span style="color:green">(MINOR)</span> Use error codes instead of messages in exceptions
-11. <span style="color:orange">(MEDIUM)</span> Define schema.sql with constraints, indexes and other staff
+11. <span style="color:orange">(MEDIUM)</span> Define schema.sql with constraints, indexes and other staff (and disable hibernate ddl)
 12. <span style="color:green">(MINOR)</span> Eureka and other spring cloud staff
 13. <span style="color:green">(MINOR)</span> Something wrong with noop notification port for service module
+14. <span style="color:green">(MINOR)</span> k8s config (also `gateway` module isn't needed at all in that case)
+15. <span style="color:green">(MINOR)</span> pagination instead of find all for each module
