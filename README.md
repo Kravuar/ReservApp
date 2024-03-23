@@ -20,4 +20,5 @@
 12. <span style="color:green">(MINOR)</span> Eureka and other spring cloud staff
 13. <span style="color:green">(MINOR)</span> Something wrong with noop notification port for service module
 14. <span style="color:green">(MINOR)</span> k8s config (also `gateway` module isn't needed at all in that case)
-15. <span style="color:green">(MINOR)</span> pagination instead of find all for each module
+15. <span style="color:green">(MINOR)</span> notification port for reservations
+16. <span style="color:green">(MINOR)</span> sse for reservations

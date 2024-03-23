@@ -1,7 +1,7 @@
 package net.kravuar.business.web;
 
 public record BusinessDTO(
-        Long id,
+        long id,
         String ownerSub,
         String name,
         boolean active,

@@ -15,6 +15,8 @@
     <file url="file://$PROJECT_DIR$/commons/infrastructure-security-jwt/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/integration-dto/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/integration-dto/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/pagination/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/pagination/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/reservapp-security-core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/reservapp-security-core/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/resource-server/src/main/java" charset="UTF-8" />

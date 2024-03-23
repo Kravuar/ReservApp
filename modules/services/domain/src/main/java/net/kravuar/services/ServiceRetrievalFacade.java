@@ -24,6 +24,6 @@ public class ServiceRetrievalFacade implements ServiceRetrievalUseCase {
 
     @Override
     public Page<Service> findActive(int page, int pageSize) {
-        return serviceRetrievalPort.findActive(page, page);
+        return serviceRetrievalPort.findActive(page, pageSize);
     }
 }

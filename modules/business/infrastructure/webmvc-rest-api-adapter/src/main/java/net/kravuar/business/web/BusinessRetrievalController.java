@@ -49,7 +49,7 @@ class BusinessRetrievalController {
         return dtoMapper.toDTO(businessRetrieval.findById(businessId, true));
     }
 
-    @GetMapping("/byOwner/{sub}/{page}/{pageSize}")
+    @GetMapping("/by-owner/{sub}/{page}/{pageSize}")
     Page<BusinessDTO> byOwner(@PathVariable("sub") String sub, @PathVariable("page") int page, @PathVariable("pageSize") int pageSize) {
         Page<Business> businesses = businessRetrieval
                 .findBySub(

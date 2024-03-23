@@ -19,7 +19,7 @@ public class BusinessRetrievalFacade implements BusinessRetrievalUseCase {
 
     @Override
     public Page<Business> findBySub(String sub, boolean activeOnly, int page, int pageSize) {
-        return businessRetrievalPort.findBySub(sub, activeOnly, page, page);
+        return businessRetrievalPort.findBySub(sub, activeOnly, page, pageSize);
     }
 
     @Override
