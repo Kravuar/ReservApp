@@ -1,12 +1,13 @@
 package net.kravuar.staff.persistence.staff.invitation;
 
 import net.kravuar.staff.domain.StaffInvitation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -26,10 +27,10 @@ interface InvitationRepository extends JpaRepository<StaffInvitation, Long> {
     @Query("SELECT s FROM StaffInvitation s " +
             "WHERE s.business.id = :businessId " +
             "AND s.business.active = true")
-    List<StaffInvitation> findAllByBusiness(@Param("businessId") long businessId);
+    Page<StaffInvitation> findByBusiness(@Param("businessId") long businessId, Pageable pageable);
 
     @Query("SELECT s FROM StaffInvitation s " +
             "WHERE s.sub = :sub " +
             "AND s.business.active = true")
-    List<StaffInvitation> findAllBySub(@Param("sub") String sub);
+    Page<StaffInvitation> findBySub(@Param("sub") String sub, Pageable pageable);
 }

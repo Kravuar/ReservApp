@@ -2,13 +2,12 @@ package net.kravuar.staff;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
+import net.kravuar.pageable.Page;
 import net.kravuar.staff.domain.Staff;
 import net.kravuar.staff.domain.StaffInvitation;
 import net.kravuar.staff.ports.in.StaffRetrievalUseCase;
 import net.kravuar.staff.ports.out.InvitationRetrievalPort;
 import net.kravuar.staff.ports.out.StaffRetrievalPort;
-
-import java.util.List;
 
 @AppComponent
 @RequiredArgsConstructor
@@ -22,8 +21,8 @@ public class StaffRetrievalFacade implements StaffRetrievalUseCase {
     }
 
     @Override
-    public List<Staff> findAllStaffByBusiness(long businessId, boolean activeOnly) {
-        return staffRetrievalPort.findAllByBusiness(businessId, activeOnly);
+    public Page<Staff> findStaffByBusiness(long businessId, boolean activeOnly, int page, int pageSize) {
+        return staffRetrievalPort.findByBusiness(businessId, activeOnly, page, pageSize);
     }
 
     @Override
@@ -32,12 +31,12 @@ public class StaffRetrievalFacade implements StaffRetrievalUseCase {
     }
 
     @Override
-    public List<StaffInvitation> findStaffInvitationsBySubject(String sub) {
-        return invitationRetrievalPort.findAllBySubject(sub);
+    public Page<StaffInvitation> findStaffInvitationsBySubject(String sub, int page, int pageSize) {
+        return invitationRetrievalPort.findBySubject(sub, page, pageSize);
     }
 
     @Override
-    public List<StaffInvitation> findStaffInvitationsByBusiness(long businessId) {
-        return invitationRetrievalPort.findAllByBusiness(businessId);
+    public Page<StaffInvitation> findStaffInvitationsByBusiness(long businessId, int page, int pageSize) {
+        return invitationRetrievalPort.findByBusiness(businessId, page, pageSize);
     }
 }

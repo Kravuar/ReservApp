@@ -1,12 +1,12 @@
 package net.kravuar.staff.persistence.staff.invitation;
 
 import lombok.RequiredArgsConstructor;
+import net.kravuar.pageable.Page;
 import net.kravuar.staff.domain.StaffInvitation;
 import net.kravuar.staff.domain.exceptions.InvitationNotFoundException;
 import net.kravuar.staff.ports.out.InvitationRetrievalPort;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -26,12 +26,20 @@ class JPAInvitationRetrievalAdapter implements InvitationRetrievalPort {
     }
 
     @Override
-    public List<StaffInvitation> findAllBySubject(String sub) {
-        return invitationRepository.findAllBySub(sub);
+    public Page<StaffInvitation> findBySubject(String sub, int page, int pageSize) {
+        var invitations = invitationRepository.findBySub(sub, PageRequest.of(page, pageSize));
+        return new Page<>(
+                invitations.getContent(),
+                invitations.getTotalPages()
+        );
     }
 
     @Override
-    public List<StaffInvitation> findAllByBusiness(long businessId) {
-        return invitationRepository.findAllByBusiness(businessId);
+    public Page<StaffInvitation> findByBusiness(long businessId, int page, int pageSize) {
+        var invitations = invitationRepository.findByBusiness(businessId, PageRequest.of(page, pageSize));
+        return new Page<>(
+                invitations.getContent(),
+                invitations.getTotalPages()
+        );
     }
 }

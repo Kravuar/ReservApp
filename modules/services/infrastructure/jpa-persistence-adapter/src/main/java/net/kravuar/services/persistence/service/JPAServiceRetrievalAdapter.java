@@ -1,12 +1,12 @@
 package net.kravuar.services.persistence.service;
 
 import lombok.RequiredArgsConstructor;
+import net.kravuar.pageable.Page;
 import net.kravuar.services.domain.Service;
 import net.kravuar.services.domain.exceptions.ServiceNotFoundException;
 import net.kravuar.services.ports.out.ServiceRetrievalPort;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -21,16 +21,25 @@ class JPAServiceRetrievalAdapter implements ServiceRetrievalPort {
     }
 
     @Override
-    public List<Service> findAllByActiveBusinessId(long businessId, boolean activeOnly) {
-        return servicesRepository
-                .findAllByBusiness(businessId, activeOnly).stream()
-                .toList();
+    public Page<Service> findActiveByActiveBusinessId(long businessId, boolean activeOnly, int page, int pageSize) {
+        var services = servicesRepository
+                .findByBusiness(
+                        businessId,
+                        activeOnly,
+                        PageRequest.of(page, pageSize)
+                );
+        return new Page<>(
+                services.getContent(),
+                services.getTotalPages()
+        );
     }
 
     @Override
-    public List<Service> findAllActive() {
-        return servicesRepository
-                .findAllFullyActive().stream()
-                .toList();
+    public Page<Service> findActive(int page, int pageSize) {
+        var services = servicesRepository.findFullyActive(PageRequest.of(page, pageSize));
+        return new Page<>(
+                services.getContent(),
+                services.getTotalPages()
+        );
     }
 }

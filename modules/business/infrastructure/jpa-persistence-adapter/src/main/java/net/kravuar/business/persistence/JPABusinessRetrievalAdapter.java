@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import net.kravuar.business.domain.Business;
 import net.kravuar.business.domain.exceptions.BusinessNotFoundException;
 import net.kravuar.business.ports.out.BusinessRetrievalPort;
+import net.kravuar.pageable.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -25,16 +25,24 @@ class JPABusinessRetrievalAdapter implements BusinessRetrievalPort {
     }
 
     @Override
-    public List<Business> findBySub(String sub, boolean activeOnly) {
-        return businessRepository.findByOwnerSubAndActive(sub, activeOnly)
-                .stream()
-                .toList();
+    public Page<Business> findBySub(String sub, boolean activeOnly, int page, int pageSize) {
+        var businesses = businessRepository.findByOwnerSubAndActive(
+                sub,
+                activeOnly,
+                PageRequest.of(page, pageSize)
+        );
+        return new Page<>(
+            businesses.getContent(),
+            businesses.getTotalPages()
+        );
     }
 
     @Override
-    public List<Business> findAllActive() {
-        return businessRepository.findAllByActiveIsTrue()
-                .stream()
-                .toList();
+    public Page<Business> findActive(int page, int pageSize) {
+        var businesses = businessRepository.findByActiveIsTrue(PageRequest.of(page, pageSize));
+        return new Page<>(
+                businesses.getContent(),
+                businesses.getTotalPages()
+        );
     }
 }

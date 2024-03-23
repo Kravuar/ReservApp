@@ -1,9 +1,9 @@
 package net.kravuar.staff.ports.out;
 
+import net.kravuar.pageable.Page;
 import net.kravuar.staff.domain.Staff;
 import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface StaffRetrievalPort {
@@ -20,15 +20,17 @@ public interface StaffRetrievalPort {
     Staff findById(long staffId, boolean activeOnly);
 
     /**
-     * Find all staff members by business.
+     * Find staff members by business with pageable.
      * Only with active parent entities (business),
      * otherwise schedule exception day should not be visible.
      *
+     * @param page       page number
+     * @param pageSize   size of the page
      * @param businessId id of the business
      * @param activeOnly whether to search active staff only
-     * @return {@code List<Staff>} all staff members associated with the provided {@code businessId}
+     * @return page of staff members associated with the provided {@code businessId}
      */
-    List<Staff> findAllByBusiness(long businessId, boolean activeOnly);
+    Page<Staff> findByBusiness(long businessId, boolean activeOnly, int page, int pageSize);
 
     /**
      * Check whether an active staff exists in business.

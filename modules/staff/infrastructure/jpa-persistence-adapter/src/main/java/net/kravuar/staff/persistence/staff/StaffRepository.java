@@ -1,12 +1,13 @@
 package net.kravuar.staff.persistence.staff;
 
 import net.kravuar.staff.domain.Staff;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,7 +22,7 @@ interface StaffRepository extends JpaRepository<Staff, Long> {
             "WHERE s.business.id = :businessId " +
             "AND s.active = :activeOnly " +
             "AND s.business.active = true")
-    List<Staff> findAllByBusiness(@Param("businessId") long businessId, @Param("activeOnly") boolean activeOnly);
+    Page<Staff> findByBusiness(@Param("businessId") long businessId, @Param("activeOnly") boolean activeOnly, Pageable pageable);
 
     @Query("SELECT s FROM Staff s " +
             "WHERE s.business.id = :businessId " +

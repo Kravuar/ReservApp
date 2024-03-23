@@ -1,12 +1,13 @@
 package net.kravuar.staff.persistence.staff;
 
 import lombok.RequiredArgsConstructor;
+import net.kravuar.pageable.Page;
 import net.kravuar.staff.domain.Staff;
 import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
 import net.kravuar.staff.ports.out.StaffRetrievalPort;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -21,8 +22,16 @@ class JPAStaffRetrievalAdapter implements StaffRetrievalPort {
     }
 
     @Override
-    public List<Staff> findAllByBusiness(long businessId, boolean activeOnly) {
-        return staffRepository.findAllByBusiness(businessId, activeOnly);
+    public Page<Staff> findByBusiness(long businessId, boolean activeOnly, int page, int pageSize) {
+        var staff = staffRepository.findByBusiness(
+                businessId,
+                activeOnly,
+                PageRequest.of(page, pageSize)
+        );
+        return new Page<>(
+                staff.getContent(),
+                staff.getTotalPages()
+        );
     }
 
     @Override

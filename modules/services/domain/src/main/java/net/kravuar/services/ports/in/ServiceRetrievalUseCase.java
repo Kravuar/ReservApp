@@ -1,9 +1,8 @@
 package net.kravuar.services.ports.in;
 
+import net.kravuar.pageable.Page;
 import net.kravuar.services.domain.Service;
 import net.kravuar.services.domain.exceptions.ServiceNotFoundException;
-
-import java.util.List;
 
 public interface ServiceRetrievalUseCase {
     /**
@@ -17,18 +16,22 @@ public interface ServiceRetrievalUseCase {
     Service findById(long serviceId, boolean activeOnly);
 
     /**
-     * Find all active services by associated business.
+     * Find active services by associated business with pageable.
      *
+     * @param page page number
+     * @param pageSize size of the page
      * @param businessId id of the associated business
      * @param activeOnly whether to search active only
-     * @return {@code List<Service>} of active services associated the with provided {@code businessId}
+     * @return page of active services associated the with provided {@code businessId}
      */
-    List<Service> findAllByActiveBusinessId(long businessId, boolean activeOnly);
+    Page<Service> findActiveByActiveBusinessId(long businessId, boolean activeOnly, int page, int pageSize);
 
     /**
-     * Find all active services.
+     * Find active services with pageable.
      *
-     * @return {@code List<Service>} of active services.
+     * @param page page number
+     * @param pageSize size of the page
+     * @return page of active services.
      */
-    List<Service> findAll();
+    Page<Service> findActive(int page, int pageSize);
 }
