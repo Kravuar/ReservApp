@@ -57,17 +57,6 @@ public class ReservationManagementFacade implements ReservationManagementUseCase
                     .findAny()
                     .orElseThrow(ReservationSlotNotFoundException::new);
 
-            Reservation reservation = new Reservation(
-                    null,
-                    date,
-                    reservationSlot.getStart(),
-                    reservationSlot.getEnd(),
-                    command.sub(),
-                    staff,
-                    service,
-                    true
-            );
-
             // Non fully active as well, so that, if some parent entity went inactive before we fetch reservations
             // we will still see them, which will prevent placing multiple reservations at the same time (due to
             // existing is not visible at the moment).
@@ -94,8 +83,19 @@ public class ReservationManagementFacade implements ReservationManagementUseCase
             // Given [x1:x2] [y1:y2], overlaps when: x1 <= y2 && y1 <= x2
             List<Reservation> otherServicesReservations = partitionedBySameService.get(false);
             for (Reservation otherServiceReservation: otherServicesReservations)
-                if (reservation.getStart().isBefore(otherServiceReservation.getEnd()) && otherServiceReservation.getStart().isBefore(reservationSlot.getEnd()))
+                if (reservationSlot.getStart().isBefore(otherServiceReservation.getEnd()) && otherServiceReservation.getStart().isBefore(reservationSlot.getEnd()))
                     throw new ReservationOverlappingException();
+
+            Reservation reservation = new Reservation(
+                    null,
+                    date,
+                    reservationSlot.getStart(),
+                    reservationSlot.getEnd(),
+                    command.sub(),
+                    staff,
+                    service,
+                    true
+            );
 
             return reservationPersistencePort.save(reservation);
         } finally {

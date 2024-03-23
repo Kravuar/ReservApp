@@ -403,15 +403,7 @@ class ScheduleManagementFacadeTest {
                 START_DATE.plusDays(13),
                 List.of(fiveTwoPattern(), fiveTwoPattern())
         );
-        Staff staff = someStaff();
-        Service service = someService();
 
-        doReturn(staff)
-                .when(staffRetrievalPort)
-                .findActiveById(eq(command.getStaffId()));
-        doReturn(service)
-                .when(serviceRetrievalPort)
-                .findActiveById(eq(command.getServiceId()));
         doReturn(List.of(twoOfFiveTwosSchedule(100)))
                 .when(scheduleRetrievalPort)
                 .findActiveSchedulesByStaffAndService(eq(command.getStaffId()), eq(command.getServiceId()), any(), any());

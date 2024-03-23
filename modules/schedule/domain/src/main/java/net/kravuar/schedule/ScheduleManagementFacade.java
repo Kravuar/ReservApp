@@ -111,6 +111,15 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
             if (scheduleSizeInsufficient(command.getPatterns(), command.getStart(), command.getEnd()))
                 throw new IllegalStateException("Schedule duration isn't sufficient for provided patterns");
 
+            List<Schedule> overlapped = scheduleRetrievalPort.findActiveSchedulesByStaffAndService(
+                    command.getStaffId(),
+                    command.getServiceId(),
+                    command.getStart(),
+                    command.getEnd()
+            );
+            if (!overlapped.isEmpty())
+                throw new IllegalStateException("Schedule would overlap with other schedules");
+
             Staff staff = staffRetrievalPort.findActiveById(command.getStaffId());
             Service service = serviceRetrievalPort.findActiveById(command.getServiceId());
 
@@ -123,15 +132,6 @@ public class ScheduleManagementFacade implements ScheduleManagementUseCase {
                     command.getPatterns(),
                     true
             );
-
-            List<Schedule> overlapped = scheduleRetrievalPort.findActiveSchedulesByStaffAndService(
-                    newSchedule.getStaff().getId(),
-                    newSchedule.getService().getId(),
-                    newSchedule.getStart(),
-                    newSchedule.getEnd()
-            );
-            if (!overlapped.isEmpty())
-                throw new IllegalStateException("Schedule overlapped with other schedules");
 
             return schedulePersistencePort.save(newSchedule);
         } finally {
