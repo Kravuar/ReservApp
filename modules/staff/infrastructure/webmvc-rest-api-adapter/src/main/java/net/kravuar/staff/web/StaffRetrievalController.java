@@ -2,7 +2,7 @@ package net.kravuar.staff.web;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.pageable.Page;
-import net.kravuar.staff.domain.Staff;
+import net.kravuar.staff.domain.StaffDetailed;
 import net.kravuar.staff.domain.StaffInvitation;
 import net.kravuar.staff.ports.in.StaffRetrievalUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,7 +27,7 @@ class StaffRetrievalController {
 
     @GetMapping("/by-business/{businessId}/{page}/{pageSize}")
     Page<StaffDTO> findByBusiness(@PathVariable("businessId") long businessId, @PathVariable("page") int page, @PathVariable("pageSize") int pageSize) {
-        Page<Staff> staff = staffRetrieval.findStaffByBusiness(
+        Page<StaffDetailed> staff = staffRetrieval.findStaffByBusiness(
                 businessId,
                 true,
                 page,

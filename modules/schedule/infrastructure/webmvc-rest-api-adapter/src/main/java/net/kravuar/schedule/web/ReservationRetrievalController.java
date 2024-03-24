@@ -28,6 +28,18 @@ class ReservationRetrievalController {
         );
     }
 
+    @GetMapping("/by-service-and-staff/{serviceId}/{staffId}/{from}/{to}")
+    Map<LocalDate, List<AnonymousReservationDTO>> byServiceAndStaff(@PathVariable("serviceId") long serviceId, @PathVariable("staffId") long staffId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+        return reservationRetrievalUseCase.findAllByStaff(staffId, from, to).entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().stream()
+                                .filter(reservation -> reservation.getService().getId().equals(serviceId)) // TODO: maybe add another usecase for that
+                                .map(dtoReservationMapper::reservationToAnonymousDTO)
+                                .toList()
+                ));
+    }
+
     @GetMapping("/by-staff/{staffId}/{from}/{to}")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isStaff(#staffId, authentication.details.subject)")
     Map<LocalDate, List<ReservationDTO>> byStaff(@PathVariable("staffId") long staffId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {

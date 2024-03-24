@@ -152,8 +152,8 @@
     <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/local-lock-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/noop-notification-adapter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/noop-notification-adapter/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/okta-account-existence-check-adapter/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/okta-account-existence-check-adapter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/okta-account-retrieval-adapter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/okta-account-retrieval-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/webmvc-rest-api-adapter/src/main/java" charset="UTF-8" />

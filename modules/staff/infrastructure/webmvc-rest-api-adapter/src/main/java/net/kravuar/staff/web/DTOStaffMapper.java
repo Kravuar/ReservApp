@@ -1,6 +1,6 @@
 package net.kravuar.staff.web;
 
-import net.kravuar.staff.domain.Staff;
+import net.kravuar.staff.domain.StaffDetailed;
 import net.kravuar.staff.domain.StaffInvitation;
 import org.mapstruct.Mapper;
 
@@ -8,5 +8,5 @@ import org.mapstruct.Mapper;
 interface DTOStaffMapper {
     StaffInvitationDTO invitationToDTO(StaffInvitation invitation);
 
-    StaffDTO staffToDTO(Staff staff);
+    StaffDTO staffToDTO(StaffDetailed staff);
 }

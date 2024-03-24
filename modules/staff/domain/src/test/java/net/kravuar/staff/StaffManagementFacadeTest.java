@@ -32,7 +32,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class StaffManagementFacadeTest {
     @Mock
-    AccountExistenceCheckPort accountExistenceCheckPort;
+    AccountRetrievalPort accountRetrievalPort;
     @Mock
     StaffPersistencePort staffPersistencePort;
     @Mock
@@ -81,7 +81,7 @@ class StaffManagementFacadeTest {
                 .when(invitationRetrievalPort)
                 .existsWaitingByBusinessAndSub(eq(command.businessId()), eq(command.sub()));
         doReturn(true)
-                .when(accountExistenceCheckPort)
+                .when(accountRetrievalPort)
                 .exists(eq(command.sub()));
         doReturn(mock(StaffInvitation.class))
                 .when(invitationPersistencePort)
@@ -112,7 +112,7 @@ class StaffManagementFacadeTest {
         assertThatThrownBy(() -> staffManagement.sendInvitation(command))
                 .isInstanceOf(IllegalStateException.class);
         verify(staffLockPort).lock(eq(command.businessId()), eq(command.sub()), eq(false));
-        verifyNoInteractions(invitationRetrievalPort, accountExistenceCheckPort, invitationPersistencePort);
+        verifyNoInteractions(invitationRetrievalPort, accountRetrievalPort, invitationPersistencePort);
     }
 
     @Test
@@ -131,7 +131,7 @@ class StaffManagementFacadeTest {
         assertThatThrownBy(() -> staffManagement.sendInvitation(command))
                 .isInstanceOf(IllegalStateException.class);
         verify(staffLockPort).lock(eq(command.businessId()), eq(command.sub()), eq(false));
-        verifyNoInteractions(accountExistenceCheckPort, invitationPersistencePort);
+        verifyNoInteractions(accountRetrievalPort, invitationPersistencePort);
     }
 
     @Test
@@ -143,7 +143,7 @@ class StaffManagementFacadeTest {
         );
 
         doReturn(false)
-                .when(accountExistenceCheckPort)
+                .when(accountRetrievalPort)
                 .exists(eq(command.sub()));
 
         // When & Then
