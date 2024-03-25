@@ -18,7 +18,7 @@ import net.kravuar.staff.ports.out.*;
 @AppComponent
 @RequiredArgsConstructor
 public class StaffManagementFacade implements StaffManagementUseCase {
-    private final AccountExistenceCheckPort accountExistenceCheckPort;
+    private final AccountRetrievalPort accountRetrievalPort;
     private final BusinessRetrievalPort businessRetrievalPort;
     private final StaffRetrievalPort staffRetrievalPort;
     private final StaffPersistencePort staffPersistencePort;
@@ -38,7 +38,7 @@ public class StaffManagementFacade implements StaffManagementUseCase {
                 throw new IllegalStateException("Staff already exists");
             if (invitationRetrievalPort.existsWaitingByBusinessAndSub(command.businessId(), command.sub()))
                 throw new IllegalStateException("Invitation already exists");
-            if (!accountExistenceCheckPort.exists(command.sub()))
+            if (!accountRetrievalPort.exists(command.sub()))
                 throw new AccountNotFoundException();
             return invitationPersistencePort.save(
                     new StaffInvitation(

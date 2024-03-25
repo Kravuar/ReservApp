@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
 import net.kravuar.pageable.Page;
 import net.kravuar.staff.domain.Staff;
+import net.kravuar.staff.domain.StaffDetailed;
 import net.kravuar.staff.domain.StaffInvitation;
 import net.kravuar.staff.ports.in.StaffRetrievalUseCase;
+import net.kravuar.staff.ports.out.AccountRetrievalPort;
 import net.kravuar.staff.ports.out.InvitationRetrievalPort;
 import net.kravuar.staff.ports.out.StaffRetrievalPort;
 
@@ -14,15 +16,22 @@ import net.kravuar.staff.ports.out.StaffRetrievalPort;
 public class StaffRetrievalFacade implements StaffRetrievalUseCase {
     private final StaffRetrievalPort staffRetrievalPort;
     private final InvitationRetrievalPort invitationRetrievalPort;
+    private final AccountRetrievalPort accountRetrievalPort;
 
     @Override
-    public Staff findStaffById(long staffId, boolean activeOnly) {
-        return staffRetrievalPort.findById(staffId, activeOnly);
+    public StaffDetailed findStaffById(long staffId, boolean activeOnly) {
+        return withDetails(staffRetrievalPort.findById(staffId, activeOnly));
     }
 
     @Override
-    public Page<Staff> findStaffByBusiness(long businessId, boolean activeOnly, int page, int pageSize) {
-        return staffRetrievalPort.findByBusiness(businessId, activeOnly, page, pageSize);
+    public Page<StaffDetailed> findStaffByBusiness(long businessId, boolean activeOnly, int page, int pageSize) {
+        Page<Staff> staffPage = staffRetrievalPort.findByBusiness(businessId, activeOnly, page, pageSize);
+        return new Page<>(
+                staffPage.content().stream()
+                        .map(this::withDetails)
+                        .toList(),
+                staffPage.totalPages()
+        );
     }
 
     @Override
@@ -38,5 +47,12 @@ public class StaffRetrievalFacade implements StaffRetrievalUseCase {
     @Override
     public Page<StaffInvitation> findStaffInvitationsByBusiness(long businessId, int page, int pageSize) {
         return invitationRetrievalPort.findByBusiness(businessId, page, pageSize);
+    }
+
+    private StaffDetailed withDetails(Staff staff) {
+        return new StaffDetailed(
+                staff,
+                accountRetrievalPort.getBySub(staff.getSub())
+        );
     }
 }

@@ -21,7 +21,7 @@
         <module>kafka-notification-adapter</module>
         <module>noop-notification-adapter</module>
         <module>webmvc-rest-api-adapter</module>
-        <module>okta-account-existence-check-adapter</module>
+        <module>okta-account-retrieval-adapter</module>
         <module>fake-account-existence-check-adapter</module>
     </modules>
 
