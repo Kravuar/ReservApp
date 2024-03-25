@@ -1,16 +1,19 @@
 package net.kravuar.staff.domain;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
-@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Staff {
-    private final Long id;
-    private final String sub;
-    private final Business business;
-    private String description;
+    private Long id;
+    private String sub;
+    private Business business;
     private boolean active;
+
+    private String description;
 }

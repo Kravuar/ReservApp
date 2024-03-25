@@ -17,7 +17,7 @@ class KafkaNotificationAdapter implements ServiceNotificationPort {
     @Override
     public void notifyNewService(Service service) {
         this.template.send(
-                kafkaProps.getTopic(),
+                kafkaProps.getServiceUpdateTopic(),
                 new ServiceCreationDTO(
                         service.getId(),
                         service.getBusiness().getId(),
@@ -29,7 +29,7 @@ class KafkaNotificationAdapter implements ServiceNotificationPort {
     @Override
     public void notifyServiceActiveChanged(Service service) {
         this.template.send(
-                kafkaProps.getTopic(),
+                kafkaProps.getServiceUpdateTopic(),
                 new ServiceActivityChangeDTO(
                         service.getId(),
                         service.isActive()

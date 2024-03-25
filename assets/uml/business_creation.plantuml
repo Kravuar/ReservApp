@@ -1,0 +1,21 @@
+@startuml
+skinparam sequenceMessageAlign center
+autoactivate on
+
+participant Клиент
+participant Сервер
+participant "Хранилище данных" as Хранилище
+participant "Очередь сообщений" as Сообщения
+
+Клиент -> Сервер: Запрос на создание бизнеса\nс Access Token
+note over Сервер
+Использование пользователя
+из Access Token в качестве текущего
+end note
+note over Сервер: Синхронизация доступа
+Сервер -> Хранилище: Сохранить бизнес
+return Сохранённый бизнес
+Сервер -> Сообщения: Опубликовать сообщение о создании нового бизнеса
+return
+return Созданный бизнес
+@enduml

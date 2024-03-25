@@ -2,31 +2,36 @@ package net.kravuar.business.ports.in;
 
 import net.kravuar.business.domain.Business;
 import net.kravuar.business.domain.exceptions.BusinessNotFoundException;
-
-import java.util.List;
+import net.kravuar.pageable.Page;
 
 public interface BusinessRetrievalUseCase {
     /**
-     * Find business by businessId.
+     * Find business by id.
      *
-     * @param id businessId of the business to find
+     * @param id         id of the business to find
+     * @param activeOnly whether to search active only
      * @return {@link Business} associated the with provided businessId
      * @throws BusinessNotFoundException if business wasn't found
      */
-    Business findById(long id);
+    Business findById(long id, boolean activeOnly);
 
     /**
-     * Find active businesses by owner sub.
+     * Find businesses by owner sub with pageable.
      *
-     * @param sub sub of the owner
-     * @return {@link List<Business>} active businesses associated the with provided owner
+     * @param page page number
+     * @param pageSize size of the page
+     * @param sub        sub of the owner
+     * @param activeOnly whether to search active only
+     * @return page of businesses associated the with provided owner {@code sub}
      */
-    List<Business> findActiveBySub(String sub);
+    Page<Business> findBySub(String sub, boolean activeOnly, int page, int pageSize);
 
     /**
-     * Find all active.
+     * Find active businesses with pageable.
      *
-     * @return all existing and active businesses
+     * @param page page number
+     * @param pageSize size of the page
+     * @return page of existing active businesses
      */
-    List<Business> findAllActive();
+    Page<Business> findActive(int page, int pageSize);
 }

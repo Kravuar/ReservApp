@@ -3,6 +3,7 @@ package net.kravuar.business.web;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.business.domain.Business;
 import net.kravuar.business.ports.in.BusinessRetrievalUseCase;
+import net.kravuar.pageable.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -11,32 +12,71 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/retrieval")
 @RequiredArgsConstructor
 class BusinessRetrievalController {
-    private final BusinessRetrievalUseCase businessRetrievalUseCase;
+    private final BusinessRetrievalUseCase businessRetrieval;
+    private final DTOMapper dtoMapper;
 
-    @GetMapping("/my")
+    @GetMapping("/my/{page}/{pageSize}")
     @PreAuthorize("isAuthenticated()")
-    List<Business> byCurrentUser(@AuthenticationPrincipal Jwt user) {
-        return businessRetrievalUseCase.findActiveBySub(user.getSubject());
+    Page<BusinessDTO> my(@AuthenticationPrincipal Jwt user, @PathVariable("page") int page, @PathVariable("pageSize") int pageSize) {
+        Page<Business> businesses = businessRetrieval
+                .findBySub(
+                        user.getSubject(),
+                        false,
+                        page,
+                        pageSize
+                );
+        return new Page<>(
+                businesses.content()
+                        .stream()
+                        .map(dtoMapper::toDTO)
+                        .toList(),
+                businesses.totalPages()
+        );
     }
 
-    @GetMapping("/byId/{id}")
-    Business byId(@PathVariable("id") long id) {
-        return businessRetrievalUseCase.findById(id);
+    @GetMapping("/my/by-id/{businessId}")
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwner(#businessId, authentication.details.subject)")
+    BusinessDTO myById(@PathVariable("businessId") long businessId) {
+        return dtoMapper.toDTO(businessRetrieval.findById(businessId, false));
     }
 
-    @GetMapping("/byOwner/{sub}")
-    List<Business> byOwner(@PathVariable("sub") String sub) {
-        return businessRetrievalUseCase.findActiveBySub(sub);
+    @GetMapping("/by-id/{businessId}")
+    BusinessDTO byId(@PathVariable("businessId") long businessId) {
+        return dtoMapper.toDTO(businessRetrieval.findById(businessId, true));
     }
 
-    @GetMapping("/active")
-    List<Business> active() {
-        return businessRetrievalUseCase.findAllActive();
+    @GetMapping("/by-owner/{sub}/{page}/{pageSize}")
+    Page<BusinessDTO> byOwner(@PathVariable("sub") String sub, @PathVariable("page") int page, @PathVariable("pageSize") int pageSize) {
+        Page<Business> businesses = businessRetrieval
+                .findBySub(
+                        sub,
+                        true,
+                        page,
+                        pageSize
+                );
+        return new Page<>(
+                businesses.content()
+                        .stream()
+                        .map(dtoMapper::toDTO)
+                        .toList(),
+                businesses.totalPages()
+        );
+    }
+
+    @GetMapping("/active/{page}/{pageSize}")
+    Page<BusinessDTO> active(@PathVariable("page") int page, @PathVariable("pageSize") int pageSize) {
+        Page<Business> businesses = businessRetrieval
+                .findActive(page, pageSize);
+        return new Page<>(
+                businesses.content()
+                        .stream()
+                        .map(dtoMapper::toDTO)
+                        .toList(),
+                businesses.totalPages()
+        );
     }
 }

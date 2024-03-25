@@ -1,0 +1,14 @@
+version: '4.27'
+services:
+  services-db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: services-db
+    ports:
+      - "3308:3306"
+    volumes:
+      - services-db-data:/var/lib/mysql
+
+volumes:
+  services-db-data:

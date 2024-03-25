@@ -14,12 +14,13 @@ public class AccountManagementFacade implements AccountManagementUseCase {
 
     @Override
     public Account createAccount(AccountCreationCommand command) {
-        return persistencePort.save(Account.builder()
-                .username(command.username())
-                .firstName(command.firstName())
-                .lastName(command.secondName())
-                .email(command.email())
-                .password(command.password())
-                .build());
+        return persistencePort.save(new Account(
+                null,
+                command.username(),
+                command.firstName(),
+                command.secondName(),
+                command.email(),
+                command.password()
+        ));
     }
 }

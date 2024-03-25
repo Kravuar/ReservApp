@@ -4,4 +4,5 @@ record AccountDTO(
         String sub,
         String username,
         String email
-) {}
+) {
+}

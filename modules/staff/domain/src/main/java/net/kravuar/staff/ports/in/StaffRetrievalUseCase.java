@@ -1,29 +1,59 @@
 package net.kravuar.staff.ports.in;
 
-import jakarta.validation.Valid;
+import net.kravuar.pageable.Page;
 import net.kravuar.staff.domain.Staff;
-import net.kravuar.staff.domain.commands.StaffAnswerInvitationCommand;
-import net.kravuar.staff.domain.commands.StaffInvitationCommand;
-import net.kravuar.staff.domain.commands.StaffRemovalCommand;
-import net.kravuar.staff.domain.exceptions.*;
-
-import java.util.List;
+import net.kravuar.staff.domain.StaffInvitation;
+import net.kravuar.staff.domain.exceptions.InvitationNotFoundException;
+import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
 
 public interface StaffRetrievalUseCase {
     /**
      * Find staff member by ID.
      *
-     * @param id ID of the staff member to find
-     * @return {@link Staff} object associated with the provided ID
+     * @param staffId    id of the staff member to find
+     * @param activeOnly whether to search active only
+     * @return {@link Staff} object associated with the provided {@code staffId}
      * @throws StaffNotFoundException if staff member wasn't found
      */
-    Staff findStaffById(long id);
+    Staff findStaffById(long staffId, boolean activeOnly);
 
     /**
-     * Find all staff members by business.
+     * Find staff members by business with pageable.
      *
-     * @param businessId ID of the business
-     * @return {@link List<Staff>} all staff members associated with the provided business ID
+     * @param page page number
+     * @param pageSize size of the page
+     * @param businessId id of the business
+     * @param activeOnly whether to search active staff only
+     * @return page of staff members associated with the provided {@code businessId}
      */
-    List<Staff> findAllStaffByBusiness(long businessId);
+    Page<Staff> findStaffByBusiness(long businessId, boolean activeOnly, int page, int pageSize);
+
+    /**
+     * Find staff invitation by id.
+     *
+     * @param invitationId id of the staff invitation
+     * @return found {@link StaffInvitation}
+     * @throws InvitationNotFoundException if invitation wasn't found
+     */
+    StaffInvitation findStaffInvitationById(long invitationId);
+
+    /**
+     * Find staff invitations by subject with pageable.
+     *
+     * @param page page number
+     * @param pageSize size of the page
+     * @param sub subject of the staff invitations
+     * @return page of staff invitations associated with the provided {@code subject}
+     */
+    Page<StaffInvitation> findStaffInvitationsBySubject(String sub, int page, int pageSize);
+
+    /**
+     * Find staff invitations by business with pageable.
+     *
+     * @param page page number
+     * @param pageSize size of the page
+     * @param businessId id of the business
+     * @return page of staff invitations associated with the provided {@code businessId}
+     */
+    Page<StaffInvitation> findStaffInvitationsByBusiness(long businessId, int page, int pageSize);
 }

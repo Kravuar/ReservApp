@@ -15,6 +15,16 @@
 
     <packaging>pom</packaging>
 
+    <modules>
+        <module>local-lock-adapter</module>
+        <module>jpa-persistence-adapter</module>
+        <module>kafka-notification-adapter</module>
+        <module>noop-notification-adapter</module>
+        <module>webmvc-rest-api-adapter</module>
+        <module>okta-account-existence-check-adapter</module>
+        <module>fake-account-existence-check-adapter</module>
+    </modules>
+
     <dependencies>
         <dependency>
             <groupId>net.kravuar.staff</groupId>

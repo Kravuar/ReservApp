@@ -4,36 +4,45 @@ import lombok.RequiredArgsConstructor;
 import net.kravuar.business.domain.Business;
 import net.kravuar.business.domain.exceptions.BusinessNotFoundException;
 import net.kravuar.business.ports.out.BusinessRetrievalPort;
+import net.kravuar.pageable.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 class JPABusinessRetrievalAdapter implements BusinessRetrievalPort {
-    private final BusinessMapper businessMapper;
     private final BusinessRepository businessRepository;
 
     @Override
-    public Business findById(long id) {
-        return businessRepository.findById(id)
-                .map(businessMapper::toDomain)
+    public Business findById(long businessId, boolean activeOnly) {
+        return businessRepository.findByIdAndActive(businessId, activeOnly)
                 .orElseThrow(BusinessNotFoundException::new);
     }
 
     @Override
-    public List<Business> findActiveBySub(String sub) {
-        return businessRepository.findByOwnerSubAndActiveIsTrue(sub)
-                .stream()
-                .map(businessMapper::toDomain)
-                .toList();
+    public boolean existsActiveByName(String name) {
+        return businessRepository.existsByNameAndActiveIsTrue(name);
     }
 
     @Override
-    public List<Business> findAllActive() {
-        return businessRepository.findAllByActiveIsTrue()
-                .stream()
-                .map(businessMapper::toDomain)
-                .toList();
+    public Page<Business> findBySub(String sub, boolean activeOnly, int page, int pageSize) {
+        var businesses = businessRepository.findByOwnerSubAndActive(
+                sub,
+                activeOnly,
+                PageRequest.of(page, pageSize)
+        );
+        return new Page<>(
+            businesses.getContent(),
+            businesses.getTotalPages()
+        );
+    }
+
+    @Override
+    public Page<Business> findActive(int page, int pageSize) {
+        var businesses = businessRepository.findByActiveIsTrue(PageRequest.of(page, pageSize));
+        return new Page<>(
+                businesses.getContent(),
+                businesses.getTotalPages()
+        );
     }
 }

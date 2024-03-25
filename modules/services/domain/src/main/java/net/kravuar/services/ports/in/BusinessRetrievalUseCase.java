@@ -5,11 +5,11 @@ import net.kravuar.services.domain.exceptions.BusinessNotFoundException;
 
 public interface BusinessRetrievalUseCase {
     /**
-     * Find business by businessId.
+     * Find business by id.
      *
-     * @param id businessId of the business to find
-     * @return {@link Business} associated the with provided businessId
+     * @param businessId id of the business to find
+     * @return {@link Business} associated the with provided {@code businessId}
      * @throws BusinessNotFoundException if business wasn't found
      */
-    Business findById(long id);
+    Business findById(long businessId);
 }

@@ -1,9 +1,8 @@
 package net.kravuar.services.web;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.services.domain.Service;
 import net.kravuar.services.domain.commands.ServiceChangeActiveCommand;
-import net.kravuar.services.domain.commands.ServiceChangeNameCommand;
+import net.kravuar.services.domain.commands.ServiceChangeDetailsCommand;
 import net.kravuar.services.domain.commands.ServiceCreationCommand;
 import net.kravuar.services.ports.in.ServiceManagementUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,22 +13,23 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 class ServiceManagementController {
     private final ServiceManagementUseCase serviceManagement;
+    private final DTOServiceMapper dtoServiceMapper;
 
     @PostMapping("/create")
-    @PreAuthorize("isAuthenticated() && @businessRetrievalFacade.findById(#command.businessId).ownerSub.equals(authentication.details.getSubject())")
-    Service create(@RequestBody ServiceCreationCommand command) {
-        return serviceManagement.create(command);
-    }
-
-    @PostMapping("/change-name")
-    @PreAuthorize("isAuthenticated() && @serviceRetrievalFacade.findById(#command.serviceId).business.ownerSub.equals(authentication.details.getSubject())")
-    public void changeName(@RequestBody ServiceChangeNameCommand command) {
-        serviceManagement.changeName(command);
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfBusiness(#command.businessId(), authentication.details.subject)")
+    ServiceDTO create(@RequestBody ServiceCreationCommand command) {
+        return dtoServiceMapper.toDTO(serviceManagement.create(command));
     }
 
     @PutMapping("/change-active")
-    @PreAuthorize("isAuthenticated() && @serviceRetrievalFacade.findById(#command.serviceId).business.ownerSub.equals(authentication.details.getSubject())")
-    public void changeName(@RequestBody ServiceChangeActiveCommand command) {
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfService(#command.serviceId(), authentication.details.subject)")
+    public void changeActive(@RequestBody ServiceChangeActiveCommand command) {
         serviceManagement.changeActive(command);
+    }
+
+    @PutMapping("/update-details")
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfService(#command.serviceId(), authentication.details.subject)")
+    public void updateDetails(@RequestBody ServiceChangeDetailsCommand command) {
+        serviceManagement.changeDetails(command);
     }
 }

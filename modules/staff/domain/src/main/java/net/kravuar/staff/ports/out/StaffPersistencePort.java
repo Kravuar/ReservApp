@@ -9,5 +9,5 @@ public interface StaffPersistencePort {
      * @param staff Staff entity to save
      * @return saved {@link Staff} object
      */
-    Staff saveStaff(Staff staff);
+    Staff save(Staff staff);
 }

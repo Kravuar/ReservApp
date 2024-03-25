@@ -1,37 +1,50 @@
 package net.kravuar.staff.ports.in;
 
 import jakarta.validation.Valid;
+import net.kravuar.context.AppValidated;
 import net.kravuar.staff.domain.Staff;
+import net.kravuar.staff.domain.StaffInvitation;
+import net.kravuar.staff.domain.commands.RemoveStaffCommand;
 import net.kravuar.staff.domain.commands.StaffAnswerInvitationCommand;
+import net.kravuar.staff.domain.commands.StaffChangeDetailsCommand;
 import net.kravuar.staff.domain.commands.StaffInvitationCommand;
-import net.kravuar.staff.domain.commands.StaffRemovalCommand;
 import net.kravuar.staff.domain.exceptions.*;
 
+@AppValidated
 public interface StaffManagementUseCase {
     /**
      * Sends invitation to business if not already invited.
      *
      * @param command the command containing information for {@link Staff} invitation
-     * @return {@code false} if already invited, {@code true} otherwise
-     * @throws BusinessNotFoundException if business to associate Staff with wasn't found
-     * @throws BusinessDisabledException if business is disabled
-     * @throws AccountNotFoundException if account to invite wasn't found
-     * @throws IllegalStateException if there's an active invitation
+     * @return {@link StaffInvitation} created invitation
+     * @throws BusinessNotFoundException if business to associate staff with wasn't found
+     * @throws AccountNotFoundException  if account to invite wasn't found
+     * @throws IllegalStateException     if there's an active invitation/staff
      */
-    boolean sendInvitation(@Valid StaffInvitationCommand command);
+    StaffInvitation sendInvitation(@Valid StaffInvitationCommand command);
 
     /**
      * Answer on invitation to business.
      *
      * @param command the command containing information for answering {@link Staff} invitation
-     * @throws InvitationNotFoundException if invitation wasn't found
+     * @throws InvitationNotFoundException      if invitation wasn't found
+     * @throws InvitationInvalidStatusException if invitation cannot be answered, due to invalid status
      */
-    void answerInvitation(@Valid StaffAnswerInvitationCommand command);
+    void answerInvitation(StaffAnswerInvitationCommand command);
+
+    /**
+     * Changes details for a {@link Staff}.
+     *
+     * @param command the command containing information for details update of the staff
+     * @throws StaffNotFoundException if staff wasn't found
+     */
+    void changeDetails(@Valid StaffChangeDetailsCommand command);
 
     /**
      * Removes staff from business
+     *
      * @param command the command containing information for {@link Staff} removal
      * @throws StaffNotFoundException if staff wasn't found
      */
-    void removeStaff(@Valid StaffRemovalCommand command);
+    void removeStaff(RemoveStaffCommand command);
 }

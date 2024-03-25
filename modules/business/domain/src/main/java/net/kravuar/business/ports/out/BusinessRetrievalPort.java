@@ -2,31 +2,44 @@ package net.kravuar.business.ports.out;
 
 import net.kravuar.business.domain.Business;
 import net.kravuar.business.domain.exceptions.BusinessNotFoundException;
-
-import java.util.List;
+import net.kravuar.pageable.Page;
 
 public interface BusinessRetrievalPort {
     /**
-     * Find business by businessId.
+     * Find business by id.
      *
-     * @param id businessId of the business to find
-     * @return {@link Business} associated the with provided businessId
+     * @param businessId id of the business to find
+     * @param activeOnly whether to search active only
+     * @return {@link Business} associated the with provided {@code businessId}
      * @throws BusinessNotFoundException if business wasn't found
      */
-    Business findById(long id);
+    Business findById(long businessId, boolean activeOnly);
 
     /**
-     * Find active businesses by owner.
+     * Check whether an active business exists by name.
      *
-     * @param sub sub of the owner
-     * @return {@link List<Business>} active businesses associated the with provided owner
+     * @param name name to check
+     * @return {@code true} if exists, {@code false} otherwise
      */
-    List<Business> findActiveBySub(String sub);
+    boolean existsActiveByName(String name);
 
     /**
-     * Find all active.
+     * Find businesses by owner with pageable.
      *
-     * @return all existing and active businesses
+     * @param page page number
+     * @param pageSize size of the page
+     * @param sub        sub of the owner
+     * @param activeOnly whether to search active only
+     * @return page of businesses associated the with provided owner {@code sub}
      */
-    List<Business> findAllActive();
+    Page<Business> findBySub(String sub, boolean activeOnly, int page, int pageSize);
+
+    /**
+     * Find active with pageable.
+     *
+     * @param page page number
+     * @param pageSize size of the page
+     * @return page of existing and active businesses
+     */
+    Page<Business> findActive(int page, int pageSize);
 }

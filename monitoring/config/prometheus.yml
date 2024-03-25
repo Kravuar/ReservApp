@@ -1,0 +1,26 @@
+scrape_configs: # TODO: Looks bad
+  - job_name: 'business_monitoring'
+    scrape_interval: 30s
+    metrics_path: 'business/api-v1/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:8080' ]
+  - job_name: 'accounts_monitoring'
+    scrape_interval: 30s
+    metrics_path: 'accounts/api-v1/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:8080' ]
+  - job_name: 'services_monitoring'
+    scrape_interval: 30s
+    metrics_path: 'services/api-v1/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:8080' ]
+  - job_name: 'staff_monitoring'
+    scrape_interval: 30s
+    metrics_path: 'staff/api-v1/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:8080' ]
+  - job_name: 'schedule_monitoring'
+    scrape_interval: 5s
+    metrics_path: 'schedule/api-v1/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:8080' ]

@@ -1,8 +1,8 @@
 package net.kravuar.business.web;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.business.domain.Business;
 import net.kravuar.business.domain.commands.BusinessChangeActiveCommand;
+import net.kravuar.business.domain.commands.BusinessChangeDetailsCommand;
 import net.kravuar.business.domain.commands.BusinessChangeNameCommand;
 import net.kravuar.business.domain.commands.BusinessCreationCommand;
 import net.kravuar.business.ports.in.BusinessManagementUseCase;
@@ -16,26 +16,34 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 class BusinessManagementController {
     private final BusinessManagementUseCase businessManagement;
+    private final DTOMapper dtoMapper;
 
     @PostMapping("/create")
     @PreAuthorize("isAuthenticated()")
-    Business create(@AuthenticationPrincipal Jwt user, @RequestBody BusinessCreationDTO businessCreation) {
+    BusinessDTO create(@AuthenticationPrincipal Jwt user, @RequestBody BusinessCreationDTO businessCreation) {
         var command = new BusinessCreationCommand(
                 user.getSubject(),
-                businessCreation.name()
+                businessCreation.name(),
+                businessCreation.description()
         );
-        return businessManagement.create(command);
+        return dtoMapper.toDTO(businessManagement.create(command));
     }
 
     @PostMapping("/change-name")
-    @PreAuthorize("isAuthenticated() && @businessRetrievalFacade.findById(#command.businessId()).ownerSub.equals(authentication.details.getSubject())")
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwner(#command.businessId(), authentication.details.subject)")
     void changeName(@RequestBody BusinessChangeNameCommand command) {
         businessManagement.changeName(command);
     }
 
     @PutMapping("/change-active")
-    @PreAuthorize("isAuthenticated() && @businessRetrievalFacade.findById(#command.businessId()).ownerSub.equals(authentication.details.getSubject())")
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwner(#command.businessId(), authentication.details.subject)")
     void changeActive(@RequestBody BusinessChangeActiveCommand command) {
         businessManagement.changeActive(command);
+    }
+
+    @PutMapping("/update-details")
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwner(#command.businessId(), authentication.details.subject)")
+    void updateDetails(@RequestBody BusinessChangeDetailsCommand command) {
+        businessManagement.changeDetails(command);
     }
 }

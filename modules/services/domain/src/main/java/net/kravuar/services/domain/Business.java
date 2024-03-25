@@ -1,14 +1,16 @@
 package net.kravuar.services.domain;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
-@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Business {
-    private final long id;
-    private final String ownerSub;
+    private Long id;
+    private String ownerSub;
     private boolean active;
 }

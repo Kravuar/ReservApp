@@ -1,7 +1,6 @@
 package net.kravuar.business.ports.out;
 
 import net.kravuar.business.domain.Business;
-import net.kravuar.business.domain.exceptions.BusinessNameAlreadyTaken;
 
 public interface BusinessPersistencePort {
     /**
@@ -9,7 +8,6 @@ public interface BusinessPersistencePort {
      *
      * @param business business to save
      * @return saved {@link Business} object
-     * @throws BusinessNameAlreadyTaken if business name already taken
      */
     Business save(Business business);
 }
