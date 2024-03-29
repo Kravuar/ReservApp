@@ -8,6 +8,7 @@ import com.okta.sdk.resource.model.User;
 import com.okta.sdk.resource.model.UserProfile;
 import net.kravuar.context.AppComponent;
 import net.kravuar.staff.domain.AccountDetails;
+import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
 import net.kravuar.staff.ports.out.AccountRetrievalPort;
 
 import java.net.HttpURLConnection;
@@ -36,20 +37,24 @@ class OktaClient implements AccountRetrievalPort {
 
     @Override
     public AccountDetails getBySub(String sub) {
-        User user = client.getUser(sub);
-        UserProfile userProfile = user.getProfile();
-        String fullName = "";
+        try {
+            User user = client.getUser(sub);
+            UserProfile userProfile = user.getProfile();
+            String fullName = "";
 //        URI picture = null;
-        if (userProfile != null) {
-            fullName = Stream.of(userProfile.getFirstName(), userProfile.getLastName())
-                    .filter(Objects::nonNull)
-                    .filter(str -> !str.isBlank())
-                    .collect(Collectors.joining(" "));
+            if (userProfile != null) {
+                fullName = Stream.of(userProfile.getFirstName(), userProfile.getLastName())
+                        .filter(Objects::nonNull)
+                        .filter(str -> !str.isBlank())
+                        .collect(Collectors.joining(" "));
 //            picture = URI.create(String.valueOf(userProfile.getAdditionalProperties().get("picture")));
-        }
-        return new AccountDetails(
-                fullName
+            }
+            return new AccountDetails(
+                    fullName
 //                picture
-        );
+            );
+        } catch (ApiException exception) {
+            throw new StaffNotFoundException();
+        }
     }
 }

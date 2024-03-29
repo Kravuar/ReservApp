@@ -1,6 +1,7 @@
 package net.kravuar.staff.ports.out;
 
 import net.kravuar.staff.domain.AccountDetails;
+import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
 
 public interface AccountRetrievalPort {
     /**
@@ -16,6 +17,7 @@ public interface AccountRetrievalPort {
      *
      * @param sub subject value of the account to retrieve
      * @return {@code AccountDetails} with information about account
+     * @throws StaffNotFoundException if staff wasn't found
      */
     AccountDetails getBySub(String sub);
 }

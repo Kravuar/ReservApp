@@ -1,19 +1,19 @@
 INSERT INTO business (id, owner_sub, active)
-VALUES (1, 'ownerSub', true),
-       (2, 'ownerSub', true),
-       (3, 'ownerSub', true),
-       (4, 'ownerSub', true),
-       (5, 'ownerSub', true),
-       (6, 'ownerSub', true),
-       (7, 'ownerSub', true),
-       (8, 'ownerSub', true),
-       (9, 'ownerSub', true),
-       (10, 'ownerSub', true),
-       (11, 'ownerSub', true),
-       (12, 'ownerSub', true),
-       (13, 'ownerSub', true),
-       (14, 'ownerSub', true),
-       (15, 'ownerSub', false);
+VALUES (1, 'bebr1@mail.ru', true),
+       (2, 'bebr1@mail.ru', true),
+       (3, 'bebr1@mail.ru', true),
+       (4, 'bebr1@mail.ru', true),
+       (5, 'bebr1@mail.ru', true),
+       (6, 'bebr1@mail.ru', true),
+       (7, 'bebr1@mail.ru', true),
+       (8, 'bebr1@mail.ru', true),
+       (9, 'bebr1@mail.ru', true),
+       (10, 'bebr1@mail.ru', true),
+       (11, 'bebr1@mail.ru', true),
+       (12, 'bebr1@mail.ru', true),
+       (13, 'bebr1@mail.ru', true),
+       (14, 'bebr1@mail.ru', true),
+       (15, 'bebr1@mail.ru', false);
 
 INSERT INTO service (id, business_id, active)
 VALUES (1, 1, true),
@@ -38,10 +38,10 @@ VALUES (1, 1, true),
        (20, 1, true);
 
 INSERT INTO staff (id, business_id, sub, active)
-VALUES (1, 1, "iamStaff111", true),
-       (2, 2, "iamStaff222", true),
-       (3, 2, "iamStaff333", true),
-       (4, 2, "iamStaff444", true);
+VALUES (1, 1, "bebr2@mail.ru", true),
+       (2, 2, "bebr3@mail.ru", true),
+       (3, 2, "bebr4@mail.ru", true),
+       (4, 2, "bebr1@mail.ru", true);
 
 INSERT INTO schedule (start, end, staff_id, service_id, created_at, active)
 VALUES ('2025-03-02', '2025-03-20', 1, 1, '2024-03-02T08:00:00', true),
@@ -122,5 +122,5 @@ VALUES (1, '08:25:00', '09:25:00', 50.0, 1),
        (2, '16:25:00', '17:25:00', 100.0, 1);
 
 INSERT INTO reservation (date, start, end, client_sub, staff_id, service_id, active, created_at)
-VALUES ('2025-03-03', '09:30:00', '10:30:00', 'abobus', 1, 1, true, '2024-03-02T08:00:00'),
-       ('2025-03-08', '11:30:00', '12:30:00', 'bebobus', 1, 1, true, '2024-03-02T08:00:00');
+VALUES ('2025-03-03', '09:30:00', '10:30:00', 'client@maile.ru', 1, 1, true, '2024-03-02T08:00:00'),
+       ('2025-03-08', '11:30:00', '12:30:00', 'client@maile.ru', 1, 1, true, '2024-03-02T08:00:00');

@@ -1,19 +1,19 @@
 INSERT INTO business (id, owner_sub, active)
-VALUES (1, 'ownerSub', true),
-       (2, 'ownerSub', true),
-       (3, 'ownerSub', true),
-       (4, 'ownerSub', true),
-       (5, 'ownerSub', true),
-       (6, 'ownerSub', true),
-       (7, 'ownerSub', true),
-       (8, 'ownerSub', true),
-       (9, 'ownerSub', true),
-       (10, 'ownerSub', true),
-       (11, 'ownerSub', true),
-       (12, 'ownerSub', true),
-       (13, 'ownerSub', true),
-       (14, 'ownerSub', true),
-       (15, 'ownerSub', false);
+VALUES (1, 'bebr1@mail.ru', true),
+       (2, 'bebr1@mail.ru', true),
+       (3, 'bebr1@mail.ru', true),
+       (4, 'bebr1@mail.ru', true),
+       (5, 'bebr1@mail.ru', true),
+       (6, 'bebr1@mail.ru', true),
+       (7, 'bebr1@mail.ru', true),
+       (8, 'bebr1@mail.ru', true),
+       (9, 'bebr1@mail.ru', true),
+       (10, 'bebr1@mail.ru', true),
+       (11, 'bebr1@mail.ru', true),
+       (12, 'bebr1@mail.ru', true),
+       (13, 'bebr1@mail.ru', true),
+       (14, 'bebr1@mail.ru', true),
+       (15, 'bebr1@mail.ru', false);
 
 INSERT INTO service (business_id, name, active, description)
 VALUES
