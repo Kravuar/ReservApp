@@ -13,10 +13,7 @@ import net.kravuar.schedule.ports.in.ScheduleRetrievalUseCase;
 import net.kravuar.schedule.ports.out.ScheduleRetrievalPort;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.NavigableMap;
-import java.util.SortedSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @AppComponent
@@ -56,7 +53,7 @@ public class ScheduleRetrievalFacade implements ScheduleRetrievalUseCase {
                 Map.Entry::getKey,
                 entry -> Schedule.asPerDay(
                         entry.getValue(),
-                        exceptionDays.get(entry.getKey()),
+                        exceptionDays.getOrDefault(entry.getKey(), Collections.emptyNavigableMap()),
                         command.getStart(),
                         command.getEnd()
                 )
