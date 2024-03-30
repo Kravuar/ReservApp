@@ -17,9 +17,9 @@ class ReservationManagementController {
     private final ReservationManagementUseCase reservationManagementUseCase;
     private final DTOReservationMapper dtoReservationMapper;
 
-    @PostMapping("/create/{staffId}/{serviceId}/{dateTime}")
+    @PostMapping("/reserve/{staffId}/{serviceId}/{dateTime}")
     @PreAuthorize("isAuthenticated()")
-    ReservationDTO createSchedule(@AuthenticationPrincipal Jwt jwt, @PathVariable("staffId") long staffId, @PathVariable("serviceId") long serviceId, @PathVariable("dateTime") LocalDateTime dateTime) {
+    ReservationDTO reserve(@AuthenticationPrincipal Jwt jwt, @PathVariable("staffId") long staffId, @PathVariable("serviceId") long serviceId, @PathVariable("dateTime") LocalDateTime dateTime) {
         return dtoReservationMapper.reservationToDTO(
                 reservationManagementUseCase.createReservation(new CreateReservationCommand(
                                 jwt.getSubject(),
@@ -33,7 +33,7 @@ class ReservationManagementController {
 
     @DeleteMapping("/cancel/{reservationId}")
     @PreAuthorize("isAuthenticated() && @authorizationHandler.isClientOrStaff(#reservationId, authentication.details.subject)")
-    void changePatterns(@PathVariable("reservationId") long reservationId) {
+    void cancel(@PathVariable("reservationId") long reservationId) {
         reservationManagementUseCase.cancelReservation(reservationId);
     }
 }

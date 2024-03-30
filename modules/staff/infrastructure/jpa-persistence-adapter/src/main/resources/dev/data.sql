@@ -23,7 +23,7 @@ VALUES ('bebr2@mail.ru', 1, '2024-02-25', 2),
        ('bebr3@mail.ru', 2, '2024-02-25', 2);
 
 INSERT INTO staff (sub, business_id, description, active)
-VALUES ('bebr2@mail.ru', 1, 'just a bebr', true),
+VALUES ('bebr1@mail.ru', 2, 'likes to do owner stuff', true),
+       ('bebr2@mail.ru', 1, 'just a bebr', true),
        ('bebr3@mail.ru', 2, 'bebr3@mail.ru descr', true),
-       ('bebr4@mail.ru', 2, 'aajfwnjfa', true),
-       ('bebr1@mail.ru', 2, 'likes to do owner stuff', true);
+       ('bebr4@mail.ru', 2, 'aajfwnjfa', true);
