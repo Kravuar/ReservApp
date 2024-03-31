@@ -23,5 +23,5 @@ logging:
   level:
     org:
       springframework:
-        security: TRACE
-        web: TRACE
+        security: ERROR
+        web: ERROR

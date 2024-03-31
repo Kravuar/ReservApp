@@ -3,6 +3,7 @@ package net.kravuar.schedule.persistence.local;
 import net.kravuar.schedule.domain.Staff;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -13,5 +14,5 @@ interface StaffRepository extends JpaRepository<Staff, Long> {
             "WHERE s.id = :staffId " +
             "AND s.active = true " +
             "AND s.business.active = true")
-    Optional<Staff> findByIdAndActiveIsTrue(long staffId);
+    Optional<Staff> findByIdAndActiveIsTrue(@Param("staffId") long staffId);
 }
