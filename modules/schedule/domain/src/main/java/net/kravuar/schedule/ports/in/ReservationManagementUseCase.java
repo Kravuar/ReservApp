@@ -27,4 +27,15 @@ public interface ReservationManagementUseCase {
      * @throws ReservationNotFoundException if reservation wasn't found
      */
     void cancelReservation(long reservationId);
+
+    /**
+     * Restore a reservation.
+     *
+     * @param reservationId id of the reservation
+     * @return {@link Reservation} restored reservation
+     * @throws StaffNotFoundException if staff wasn't found
+     * @throws IllegalStateException  if reservation is active, overlaps with other reservations
+     *                                of the staff or if there are no available reservation slots
+     */
+    Reservation restoreReservation(long reservationId);
 }

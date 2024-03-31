@@ -36,4 +36,12 @@ class ReservationManagementController {
     void cancel(@PathVariable("reservationId") long reservationId) {
         reservationManagementUseCase.cancelReservation(reservationId);
     }
+
+    @DeleteMapping("/restore/{reservationId}")
+    @PreAuthorize("isAuthenticated() && @authorizationHandler.isClientOrStaff(#reservationId, authentication.details.subject)")
+    ReservationDTO restore(@PathVariable("reservationId") long reservationId) {
+        return dtoReservationMapper.reservationToDTO(
+                reservationManagementUseCase.restoreReservation(reservationId)
+        );
+    }
 }

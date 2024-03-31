@@ -22,8 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -352,5 +351,144 @@ class ReservationManagementFacadeTest {
         verify(reservationPersistencePort).save(same(reservation));
         verify(scheduleLockPort).lockByStaff(eq(reservation.getStaff().getId()), eq(false));
         verify(scheduleLockPort).lock(eq(reservationId), eq(false));
+    }
+
+    @Test
+    void givenValidReservationId_AndReservationExists_whenRestoreReservation_thenReservationRestored() {
+        // Given
+        Staff staff = someStaff();
+        Service service = someService();
+        long reservationId = 1;
+        ReservationSlot reservationSlot = new ReservationSlot(
+                RESERVATION_DATE_TIME.toLocalTime(),
+                RESERVATION_DATE_TIME.toLocalTime().plusHours(1),
+                1,
+                1
+        );
+        Reservation reservation = spy(new Reservation(
+                reservationId,
+                RESERVATION_DATE_TIME.toLocalDate(),
+                RESERVATION_DATE_TIME.toLocalTime(),
+                RESERVATION_DATE_TIME.toLocalTime(),
+                "sub",
+                staff,
+                service,
+                false
+        ));
+        var existingSlots = new TreeMap<>(Collections.singletonMap(
+                RESERVATION_DATE_TIME.toLocalDate(),
+                new TreeSet<>(Set.of(reservationSlot))
+        ));
+
+        doReturn(existingSlots)
+                .when(scheduleRetrievalUseCase)
+                .findActiveScheduleByStaffAndServiceInPerDay(any());
+        doReturn(Collections.emptyNavigableMap())
+                .when(reservationRetrievalPort)
+                .findAllActiveByStaff(anyLong(), eq(RESERVATION_DATE_TIME.toLocalDate()), eq(RESERVATION_DATE_TIME.toLocalDate()), eq(false));
+        doAnswer(invocation -> invocation.getArgument(0))
+                .when(reservationPersistencePort)
+                .save(any());
+        doReturn(reservation)
+                .when(reservationRetrievalPort)
+                .findActiveById(eq(reservationId));
+
+        // When
+        Reservation restoredReservation = reservationManagement.restoreReservation(reservationId);
+
+        // Then
+        assertThat(restoredReservation.isActive()).isTrue();
+        verify(reservationPersistencePort).save(same(reservation));
+        verify(scheduleLockPort).lockByStaff(eq(reservation.getStaff().getId()), eq(false));
+    }
+
+    @Test
+    void givenValidReservationId_AndReservationIsAlreadyActive_whenRestoreReservation_thenIllegalStateExceptionThrown() {
+        // Given
+        Staff staff = someStaff();
+        Service service = someService();
+        long reservationId = 1;
+        Reservation reservation = spy(new Reservation(
+                reservationId,
+                RESERVATION_DATE_TIME.toLocalDate(),
+                RESERVATION_DATE_TIME.toLocalTime(),
+                RESERVATION_DATE_TIME.toLocalTime(),
+                "sub",
+                staff,
+                service,
+                true
+        ));
+
+        doReturn(reservation)
+                .when(reservationRetrievalPort)
+                .findActiveById(eq(reservationId));
+
+        // When
+        Throwable thrown = catchThrowable(() -> reservationManagement.restoreReservation(reservationId));
+
+        // Then
+        assertThat(thrown).isInstanceOf(IllegalStateException.class);
+        verifyNoMoreInteractions(reservationPersistencePort);
+        verify(scheduleLockPort).lock(eq(reservation.getId()), eq(false));
+    }
+
+    @Test
+    void givenValidReservationId_AndReservationSlotOccupiedByAnotherActiveReservation_whenRestoreReservation_thenIllegalStateExceptionThrown() {
+        // Given
+        Staff staff = someStaff();
+        Service service = someService();
+        long reservationId = 1;
+        ReservationSlot reservationSlot = new ReservationSlot(
+                RESERVATION_DATE_TIME.toLocalTime(),
+                RESERVATION_DATE_TIME.toLocalTime().plusHours(1),
+                1,
+                1
+        );
+        Reservation existingReservation = new Reservation(
+                null,
+                RESERVATION_DATE_TIME.toLocalDate(),
+                reservationSlot.getStart(),
+                reservationSlot.getEnd(),
+                "other sub",
+                staff,
+                service,
+                true
+        );
+        Reservation reservation = spy(new Reservation(
+                reservationId,
+                RESERVATION_DATE_TIME.toLocalDate(),
+                RESERVATION_DATE_TIME.toLocalTime(),
+                RESERVATION_DATE_TIME.toLocalTime(),
+                "sub",
+                staff,
+                service,
+                false
+        ));
+        var existingSlots = new TreeMap<>(Collections.singletonMap(
+                RESERVATION_DATE_TIME.toLocalDate(),
+                new TreeSet<>(Set.of(reservationSlot))
+        ));
+        var existingReservations = new TreeMap<>(Collections.singletonMap(
+                RESERVATION_DATE_TIME.toLocalDate(),
+                List.of(existingReservation)
+        ));
+
+        doReturn(existingSlots)
+                .when(scheduleRetrievalUseCase)
+                .findActiveScheduleByStaffAndServiceInPerDay(any());
+        doReturn(existingReservations)
+                .when(reservationRetrievalPort)
+                .findAllActiveByStaff(anyLong(), eq(RESERVATION_DATE_TIME.toLocalDate()), eq(RESERVATION_DATE_TIME.toLocalDate()), eq(false));
+        doReturn(reservation)
+                .when(reservationRetrievalPort)
+                .findActiveById(eq(reservationId));
+
+        // When
+        Throwable thrown = catchThrowable(() -> reservationManagement.restoreReservation(reservationId));
+
+        // Then
+        assertThat(thrown).isInstanceOf(ReservationOutOfSlotsException.class);
+        verifyNoMoreInteractions(reservationPersistencePort);
+        verify(scheduleLockPort).lock(eq(reservation.getId()), eq(false));
     }
 }
