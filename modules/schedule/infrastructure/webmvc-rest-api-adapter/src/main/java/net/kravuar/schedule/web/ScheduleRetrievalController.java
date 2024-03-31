@@ -79,8 +79,8 @@ class ScheduleRetrievalController {
     @GetMapping("/by-service-and-staff/{serviceId}/{staffId}/{from}/{to}")
     Map<LocalDate, SortedSet<ReservationSlot>> byServiceAndStaff(@PathVariable("serviceId") long serviceId, @PathVariable("staffId") long staffId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return scheduleRetrievalUseCase.findActiveScheduleByStaffAndServiceInPerDay(new RetrieveScheduleByStaffAndServiceCommand(
-                serviceId,
                 staffId,
+                serviceId,
                 from,
                 to
         ));

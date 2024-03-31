@@ -14,6 +14,7 @@ import net.kravuar.schedule.ports.out.ScheduleRetrievalPort;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @AppComponent
@@ -48,12 +49,14 @@ public class ScheduleRetrievalFacade implements ScheduleRetrievalUseCase {
     public Map<Staff, NavigableMap<LocalDate, SortedSet<ReservationSlot>>> findActiveScheduleByServiceInPerDay(RetrieveScheduleByServiceCommand command) {
         Map<Staff, List<Schedule>> schedules = scheduleRetrievalPort.findActiveSchedulesByService(command.getServiceId(), command.getStart(), command.getEnd());
         Map<Staff, NavigableMap<LocalDate, ScheduleExceptionDay>> exceptionDays = scheduleRetrievalPort.findActiveExceptionDaysByService(command.getServiceId(), command.getStart(), command.getEnd());
+        Set<Staff> allStaff = new HashSet<>(schedules.keySet());
+        allStaff.addAll(exceptionDays.keySet());
 
-        return schedules.entrySet().stream().collect(Collectors.toMap(
-                Map.Entry::getKey,
-                entry -> Schedule.asPerDay(
-                        entry.getValue(),
-                        exceptionDays.getOrDefault(entry.getKey(), Collections.emptyNavigableMap()),
+        return allStaff.stream().collect(Collectors.toMap(
+                Function.identity(),
+                staff -> Schedule.asPerDay(
+                        schedules.getOrDefault(staff, Collections.emptyList()),
+                        exceptionDays.getOrDefault(staff, Collections.emptyNavigableMap()),
                         command.getStart(),
                         command.getEnd()
                 )

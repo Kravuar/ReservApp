@@ -1,19 +1,19 @@
 INSERT INTO business (id, owner_sub, active)
-VALUES (1, 'bebr1@mail.ru', true),
-       (2, 'bebr1@mail.ru', true),
-       (3, 'bebr1@mail.ru', true),
-       (4, 'bebr1@mail.ru', true),
-       (5, 'bebr1@mail.ru', true),
-       (6, 'bebr1@mail.ru', true),
-       (7, 'bebr1@mail.ru', true),
-       (8, 'bebr1@mail.ru', true),
-       (9, 'bebr1@mail.ru', true),
-       (10, 'bebr1@mail.ru', true),
-       (11, 'bebr1@mail.ru', true),
-       (12, 'bebr1@mail.ru', true),
-       (13, 'bebr1@mail.ru', true),
-       (14, 'bebr1@mail.ru', true),
-       (15, 'bebr1@mail.ru', false);
+VALUES (1, 'realownerowningstuff@mail.ru', true),
+       (2, 'realownerowningstuff@mail.ru', true),
+       (3, 'realownerowningstuff@mail.ru', true),
+       (4, 'realownerowningstuff@mail.ru', true),
+       (5, 'realownerowningstuff@mail.ru', true),
+       (6, 'realownerowningstuff@mail.ru', true),
+       (7, 'realownerowningstuff@mail.ru', true),
+       (8, 'realownerowningstuff@mail.ru', true),
+       (9, 'realownerowningstuff@mail.ru', true),
+       (10, 'realownerowningstuff@mail.ru', true),
+       (11, 'realownerowningstuff@mail.ru', true),
+       (12, 'realownerowningstuff@mail.ru', true),
+       (13, 'realownerowningstuff@mail.ru', true),
+       (14, 'realownerowningstuff@mail.ru', true),
+       (15, 'realownerowningstuff@mail.ru', false);
 
 INSERT INTO service (id, business_id, active)
 VALUES (1, 1, true),
@@ -38,10 +38,10 @@ VALUES (1, 1, true),
        (20, 1, true);
 
 INSERT INTO staff (id, business_id, sub, active)
-VALUES (1, 1, "bebr1@mail.ru", true),
-       (2, 2, "bebr2@mail.ru", true),
-       (3, 2, "bebr3@mail.ru", true),
-       (4, 2, "bebr4@mail.ru", true);
+VALUES (1, 1, 'aboba1@mail.ru', true),
+       (2, 2, 'aboba2@mail.ru', true),
+       (3, 2, 'aboba3@mail.ru', true),
+       (4, 2, 'aboba4@mail.ru', true);
 
 INSERT INTO schedule (start, end, staff_id, service_id, created_at, active)
 VALUES ('2025-03-02', '2025-03-20', 1, 1, '2024-03-02T08:00:00', true),
@@ -60,10 +60,10 @@ VALUES (1, 3, 2),
        (4, 4, 3);
 
 INSERT INTO schedule_exception_day (date, staff_id, service_id)
-VALUES ('2025-03-09', 1, 1),
-       ('2025-03-03', 4, 2),
+VALUES ('2025-03-03', 4, 2),
        ('2025-03-04', 3, 2),
-       ('2025-03-13', 2, 2);
+       ('2025-03-09', 2, 2),
+       ('2025-03-13', 1, 1);
 
 INSERT INTO pattern_slots (schedule_pattern_id, start, end, cost, max_reservations)
 VALUES (1, '08:00:00', '09:00:00', 20.0, 1),
@@ -128,5 +128,5 @@ VALUES (1, '08:25:00', '09:25:00', 500.0, 1),
        (4, '16:25:00', '17:25:00', 1000.0, 1);
 
 INSERT INTO reservation (date, start, end, client_sub, staff_id, service_id, active, created_at)
-VALUES ('2025-03-03', '09:30:00', '10:30:00', 'client@maile.ru', 2, 2, true, '2024-03-02T08:00:00'),
-       ('2025-03-04', '11:30:00', '12:30:00', 'client@maile.ru', 2, 2, true, '2024-03-02T08:00:00');
+VALUES ('2025-03-03', '09:50:00', '10:50:00', 'client@maile.ru', 2, 2, true, '2024-03-02T08:00:00'),
+       ('2025-03-04', '11:20:00', '12:20:00', 'client@maile.ru', 2, 2, true, '2024-03-02T08:00:00');
