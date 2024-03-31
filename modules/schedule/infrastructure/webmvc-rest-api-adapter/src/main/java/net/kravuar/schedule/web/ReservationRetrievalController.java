@@ -3,6 +3,8 @@ package net.kravuar.schedule.web;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.schedule.ports.in.ReservationRetrievalUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,10 +65,10 @@ class ReservationRetrievalController {
                 ));
     }
 
-    @GetMapping("/by-client-sub/{sub}/{from}/{to}")
-    @PreAuthorize("isAuthenticated() && #sub.equals(authentication.details.subject)")
-    Map<LocalDate, List<ReservationDTO>> byClient(@PathVariable("sub") String sub, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
-        return reservationRetrievalUseCase.findAllByClient(sub, from, to).entrySet().stream()
+    @GetMapping("/my/{from}/{to}")
+    @PreAuthorize("isAuthenticated()")
+    Map<LocalDate, List<ReservationDTO>> my(@AuthenticationPrincipal Jwt jwt, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+        return reservationRetrievalUseCase.findAllByClient(jwt.getSubject(), from, to).entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         entry -> entry.getValue().stream()
