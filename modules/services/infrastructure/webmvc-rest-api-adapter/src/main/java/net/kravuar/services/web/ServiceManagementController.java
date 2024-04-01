@@ -16,19 +16,19 @@ class ServiceManagementController {
     private final DTOServiceMapper dtoServiceMapper;
 
     @PostMapping("/create")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfBusiness(#command.businessId(), authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#command.businessId(), 'Service', 'Create')")
     ServiceDTO create(@RequestBody ServiceCreationCommand command) {
         return dtoServiceMapper.toDTO(serviceManagement.create(command));
     }
 
     @PutMapping("/change-active")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfService(#command.serviceId(), authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#command.serviceId(), 'Service', 'Update')")
     public void changeActive(@RequestBody ServiceChangeActiveCommand command) {
         serviceManagement.changeActive(command);
     }
 
     @PutMapping("/update-details")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfService(#command.serviceId(), authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#command.serviceId(), 'Service', 'Update')")
     public void updateDetails(@RequestBody ServiceChangeDetailsCommand command) {
         serviceManagement.changeDetails(command);
     }

@@ -15,7 +15,7 @@ class ScheduleManagementController {
     private final DTOScheduleExceptionDayMapper dtoScheduleExceptionDayMapper;
 
     @PostMapping("/create")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfServiceBusiness(#command.serviceId(), authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#command.serviceId(), 'Schedule', 'Create')")
     ScheduleDTO createSchedule(@RequestBody CreateScheduleCommand command) {
         return dtoScheduleMapper.scheduleToDTO(
                 scheduleManagementUseCase.createSchedule(command)
@@ -23,7 +23,7 @@ class ScheduleManagementController {
     }
 
     @PutMapping("/change/patterns")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfScheduleBusiness(#command.scheduleId(), authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#command.scheduleId(), 'Schedule', 'Update')")
     ScheduleDTO changePatterns(@RequestBody ChangeSchedulePatternsCommand command) {
         return dtoScheduleMapper.scheduleToDTO(
                 scheduleManagementUseCase.changeSchedulePatterns(command)
@@ -31,7 +31,7 @@ class ScheduleManagementController {
     }
 
     @PutMapping("/change/duration")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfScheduleBusiness(#command.scheduleId(), authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#command.scheduleId(), 'Schedule', 'Update')")
     ScheduleDTO changeDuration(@RequestBody ChangeScheduleDurationCommand command) {
         return dtoScheduleMapper.scheduleToDTO(
                 scheduleManagementUseCase.changeScheduleDuration(command)
@@ -39,7 +39,7 @@ class ScheduleManagementController {
     }
 
     @PostMapping("/exception-days/create")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfServiceBusiness(#command.serviceId(), authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#command.serviceId(), 'ScheduleException', 'Create')")
     ScheduleExceptionDayDTO createExceptionDay(@RequestBody CreateScheduleExceptionDayCommand command) {
         return dtoScheduleExceptionDayMapper.scheduleExceptionDayToDTO(
                 scheduleManagementUseCase.addOrUpdateScheduleExceptionDay(command)
@@ -47,7 +47,7 @@ class ScheduleManagementController {
     }
 
     @PutMapping("/remove")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfScheduleBusiness(#command.scheduleId(), authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#command.scheduleId(), 'Schedule', 'Delete')")
     void removeSchedule(@RequestBody RemoveScheduleCommand command) {
         scheduleManagementUseCase.removeSchedule(command);
     }

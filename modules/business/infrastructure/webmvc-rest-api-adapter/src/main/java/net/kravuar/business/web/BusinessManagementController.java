@@ -30,19 +30,19 @@ class BusinessManagementController {
     }
 
     @PostMapping("/change-name")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwner(#command.businessId(), authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#command.businessId(), 'Business', 'Update')")
     void changeName(@RequestBody BusinessChangeNameCommand command) {
         businessManagement.changeName(command);
     }
 
     @PutMapping("/change-active")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwner(#command.businessId(), authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#command.businessId(), 'Business', 'Update')")
     void changeActive(@RequestBody BusinessChangeActiveCommand command) {
         businessManagement.changeActive(command);
     }
 
     @PutMapping("/update-details")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwner(#command.businessId(), authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#command.businessId(), 'Business', 'Update')")
     void updateDetails(@RequestBody BusinessChangeDetailsCommand command) {
         businessManagement.changeDetails(command);
     }

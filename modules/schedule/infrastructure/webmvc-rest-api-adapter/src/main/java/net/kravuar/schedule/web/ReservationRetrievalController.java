@@ -23,7 +23,7 @@ class ReservationRetrievalController {
     private final DTOReservationMapper dtoReservationMapper;
 
     @GetMapping("/by-id/{reservationId}")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isClientOrStaff(#reservationId, authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#reservationId, 'Reservation', 'Read')")
     ReservationDTO byId(@PathVariable("reservationId") long reservationId) {
         return dtoReservationMapper.reservationToDTO(
                 reservationRetrievalUseCase.findById(reservationId)
@@ -43,7 +43,7 @@ class ReservationRetrievalController {
     }
 
     @GetMapping("/by-staff/{staffId}/{from}/{to}")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isStaff(#staffId, authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#staffId, 'ReservationsOfStaff', 'Read')")
     Map<LocalDate, List<ReservationDTO>> byStaff(@PathVariable("staffId") long staffId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return reservationRetrievalUseCase.findAllByStaff(staffId, from, to).entrySet().stream()
                 .collect(Collectors.toMap(

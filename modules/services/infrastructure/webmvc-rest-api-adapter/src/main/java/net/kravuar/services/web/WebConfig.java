@@ -1,20 +1,26 @@
 package net.kravuar.services.web;
 
 import jakarta.validation.ConstraintViolationException;
+import lombok.RequiredArgsConstructor;
 import net.kravuar.services.domain.exceptions.ServiceException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.parameters.AnnotationParameterNameDiscoverer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -22,7 +28,9 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 @ControllerAdvice
+@RequiredArgsConstructor
 class WebConfig {
+    private final AuthorizationHandler authorizationHandler;
 
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<String> handleDomainException(ServiceException exception) {
@@ -32,6 +40,14 @@ class WebConfig {
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
     public ResponseEntity<String> handleDomainException(Exception exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @Bean
+    public MethodSecurityExpressionHandler methodSecurityExpressionHandler() {
+        DefaultMethodSecurityExpressionHandler handler = new DefaultMethodSecurityExpressionHandler();
+        handler.setPermissionEvaluator(authorizationHandler);
+        handler.setParameterNameDiscoverer(new AnnotationParameterNameDiscoverer(PathVariable.class.getName(), RequestBody.class.getName()));
+        return handler;
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

@@ -18,7 +18,7 @@ class ServiceRetrievalController {
     private final DTOServiceMapper dtoServiceMapper;
 
     @GetMapping("/my/by-business/{businessId}/{page}/{pageSize}")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfBusiness(#businessId, authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#businessId, 'Service', 'Read')")
     Page<ServiceDTO> myByBusiness(@PathVariable("businessId") long businessId, @PathVariable("page") int page, @PathVariable("pageSize") int pageSize) {
         Page<Service> services = serviceRetrieval
                 .findActiveByActiveBusinessId(
@@ -36,7 +36,7 @@ class ServiceRetrievalController {
     }
 
     @GetMapping("/my/by-id/{serviceId}")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfService(#serviceId, authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#serviceId, 'Service', 'ReadDirect')")
     ServiceDTO myById(@PathVariable("serviceId") long serviceId) {
         return dtoServiceMapper.toDTO(serviceRetrieval.findById(serviceId, false));
     }

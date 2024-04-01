@@ -17,7 +17,7 @@ class StaffManagementController {
     private final DTOStaffMapper dtoStaffMapper;
 
     @PostMapping("/send-invitation/{subject}/{businessId}")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfBusiness(#businessId, authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#businessId, 'Invitation', 'Invite')")
     StaffInvitationDTO sendInvitation(@PathVariable("subject") String sub, @PathVariable("businessId") long businessId) {
         return dtoStaffMapper.invitationToDTO(staffManagement.sendInvitation(
                 new StaffInvitationCommand(
@@ -28,7 +28,7 @@ class StaffManagementController {
     }
 
     @PostMapping("/answer-invitation/{invitationId}/{accept}")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isInvitedStaff(#invitationId, authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#invitationId, 'Invitation', 'AnswerInvitation')")
     void answerInvitation(@PathVariable("invitationId") long invitationId, @PathVariable("accept") boolean accept) {
         staffManagement.answerInvitation(
                 new StaffAnswerInvitationCommand(
@@ -39,13 +39,13 @@ class StaffManagementController {
     }
 
     @PutMapping("/update-details")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isStaffOrOwnerOfStaffBusiness(#command.staffId(), authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#command.staffId(), 'Staff', 'Update')")
     void updateDetails(@RequestBody StaffChangeDetailsCommand command) {
         staffManagement.changeDetails(command);
     }
 
     @DeleteMapping("/remove-staff")
-    @PreAuthorize("isAuthenticated() && @authorizationHandler.isOwnerOfStaffBusiness(#command.staffId(), authentication.details.subject)")
+    @PreAuthorize("isAuthenticated() && hasPermission(#command.staffId(), 'Staff', 'Delete')")
     void removeStaff(@RequestBody RemoveStaffCommand command) {
         staffManagement.removeStaff(command);
     }

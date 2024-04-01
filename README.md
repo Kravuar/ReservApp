@@ -25,3 +25,8 @@
 17. <span style="color:green">(MINOR)</span> by-service route for staff module (if staff ever have been assigned a schedule for service - he should be included)
 18. <span style="color:orange">(MEDIUM)</span> Migrate to different authorization server, okta does not have profile picture attribute (or at least I don't know the way to get it)
 19. <span style="color:green">(MINOR)</span> add maxReservationsFromSameUser field to slot and check compliance with the restriction
+20. <span style="color:green">(MEDIUM)</span> too much code duplication, move to common module at least
+
+### Конфигурация Okta
+Создать сервер авторизации, использовать issuer-uri (адрес сервера), а также создать и использовать api token
+![okta-api](assets/okta.png) 
