@@ -14,20 +14,20 @@ import java.util.Optional;
 interface StaffRepository extends JpaRepository<Staff, Long> {
     @Query("SELECT s FROM Staff s " +
             "WHERE s.id = :staffId " +
-            "AND s.active = :activeOnly " +
+            "AND (:activeOnly = false OR s.active = true) " +
             "AND s.business.active = true")
     Optional<Staff> findById(@Param("staffId") long staffId, @Param("activeOnly") boolean activeOnly);
 
     @Query("SELECT s FROM Staff s " +
             "WHERE s.business.id = :businessId " +
-            "AND s.active = :activeOnly " +
+            "AND (:activeOnly = false OR s.active = true) " +
             "AND s.business.active = true")
     Page<Staff> findByBusiness(@Param("businessId") long businessId, @Param("activeOnly") boolean activeOnly, Pageable pageable);
 
     @Query("SELECT s FROM Staff s " +
             "WHERE s.business.id = :businessId " +
             "AND s.sub = :sub " +
-            "AND s.active = :activeOnly " +
-            "AND s.business.active = :activeBusinessOnly")
+            "AND (:activeOnly = false OR s.active = true) " +
+            "AND (:activeBusinessOnly = false or s.business.active = true)")
     Optional<Staff> findByBusinessAndSub(@Param("businessId") long businessId, @Param("sub") String sub, @Param("activeOnly") boolean activeOnly, @Param("activeBusinessOnly") boolean activeBusinessOnly);
 }

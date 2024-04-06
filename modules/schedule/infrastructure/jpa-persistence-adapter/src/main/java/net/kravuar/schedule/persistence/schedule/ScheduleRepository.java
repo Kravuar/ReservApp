@@ -14,7 +14,7 @@ import java.util.Optional;
 interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     @Query("SELECT s FROM Schedule s " +
             "WHERE s.id = :scheduleId " +
-            "AND s.active = :activeOnly " +
+            "AND (:activeOnly = false OR s.active = true) " +
             "AND s.service.active = true " +
             "AND s.service.business.active = true " +
             "AND s.staff.active = true")
