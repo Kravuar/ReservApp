@@ -27,6 +27,11 @@ public class ReservationRetrievalFacade implements ReservationRetrievalUseCase {
     }
 
     @Override
+    public NavigableMap<LocalDate, List<Reservation>> findAllByStaff(String sub, LocalDate from, LocalDate to) {
+        return reservationRetrievalPort.findAllActiveByStaff(sub, from, to, true);
+    }
+
+    @Override
     public NavigableMap<LocalDate, List<Reservation>> findAllByClient(String clientSub, LocalDate from, LocalDate to) {
         return reservationRetrievalPort.findAllActiveByClient(clientSub, from, to);
     }

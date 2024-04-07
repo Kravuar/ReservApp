@@ -29,21 +29,30 @@ class BusinessManagementController {
         return dtoMapper.toDTO(businessManagement.create(command));
     }
 
-    @PostMapping("/change-name")
-    @PreAuthorize("isAuthenticated() && hasPermission(#command.businessId(), 'Business', 'Update')")
-    void changeName(@RequestBody BusinessChangeNameCommand command) {
-        businessManagement.changeName(command);
+    @PutMapping("/change-name/{businessId}")
+    @PreAuthorize("hasPermission(#businessId, 'Business', 'Update')")
+    void changeName(@PathVariable("businessId") long businessId, @RequestBody String name) {
+        businessManagement.changeName(new BusinessChangeNameCommand(
+                businessId,
+                name
+        ));
     }
 
-    @PutMapping("/change-active")
-    @PreAuthorize("isAuthenticated() && hasPermission(#command.businessId(), 'Business', 'Update')")
-    void changeActive(@RequestBody BusinessChangeActiveCommand command) {
-        businessManagement.changeActive(command);
+    @PutMapping("/change-active/{businessId}/{active}")
+    @PreAuthorize("hasPermission(#businessId, 'Business', 'Update')")
+    public void changeActive(@PathVariable("businessId") long businessId, @PathVariable("active") boolean active) {
+        businessManagement.changeActive(new BusinessChangeActiveCommand(
+                businessId,
+                active
+        ));
     }
 
-    @PutMapping("/update-details")
-    @PreAuthorize("isAuthenticated() && hasPermission(#command.businessId(), 'Business', 'Update')")
-    void updateDetails(@RequestBody BusinessChangeDetailsCommand command) {
-        businessManagement.changeDetails(command);
+    @PutMapping("/update-details/{businessId}")
+    @PreAuthorize("hasPermission(#businessId, 'Business', 'Update')")
+    public void updateDetails(@PathVariable("businessId") long businessId, @RequestBody BusinessDetailsDTO details) {
+        businessManagement.changeDetails(new BusinessChangeDetailsCommand(
+                businessId,
+                details.description()
+        ));
     }
 }

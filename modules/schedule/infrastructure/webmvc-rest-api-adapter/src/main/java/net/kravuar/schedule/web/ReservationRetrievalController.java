@@ -23,7 +23,7 @@ class ReservationRetrievalController {
     private final DTOReservationMapper dtoReservationMapper;
 
     @GetMapping("/by-id/{reservationId}")
-    @PreAuthorize("isAuthenticated() && hasPermission(#reservationId, 'Reservation', 'Read')")
+    @PreAuthorize("hasPermission(#reservationId, 'Reservation', 'Read')")
     ReservationDTO byId(@PathVariable("reservationId") long reservationId) {
         return dtoReservationMapper.reservationToDTO(
                 reservationRetrievalUseCase.findById(reservationId)
@@ -43,7 +43,7 @@ class ReservationRetrievalController {
     }
 
     @GetMapping("/by-staff/{staffId}/{from}/{to}")
-    @PreAuthorize("isAuthenticated() && hasPermission(#staffId, 'ReservationsOfStaff', 'Read')")
+    @PreAuthorize("hasPermission(#staffId, 'ReservationsOfStaff', 'Read')")
     Map<LocalDate, List<ReservationDTO>> byStaff(@PathVariable("staffId") long staffId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return reservationRetrievalUseCase.findAllByStaff(staffId, from, to).entrySet().stream()
                 .collect(Collectors.toMap(
@@ -69,6 +69,18 @@ class ReservationRetrievalController {
     @PreAuthorize("isAuthenticated()")
     Map<LocalDate, List<ReservationDTO>> my(@AuthenticationPrincipal Jwt jwt, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return reservationRetrievalUseCase.findAllByClient(jwt.getSubject(), from, to).entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().stream()
+                                .map(dtoReservationMapper::reservationToDTO)
+                                .toList()
+                ));
+    }
+
+    @GetMapping("/to-me/{from}/{to}")
+    @PreAuthorize("isAuthenticated()")
+    Map<LocalDate, List<ReservationDTO>> toMe(@AuthenticationPrincipal Jwt jwt, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+        return reservationRetrievalUseCase.findAllByStaff(jwt.getSubject(), from, to).entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         entry -> entry.getValue().stream()

@@ -6,7 +6,6 @@ import net.kravuar.context.AppComponent;
 import net.kravuar.staff.domain.Business;
 import net.kravuar.staff.domain.Staff;
 import net.kravuar.staff.domain.StaffInvitation;
-import net.kravuar.staff.domain.commands.RemoveStaffCommand;
 import net.kravuar.staff.domain.commands.StaffAnswerInvitationCommand;
 import net.kravuar.staff.domain.commands.StaffChangeDetailsCommand;
 import net.kravuar.staff.domain.commands.StaffInvitationCommand;
@@ -108,16 +107,16 @@ public class StaffManagementFacade implements StaffManagementUseCase {
     }
 
     @Override
-    public void removeStaff(RemoveStaffCommand command) {
+    public void removeStaff(long staffId) {
         try {
-            staffLockPort.lock(command.staffId(), true);
+            staffLockPort.lock(staffId, true);
 
-            Staff staff = staffRetrievalPort.findById(command.staffId(), true);
+            Staff staff = staffRetrievalPort.findById(staffId, true);
             staff.setActive(false);
             staffPersistencePort.save(staff);
             staffNotificationPort.notifyStaffActiveChanged(staff);
         } finally {
-            staffLockPort.lock(command.staffId(), false);
+            staffLockPort.lock(staffId, false);
         }
     }
 }

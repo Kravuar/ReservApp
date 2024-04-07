@@ -3,7 +3,6 @@ package net.kravuar.staff;
 import net.kravuar.staff.domain.Business;
 import net.kravuar.staff.domain.Staff;
 import net.kravuar.staff.domain.StaffInvitation;
-import net.kravuar.staff.domain.commands.RemoveStaffCommand;
 import net.kravuar.staff.domain.commands.StaffAnswerInvitationCommand;
 import net.kravuar.staff.domain.commands.StaffChangeDetailsCommand;
 import net.kravuar.staff.domain.commands.StaffInvitationCommand;
@@ -289,15 +288,15 @@ class StaffManagementFacadeTest {
     @Test
     void givenValidRemoveStaffCommand_whenRemoveStaff_thenStaffRemoved() {
         // Given
-        RemoveStaffCommand command = new RemoveStaffCommand(1);
+        long staffId = 1;
         Staff staff = spy(someStaff());
 
         doReturn(staff)
                 .when(staffRetrievalPort)
-                .findById(eq(command.staffId()), eq(true));
+                .findById(eq(staffId), eq(true));
 
         // When
-        staffManagement.removeStaff(command);
+        staffManagement.removeStaff(staffId);
 
         // Then
         verify(staff).setActive(eq(false));
@@ -308,14 +307,14 @@ class StaffManagementFacadeTest {
     @Test
     void givenNonExistingStaff_whenRemoveStaff_thenStaffNotFoundExceptionThrown() {
         // Given
-        RemoveStaffCommand command = new RemoveStaffCommand(-1);
+        long staffId = -1;
 
         doThrow(StaffNotFoundException.class)
                 .when(staffRetrievalPort)
-                .findById(eq(command.staffId()), eq(true));
+                .findById(eq(staffId), eq(true));
 
         // When & Then
-        assertThatThrownBy(() -> staffManagement.removeStaff(command))
+        assertThatThrownBy(() -> staffManagement.removeStaff(staffId))
                 .isInstanceOf(StaffNotFoundException.class);
         verifyNoInteractions(staffPersistencePort, staffNotificationPort);
     }

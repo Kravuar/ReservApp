@@ -39,8 +39,23 @@ interface ReservationRepository extends JpaRepository<Reservation, Long> {
     List<Reservation> findAllFullyActiveByStaff(@Param("staffId") long staffId, @Param("from") LocalDate from, @Param("to") LocalDate to);
 
     @Query("SELECT r FROM Reservation r " +
+            "WHERE r.staff.sub = :sub " +
+            "AND r.date BETWEEN :from AND :to " +
+            "AND r.active = true " +
+            "AND r.service.active = true " +
+            "AND r.service.business.active = true " +
+            "AND r.staff.active = true")
+    List<Reservation> findAllFullyActiveByStaff(@Param("sub") String sub, @Param("from") LocalDate from, @Param("to") LocalDate to);
+
+    @Query("SELECT r FROM Reservation r " +
             "WHERE r.staff.id = :staffId " +
             "AND r.date BETWEEN :from AND :to " +
             "AND r.active = true")
     List<Reservation> findAllActiveByStaff(@Param("staffId") long staffId, @Param("from") LocalDate from, @Param("to") LocalDate to);
+
+    @Query("SELECT r FROM Reservation r " +
+            "WHERE r.staff.sub = :sub " +
+            "AND r.date BETWEEN :from AND :to " +
+            "AND r.active = true")
+    List<Reservation> findAllActiveByStaff(@Param("sub") String sub, @Param("from") LocalDate from, @Param("to") LocalDate to);
 }

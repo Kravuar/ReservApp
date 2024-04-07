@@ -33,6 +33,18 @@ public interface ReservationRetrievalPort {
     NavigableMap<LocalDate, List<Reservation>> findAllActiveByStaff(long staffId, LocalDate from, LocalDate to, boolean fullyActiveOnly);
 
     /**
+     * Find all active reservations by staff subject within a date range.
+     *
+     * @param sub         subject of the staff
+     * @param from            start date of the range
+     * @param to              end date of the range (inclusive)
+     * @param fullyActiveOnly whether to search fully active reservations only (with active parent entities)
+     * @return {@code NavigableMap<LocalDate, List<Reservation>>} mapping dates to reservations associated with the provided {@code staffId}
+     * within the specified date range
+     */
+    NavigableMap<LocalDate, List<Reservation>> findAllActiveByStaff(String sub, LocalDate from, LocalDate to, boolean fullyActiveOnly);
+
+    /**
      * Find all active reservations by client within a date range.
      * Only with active parent entities (business, service and staff),
      * otherwise schedule exception day should not be visible.

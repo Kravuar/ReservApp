@@ -1,10 +1,13 @@
 package net.kravuar.schedule.web;
 
 import lombok.RequiredArgsConstructor;
+import net.kravuar.schedule.domain.SchedulePattern;
 import net.kravuar.schedule.domain.commands.*;
 import net.kravuar.schedule.ports.in.ScheduleManagementUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/management")
@@ -14,41 +17,61 @@ class ScheduleManagementController {
     private final DTOScheduleMapper dtoScheduleMapper;
     private final DTOScheduleExceptionDayMapper dtoScheduleExceptionDayMapper;
 
-    @PostMapping("/create")
-    @PreAuthorize("isAuthenticated() && hasPermission(#command.serviceId(), 'Schedule', 'Create')")
-    ScheduleDTO createSchedule(@RequestBody CreateScheduleCommand command) {
+    @PostMapping("/create/{serviceId}/{staffId}")
+    @PreAuthorize("hasPermission(#serviceId, 'Schedule', 'Create')")
+    ScheduleDTO createSchedule(@PathVariable("serviceId") long serviceId, @PathVariable("staffId") long staffId, @RequestBody ScheduleDetailsDTO details) {
         return dtoScheduleMapper.scheduleToDTO(
-                scheduleManagementUseCase.createSchedule(command)
+                scheduleManagementUseCase.createSchedule(new CreateScheduleCommand(
+                        staffId,
+                        serviceId,
+                        details.start(),
+                        details.end(),
+                        details.patterns()
+                ))
         );
     }
 
-    @PutMapping("/change/patterns")
-    @PreAuthorize("isAuthenticated() && hasPermission(#command.scheduleId(), 'Schedule', 'Update')")
-    ScheduleDTO changePatterns(@RequestBody ChangeSchedulePatternsCommand command) {
+    @PutMapping("/change/{scheduleId}/patterns")
+    @PreAuthorize("hasPermission(#scheduleId, 'Schedule', 'Update')")
+    ScheduleDTO changePatterns(@PathVariable("scheduleId") long scheduleId, @RequestBody List<SchedulePattern> patterns) {
         return dtoScheduleMapper.scheduleToDTO(
-                scheduleManagementUseCase.changeSchedulePatterns(command)
+                scheduleManagementUseCase.changeSchedulePatterns(new ChangeSchedulePatternsCommand(
+                        scheduleId,
+                        patterns
+                ))
         );
     }
 
-    @PutMapping("/change/duration")
-    @PreAuthorize("isAuthenticated() && hasPermission(#command.scheduleId(), 'Schedule', 'Update')")
-    ScheduleDTO changeDuration(@RequestBody ChangeScheduleDurationCommand command) {
+    @PutMapping("/change/{scheduleId}/duration")
+    @PreAuthorize("hasPermission(#scheduleId, 'Schedule', 'Update')")
+    ScheduleDTO changeDuration(@PathVariable("scheduleId") long scheduleId, @RequestBody ScheduleDurationDTO duration) {
         return dtoScheduleMapper.scheduleToDTO(
-                scheduleManagementUseCase.changeScheduleDuration(command)
+                scheduleManagementUseCase.changeScheduleDuration(new ChangeScheduleDurationCommand(
+                        scheduleId,
+                        duration.start(),
+                        duration.end()
+                ))
         );
     }
 
-    @PostMapping("/exception-days/create")
-    @PreAuthorize("isAuthenticated() && hasPermission(#command.serviceId(), 'ScheduleException', 'Create')")
-    ScheduleExceptionDayDTO createExceptionDay(@RequestBody CreateScheduleExceptionDayCommand command) {
+    @PostMapping("/exception-days/create/{serviceId}/{staffId}")
+    @PreAuthorize("hasPermission(#serviceId, 'ScheduleException', 'Create')")
+    ScheduleExceptionDayDTO createExceptionDay(@PathVariable("serviceId") long serviceId, @PathVariable("staffId") long staffId, @RequestBody ScheduleExceptionDayCreationDTO exceptionDay) {
         return dtoScheduleExceptionDayMapper.scheduleExceptionDayToDTO(
-                scheduleManagementUseCase.addOrUpdateScheduleExceptionDay(command)
+                scheduleManagementUseCase.addOrUpdateScheduleExceptionDay(new CreateScheduleExceptionDayCommand(
+                        staffId,
+                        serviceId,
+                        exceptionDay.date(),
+                        exceptionDay.reservationSlots()
+                ))
         );
     }
 
-    @PutMapping("/remove")
-    @PreAuthorize("isAuthenticated() && hasPermission(#command.scheduleId(), 'Schedule', 'Delete')")
-    void removeSchedule(@RequestBody RemoveScheduleCommand command) {
-        scheduleManagementUseCase.removeSchedule(command);
+    @DeleteMapping("/remove/{scheduleId}")
+    @PreAuthorize("hasPermission(#scheduleId, 'Schedule', 'Delete')")
+    void removeSchedule(@PathVariable("scheduleId") long scheduleId) {
+        scheduleManagementUseCase.removeSchedule(new RemoveScheduleCommand(
+                scheduleId
+        ));
     }
 }

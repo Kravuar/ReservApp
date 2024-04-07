@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import net.kravuar.context.AppValidated;
 import net.kravuar.staff.domain.Staff;
 import net.kravuar.staff.domain.StaffInvitation;
-import net.kravuar.staff.domain.commands.RemoveStaffCommand;
 import net.kravuar.staff.domain.commands.StaffAnswerInvitationCommand;
 import net.kravuar.staff.domain.commands.StaffChangeDetailsCommand;
 import net.kravuar.staff.domain.commands.StaffInvitationCommand;
@@ -43,8 +42,8 @@ public interface StaffManagementUseCase {
     /**
      * Removes staff from business
      *
-     * @param command the command containing information for {@link Staff} removal
+     * @param staffId identifier of {@link Staff} to remove
      * @throws StaffNotFoundException if staff wasn't found
      */
-    void removeStaff(RemoveStaffCommand command);
+    void removeStaff(long staffId);
 }

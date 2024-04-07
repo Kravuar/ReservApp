@@ -15,21 +15,32 @@ class ServiceManagementController {
     private final ServiceManagementUseCase serviceManagement;
     private final DTOServiceMapper dtoServiceMapper;
 
-    @PostMapping("/create")
-    @PreAuthorize("isAuthenticated() && hasPermission(#command.businessId(), 'Service', 'Create')")
-    ServiceDTO create(@RequestBody ServiceCreationCommand command) {
-        return dtoServiceMapper.toDTO(serviceManagement.create(command));
+    @PostMapping("/create/{businessId}")
+    @PreAuthorize("hasPermission(#businessId, 'Service', 'Create')")
+    ServiceDTO create(@PathVariable("businessId") long businessId, @RequestBody ServiceDetailsDTO command) {
+        return dtoServiceMapper.toDTO(serviceManagement.create(new ServiceCreationCommand(
+                businessId,
+                command.name(),
+                command.description()
+        )));
     }
 
-    @PutMapping("/change-active")
-    @PreAuthorize("isAuthenticated() && hasPermission(#command.serviceId(), 'Service', 'Update')")
-    public void changeActive(@RequestBody ServiceChangeActiveCommand command) {
-        serviceManagement.changeActive(command);
+    @PutMapping("/change-active/{serviceId}/{active}")
+    @PreAuthorize("hasPermission(#serviceId, 'Service', 'Update')")
+    public void changeActive(@PathVariable("serviceId") long serviceId, @PathVariable("active") boolean active) {
+        serviceManagement.changeActive(new ServiceChangeActiveCommand(
+                serviceId,
+                active
+        ));
     }
 
-    @PutMapping("/update-details")
-    @PreAuthorize("isAuthenticated() && hasPermission(#command.serviceId(), 'Service', 'Update')")
-    public void updateDetails(@RequestBody ServiceChangeDetailsCommand command) {
-        serviceManagement.changeDetails(command);
+    @PutMapping("/update-details/{serviceId}")
+    @PreAuthorize("hasPermission(#serviceId, 'Service', 'Update')")
+    public void updateDetails(@PathVariable("serviceId") long serviceId, @RequestBody ServiceDetailsDTO details) {
+        serviceManagement.changeDetails(new ServiceChangeDetailsCommand(
+                serviceId,
+                details.name(),
+                details.description()
+        ));
     }
 }

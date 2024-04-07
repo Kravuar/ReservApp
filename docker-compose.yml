@@ -209,7 +209,7 @@ services:
       SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_JSON_TRUSTED_PACKAGES: '*'
 
       BUSINESS_UPDATE_BUSINESS_UPDATE_TOPIC: 'business_update_topic'
-      STAFF_UPDATE_BUSINESS_STAFF_UPDATE_TOPIC: 'staff_update_topic'
+      STAFF_UPDATE_STAFF_UPDATE_TOPIC: 'staff_update_topic'
     networks:
       - infrastructure-network
       - staff-network
@@ -257,7 +257,7 @@ services:
       SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_JSON_TRUSTED_PACKAGES: '*'
 
       BUSINESS_UPDATE_BUSINESS_UPDATE_TOPIC: 'business_update_topic'
-      STAFF_UPDATE_BUSINESS_STAFF_UPDATE_TOPIC: 'staff_update_topic'
+      STAFF_UPDATE_STAFF_UPDATE_TOPIC: 'staff_update_topic'
       SERVICE_UPDATE_SERVICE_UPDATE_TOPIC: 'service_update_topic'
     networks:
       - infrastructure-network

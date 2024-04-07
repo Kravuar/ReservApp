@@ -28,7 +28,7 @@ class ScheduleRetrievalController {
     private final DTOScheduleExceptionDayMapper dtoScheduleExceptionDayMapper;
 
     @GetMapping("/by-id/{scheduleId}/{activeOnly}")
-    @PreAuthorize("isAuthenticated() && hasPermission(#scheduleId, 'Schedule', 'ReadDirect')")
+    @PreAuthorize("hasPermission(#scheduleId, 'Schedule', 'ReadDirect')")
     ScheduleDTO byId(@PathVariable("scheduleId") long scheduleId, @PathVariable("activeOnly") boolean activeOnly) {
         return dtoScheduleMapper.scheduleToDTO(
                 scheduleRetrievalUseCase.findScheduleById(scheduleId, activeOnly)
@@ -36,7 +36,7 @@ class ScheduleRetrievalController {
     }
 
     @GetMapping("/by-staff-and-service/{staffId}/{serviceId}")
-    @PreAuthorize("isAuthenticated() && hasPermission(#serviceId, 'Schedule', 'Read')")
+    @PreAuthorize("hasPermission(#serviceId, 'Schedule', 'Read')")
     List<ScheduleDTO> byStaffAndService(@PathVariable("staffId") long staffId, @PathVariable("serviceId") long serviceId) {
         return scheduleRetrievalUseCase.findActiveSchedulesByStaffAndService(staffId, serviceId).stream()
                 .map(dtoScheduleMapper::scheduleToDTO)
@@ -44,7 +44,7 @@ class ScheduleRetrievalController {
     }
 
     @GetMapping("/exception-days/by-service-and-staff/{staffId}/{serviceId}/{from}/{to}")
-    @PreAuthorize("isAuthenticated() && hasPermission(#serviceId, 'ScheduleException', 'Read')")
+    @PreAuthorize("hasPermission(#serviceId, 'ScheduleException', 'Read')")
     Map<LocalDate, ScheduleExceptionDayDTO> scheduleExceptionDaysByServiceAndStaff(@PathVariable("serviceId") long serviceId, @PathVariable("staffId") long staffId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return scheduleRetrievalUseCase.findActiveExceptionDaysByStaffAndService(
                         new RetrieveScheduleExceptionDaysByStaffAndServiceCommand(

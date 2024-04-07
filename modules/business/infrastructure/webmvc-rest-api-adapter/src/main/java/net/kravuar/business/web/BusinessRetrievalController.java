@@ -39,7 +39,7 @@ class BusinessRetrievalController {
     }
 
     @GetMapping("/my/by-id/{businessId}")
-    @PreAuthorize("isAuthenticated() && hasPermission(#businessId, 'Business', 'ReadDirect')")
+    @PreAuthorize("hasPermission(#businessId, 'Business', 'ReadDirect')")
     BusinessDTO myById(@PathVariable("businessId") long businessId) {
         return dtoMapper.toDTO(businessRetrieval.findById(businessId, false));
     }

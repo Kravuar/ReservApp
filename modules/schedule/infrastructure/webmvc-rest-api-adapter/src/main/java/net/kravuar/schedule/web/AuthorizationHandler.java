@@ -32,7 +32,7 @@ class AuthorizationHandler implements PermissionEvaluator {
                     "Restore", (subject, id) -> isClientOrStaff((long) id, subject)
             ),
             "ReservationsOfStaff", Map.of(
-                    "Read", (subject, id) -> isStaff((long) id, subject)
+                    "Read", (subject, id) -> subject.equals(id) || isStaff((long) id, subject)
             ),
             "Schedule", Map.of(
                     "Update", (subject, id) -> isOwnerOfScheduleBusiness((long) id, subject),

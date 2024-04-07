@@ -29,6 +29,17 @@ public interface ReservationRetrievalUseCase {
     SortedMap<LocalDate, List<Reservation>> findAllByStaff(long staffId, LocalDate from, LocalDate to);
 
     /**
+     * Find all active reservations by staff subject within a date range.
+     *
+     * @param sub subject of the staff
+     * @param from    start date of the range
+     * @param to      end date of the range (inclusive)
+     * @return {@code SortedMap<LocalDate, List<Reservation>>} of reservations associated with the provided {@code staffId}
+     * within the specified date range
+     */
+    SortedMap<LocalDate, List<Reservation>> findAllByStaff(String sub, LocalDate from, LocalDate to);
+
+    /**
      * Find all active reservations by client within a date range.
      *
      * @param clientSub unique identifier of the client

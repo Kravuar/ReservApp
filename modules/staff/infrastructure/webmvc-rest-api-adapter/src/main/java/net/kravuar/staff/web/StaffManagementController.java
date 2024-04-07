@@ -1,7 +1,6 @@
 package net.kravuar.staff.web;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.staff.domain.commands.RemoveStaffCommand;
 import net.kravuar.staff.domain.commands.StaffAnswerInvitationCommand;
 import net.kravuar.staff.domain.commands.StaffChangeDetailsCommand;
 import net.kravuar.staff.domain.commands.StaffInvitationCommand;
@@ -17,7 +16,7 @@ class StaffManagementController {
     private final DTOStaffMapper dtoStaffMapper;
 
     @PostMapping("/send-invitation/{subject}/{businessId}")
-    @PreAuthorize("isAuthenticated() && hasPermission(#businessId, 'Invitation', 'Invite')")
+    @PreAuthorize("hasPermission(#businessId, 'Invitation', 'Invite')")
     StaffInvitationDTO sendInvitation(@PathVariable("subject") String sub, @PathVariable("businessId") long businessId) {
         return dtoStaffMapper.invitationToDTO(staffManagement.sendInvitation(
                 new StaffInvitationCommand(
@@ -28,7 +27,7 @@ class StaffManagementController {
     }
 
     @PostMapping("/answer-invitation/{invitationId}/{accept}")
-    @PreAuthorize("isAuthenticated() && hasPermission(#invitationId, 'Invitation', 'AnswerInvitation')")
+    @PreAuthorize("hasPermission(#invitationId, 'Invitation', 'AnswerInvitation')")
     void answerInvitation(@PathVariable("invitationId") long invitationId, @PathVariable("accept") boolean accept) {
         staffManagement.answerInvitation(
                 new StaffAnswerInvitationCommand(
@@ -38,15 +37,18 @@ class StaffManagementController {
         );
     }
 
-    @PutMapping("/update-details")
-    @PreAuthorize("isAuthenticated() && hasPermission(#command.staffId(), 'Staff', 'Update')")
-    void updateDetails(@RequestBody StaffChangeDetailsCommand command) {
-        staffManagement.changeDetails(command);
+    @PutMapping("/update-details/{staffId}")
+    @PreAuthorize("hasPermission(#staffId, 'Staff', 'Update')")
+    void updateDetails(@PathVariable("staffId") long staffId, @RequestBody StaffDetailsDTO details) {
+        staffManagement.changeDetails(new StaffChangeDetailsCommand(
+                staffId,
+                details.description()
+        ));
     }
 
-    @DeleteMapping("/remove-staff")
-    @PreAuthorize("isAuthenticated() && hasPermission(#command.staffId(), 'Staff', 'Delete')")
-    void removeStaff(@RequestBody RemoveStaffCommand command) {
-        staffManagement.removeStaff(command);
+    @DeleteMapping("/remove-staff/{staffId}")
+    @PreAuthorize("hasPermission(#staffId, 'Staff', 'Delete')")
+    void removeStaff(@PathVariable("staffId") long staffId) {
+        staffManagement.removeStaff(staffId);
     }
 }

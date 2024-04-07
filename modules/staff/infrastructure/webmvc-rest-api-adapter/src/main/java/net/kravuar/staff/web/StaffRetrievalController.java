@@ -57,7 +57,7 @@ class StaffRetrievalController {
     }
 
     @GetMapping("/invitations-by-business/{businessId}/{page}/{pageSize}")
-    @PreAuthorize("isAuthenticated() && hasPermission(#businessId, 'Invitation', 'Read')")
+    @PreAuthorize("hasPermission(#businessId, 'Invitation', 'Read')")
     Page<StaffInvitationDTO> findInvitationsByBusiness(@PathVariable("businessId") long businessId, @PathVariable("page") int page, @PathVariable("pageSize") int pageSize) {
         Page<StaffInvitation> staff = staffRetrieval.findStaffInvitationsByBusiness(
                 businessId,
