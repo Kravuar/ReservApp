@@ -26,13 +26,24 @@ class StaffManagementController {
         ));
     }
 
-    @PostMapping("/answer-invitation/{invitationId}/{accept}")
-    @PreAuthorize("hasPermission(#invitationId, 'Invitation', 'AnswerInvitation')")
-    void answerInvitation(@PathVariable("invitationId") long invitationId, @PathVariable("accept") boolean accept) {
+    @PostMapping("/accept-invitation/{invitationId}")
+    @PreAuthorize("hasPermission(#invitationId, 'Invitation', 'AcceptInvitation')")
+    void acceptInvitation(@PathVariable("invitationId") long invitationId) {
         staffManagement.answerInvitation(
                 new StaffAnswerInvitationCommand(
                         invitationId,
-                        accept
+                        true
+                )
+        );
+    }
+
+    @PostMapping("/decline-invitation/{invitationId}")
+    @PreAuthorize("hasPermission(#invitationId, 'Invitation', 'DeclineInvitation')")
+    void declineInvitation(@PathVariable("invitationId") long invitationId) {
+        staffManagement.answerInvitation(
+                new StaffAnswerInvitationCommand(
+                        invitationId,
+                        false
                 )
         );
     }

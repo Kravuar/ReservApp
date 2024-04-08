@@ -18,9 +18,14 @@ VALUES (1, 'realownerowningstuff@mail.ru', true),
 INSERT INTO staff_invitation (sub, business_id, created_at, status)
 VALUES ('aboba1@mail.ru', 2, '2024-02-25', 1),
        ('aboba2@mail.ru', 2, '2024-02-25', 0),
+       ('aboba2@mail.ru', 1, '2024-02-26', 1),
+       ('aboba2@mail.ru', 3, '2024-02-26', 2),
+       ('aboba2@mail.ru', 4, '2024-02-26', 2),
+       ('aboba2@mail.ru', 4, '2024-02-26', 1),
        ('aboba3@mail.ru', 2, '2024-02-25', 0),
        ('aboba4@mail.ru', 2, '2024-02-25', 0),
        ('aboba1@mail.ru', 1, '2024-02-26', 0);
+
 
 INSERT INTO staff (sub, business_id, description, active)
 VALUES ('aboba1@mail.ru', 1, 'likes to do stuff', true),

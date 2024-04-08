@@ -2,6 +2,7 @@ package net.kravuar.staff.web;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.staff.domain.Staff;
+import net.kravuar.staff.domain.StaffInvitation;
 import net.kravuar.staff.ports.in.BusinessRetrievalUseCase;
 import net.kravuar.staff.ports.in.StaffRetrievalUseCase;
 import org.springframework.security.access.PermissionEvaluator;
@@ -26,7 +27,8 @@ class AuthorizationHandler implements PermissionEvaluator {
             "Invitation", Map.of(
                     "Read", (subject, id) -> isOwnerOfBusiness((long) id, subject),
                     "Invite", (subject, id) -> isOwnerOfBusiness((long) id, subject),
-                    "AnswerInvitation", (subject, id) -> isInvitedStaff((long) id, subject)
+                    "AcceptInvitation", (subject, id) -> isInvitedStaff((long) id, subject),
+                    "DeclineInvitation", (subject, id) -> isInvitedStaffOrBusinessOwner((long) id, subject)
             )
     );
 
@@ -44,6 +46,12 @@ class AuthorizationHandler implements PermissionEvaluator {
 
     public boolean isInvitedStaff(long invitationId, String subject) {
         return staffRetrieval.findStaffInvitationById(invitationId).getSub().equals(subject);
+    }
+
+    public boolean isInvitedStaffOrBusinessOwner(long invitationId, String subject) {
+        StaffInvitation invitation = staffRetrieval.findStaffInvitationById(invitationId);
+        return invitation.getSub().equals(subject) ||
+                invitation.getBusiness().getOwnerSub().equals(subject);
     }
 
     public boolean isOwnerOfStaffBusiness(long staffId, String subject) {
