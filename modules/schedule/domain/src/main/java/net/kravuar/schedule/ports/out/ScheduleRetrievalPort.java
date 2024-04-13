@@ -25,11 +25,10 @@ public interface ScheduleRetrievalPort {
     Schedule findById(long scheduleId, boolean activeOnly);
 
     /**
-     * Find active schedules by staff and service.
+     * Find active schedules by staff and service in a date range.
      * Only with active parent entities (business, service and staff),
      * otherwise schedule exception day should not be visible.
-     * Find all that have at least 1 bound between {@code from} and {@code to},
-     * or both bounds out of the range.
+     * Find all that intersect with provided period
      *
      * @param staffId   id of the staff
      * @param serviceId id of the service
@@ -40,11 +39,22 @@ public interface ScheduleRetrievalPort {
     List<Schedule> findActiveSchedulesByStaffAndService(long staffId, long serviceId, LocalDate from, LocalDate to);
 
     /**
+     * Find active schedules by staff and service which intersect with specified date.
+     * Only with active parent entities (business, service and staff),
+     * otherwise schedule exception day should not be visible.
+     *
+     * @param staffId   id of the staff
+     * @param serviceId id of the service
+     * @param from      lower bound
+     * @return {@code List<Schedule>} of schedules associated the with provided {@code staffId} and {@code serviceId}
+     */
+    List<Schedule> findActiveSchedulesByStaffAndService(long staffId, long serviceId, LocalDate from);
+
+    /**
      * Find active schedules of staff members of service.
      * Only with active parent entities (business, service and staff),
      * otherwise schedule exception day should not be visible.
-     * Find all that have at least 1 bound between {@code from} and {@code to},
-     * or both bounds out of the range.
+     * Find all that intersect with provided period
      *
      * @param serviceId id of the service
      * @param from      lower bound

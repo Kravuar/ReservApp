@@ -32,8 +32,7 @@ public class ScheduleRetrievalFacade implements ScheduleRetrievalUseCase {
         return scheduleRetrievalPort.findActiveSchedulesByStaffAndService(
                 staffId,
                 serviceId,
-                LocalDate.now(),
-                LocalDate.MAX
+                LocalDate.now()
         );
     }
 

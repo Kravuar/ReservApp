@@ -27,6 +27,7 @@
 19. <span style="color:green">(MINOR)</span> add maxReservationsFromSameUser field to slot and check compliance with the restriction
 20. <span style="color:orange">(MEDIUM)</span> too much code duplication, move to common module at least
 21. <span style="color:green">(MINOR)</span> make reservations sorted by start time
+22. <span style="color:red">(CRITICAL)</span> Hibernate validator not so powerful, so whole schedule module (management part) is fucked
 
 ### Конфигурация Okta
 Создать сервер авторизации, использовать issuer-uri (адрес сервера), а также создать и использовать api token

@@ -36,6 +36,15 @@ public class JPAScheduleRetrievalAdapter implements ScheduleRetrievalPort {
     }
 
     @Override
+    public List<Schedule> findActiveSchedulesByStaffAndService(long staffId, long serviceId, LocalDate from) {
+        return scheduleRepository.findAllByStaffAndService(
+                staffId,
+                serviceId,
+                from
+        );
+    }
+
+    @Override
     public Map<Staff, List<Schedule>> findActiveSchedulesByService(long serviceId, LocalDate from, LocalDate to) {
         return scheduleRepository.findAllByService(
                 serviceId,

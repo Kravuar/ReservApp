@@ -38,4 +38,14 @@ interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             "AND s.staff.active = true " +
             "AND ((s.start <= :to AND :from <= s.end))")
     List<Schedule> findAllByStaffAndService(@Param("staffId") long staffId, @Param("serviceId") long serviceId, @Param("from") LocalDate from, @Param("to") LocalDate to);
+
+    @Query("SELECT s FROM Schedule s " +
+            "WHERE s.staff.id = :staffId " +
+            "AND s.service.id = :serviceId " +
+            "AND s.active = true " +
+            "AND s.service.active = true " +
+            "AND s.service.business.active = true " +
+            "AND s.staff.active = true " +
+            "AND s.end >= :from")
+    List<Schedule> findAllByStaffAndService(@Param("staffId") long staffId, @Param("serviceId") long serviceId, @Param("from") LocalDate from);
 }
