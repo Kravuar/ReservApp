@@ -1,7 +1,7 @@
 package net.kravuar.staff.ports.out;
 
 import net.kravuar.pageable.Page;
-import net.kravuar.staff.domain.StaffInvitation;
+import net.kravuar.staff.model.StaffInvitation;
 import net.kravuar.staff.domain.exceptions.InvitationNotFoundException;
 
 public interface InvitationRetrievalPort {

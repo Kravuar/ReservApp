@@ -1,0 +1,156 @@
+type Query {
+    services(page: Int, pageSize: Int): ServicesPage!
+    service(serviceId: ID): Service
+
+    businesses(page: Int, pageSize: Int): BusinessesPage!
+    business(businessId: ID): Business
+
+    staffs(page: Int, pageSize: Int): StaffPage!
+    staff(staffId: ID): Staff
+}
+
+type Mutation {
+    createBusiness(input: BusinessInput!): Business!
+    createService(input: ServiceInput!): Service!
+    inviteStaff(input: StaffInvitationInput!): StaffInvitation!
+    acceptInvitation(invitationId: ID!): Staff!
+    declineInvitation(invitationId: ID!): StaffInvitation!
+    reserveSlot(input: ReservationInput!): Reservation!
+    cancelReservation(reservationId: ID!): Reservation!
+}
+
+interface Page {
+    totalCount: Int
+}
+
+type ServicesPage implements Page {
+    totalCount: Int
+    content: [Service!]!
+}
+
+type BusinessesPage implements Page {
+    totalCount: Int
+    content: [Business!]!
+}
+
+type StaffPage implements Page {
+    totalCount: Int
+    content: [Staff!]!
+}
+
+type StaffInvitationsPage implements Page {
+    totalCount: Int
+    content: [StaffInvitation!]!
+}
+
+type Business {
+    id: ID!
+    name: String!
+    description: String
+    services: [Service!]!
+    staff: [Staff!]!
+}
+
+input BusinessInput {
+    name: String!
+    description: String
+}
+
+type Service {
+    id: ID!
+    name: String!
+    description: String
+    business: Business!
+    schedule(from: Date, to: Date): [ScheduleOfDay!]!
+    schedule_of_staff(staff_id: ID, from: Date, to: Date): [ScheduleOfDay!]!
+    assigned_staff: [Staff!]!
+}
+
+input ServiceInput {
+    businessId: ID!
+    name: String!
+    description: String
+}
+
+type Staff {
+    id: ID!
+    sub: String!
+    name: String!
+    business: Business!
+    invitations: [StaffInvitation!]!
+    schedule_for_service(service_id: ID, from: Date, to: Date): [ScheduleOfDay!]!
+}
+
+type StaffInvitation {
+    id: ID!
+    sub: String!
+    business: Business!
+    created_at: DateTime!
+    status: StaffInvitationStatus!
+}
+
+input StaffInvitationInput {
+    sub: String!
+    businessId: ID!
+}
+
+type ScheduleOfDay {
+    date: Date!
+    slots: [ReservationSlot!]!
+}
+
+type ManageableSchedule {
+    id: ID!
+    start: Date!
+    end: Date!
+    staff: Staff!
+    service: Service!
+    patterns: [SchedulePattern!]!
+    exceptionDays: [ScheduleExceptionDay!]!
+    createdAt: DateTime!
+}
+
+type ReservationSlot {
+    service: Service!
+    staff: Staff!
+    start: Time!
+    end: Time!
+    cost: Float!
+    maxReservations: Int!
+    reservations: [Reservation!]!
+}
+
+type SchedulePattern {
+    id: ID!
+    repeatDays: Int
+    pauseDays: Int
+    slots: [ReservationSlot!]!
+}
+
+type ScheduleExceptionDay {
+    service: Service!
+    staff: Staff!
+    date: Date!
+    slots: [ReservationSlot!]!
+}
+
+type Reservation {
+    id: Int!
+    slot: ReservationSlot!
+    clientSub: String!
+}
+
+input ReservationInput {
+    dateTime: DateTime!
+    staffId: ID!
+    serviceId: ID!
+}
+
+enum StaffInvitationStatus {
+    ACCEPTED
+    DECLINED
+    WAITING
+}
+scalar Date
+scalar Time
+scalar DateTime

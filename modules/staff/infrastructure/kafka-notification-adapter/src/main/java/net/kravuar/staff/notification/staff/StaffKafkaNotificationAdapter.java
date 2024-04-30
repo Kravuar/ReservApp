@@ -3,7 +3,7 @@ package net.kravuar.staff.notification.staff;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.integration.staff.StaffActivityChangeDTO;
 import net.kravuar.integration.staff.StaffCreationDTO;
-import net.kravuar.staff.domain.Staff;
+import net.kravuar.staff.model.Staff;
 import net.kravuar.staff.ports.out.StaffNotificationPort;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;

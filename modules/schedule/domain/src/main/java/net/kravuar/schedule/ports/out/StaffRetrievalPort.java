@@ -1,6 +1,6 @@
 package net.kravuar.schedule.ports.out;
 
-import net.kravuar.schedule.domain.Staff;
+import net.kravuar.staff.model.Staff;
 import net.kravuar.schedule.domain.exceptions.StaffNotFoundException;
 
 public interface StaffRetrievalPort {

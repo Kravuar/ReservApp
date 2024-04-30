@@ -1,7 +1,7 @@
 package net.kravuar.staff.notification;
 
 import net.kravuar.context.AppComponent;
-import net.kravuar.staff.domain.Staff;
+import net.kravuar.staff.model.Staff;
 import net.kravuar.staff.ports.out.StaffNotificationPort;
 
 @AppComponent

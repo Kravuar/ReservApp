@@ -2,7 +2,7 @@ package net.kravuar.services.web;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.pageable.Page;
-import net.kravuar.services.domain.Service;
+import net.kravuar.services.model.Service;
 import net.kravuar.services.ports.in.ServiceRetrievalUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;

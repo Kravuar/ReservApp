@@ -34,8 +34,10 @@ class ReservationManagementController {
 
     @DeleteMapping("/cancel/{reservationId}")
     @PreAuthorize("hasPermission(#reservationId, 'Reservation', 'Cancel')")
-    void cancel(@PathVariable("reservationId") long reservationId) {
-        reservationManagementUseCase.cancelReservation(reservationId);
+    ReservationDTO cancel(@PathVariable("reservationId") long reservationId) {
+        return dtoReservationMapper.reservationToDTO(
+                reservationManagementUseCase.cancelReservation(reservationId)
+        );
     }
 
     @PostMapping("/restore/{reservationId}")

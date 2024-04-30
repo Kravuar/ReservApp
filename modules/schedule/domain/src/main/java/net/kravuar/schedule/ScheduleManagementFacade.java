@@ -2,10 +2,10 @@ package net.kravuar.schedule;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
-import net.kravuar.schedule.domain.*;
 import net.kravuar.schedule.domain.commands.*;
 import net.kravuar.schedule.ports.in.ScheduleManagementUseCase;
 import net.kravuar.schedule.ports.out.*;
+import net.kravuar.staff.model.*;
 
 import java.time.Duration;
 import java.time.LocalDate;

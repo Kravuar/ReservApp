@@ -2,7 +2,7 @@ package net.kravuar.services.ports.in;
 
 import jakarta.validation.Valid;
 import net.kravuar.context.AppValidated;
-import net.kravuar.services.domain.Service;
+import net.kravuar.services.model.Service;
 import net.kravuar.services.domain.commands.ServiceChangeActiveCommand;
 import net.kravuar.services.domain.commands.ServiceChangeDetailsCommand;
 import net.kravuar.services.domain.commands.ServiceCreationCommand;

@@ -1,6 +1,6 @@
 package net.kravuar.business.notification;
 
-import net.kravuar.business.domain.Business;
+import net.kravuar.business.model.Business;
 import net.kravuar.business.ports.out.BusinessNotificationPort;
 import net.kravuar.context.AppComponent;
 

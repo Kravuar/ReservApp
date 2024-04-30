@@ -1,6 +1,6 @@
 package net.kravuar.business.ports.out;
 
-import net.kravuar.business.domain.Business;
+import net.kravuar.business.model.Business;
 
 public interface BusinessNotificationPort {
     /**

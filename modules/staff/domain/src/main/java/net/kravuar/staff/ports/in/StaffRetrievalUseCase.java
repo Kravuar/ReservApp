@@ -1,8 +1,8 @@
 package net.kravuar.staff.ports.in;
 
 import net.kravuar.pageable.Page;
-import net.kravuar.staff.domain.StaffDetailed;
-import net.kravuar.staff.domain.StaffInvitation;
+import net.kravuar.staff.model.StaffDetailed;
+import net.kravuar.staff.model.StaffInvitation;
 import net.kravuar.staff.domain.exceptions.InvitationNotFoundException;
 import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
 

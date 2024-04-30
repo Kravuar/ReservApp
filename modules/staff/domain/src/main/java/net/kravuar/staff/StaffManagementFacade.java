@@ -3,14 +3,14 @@ package net.kravuar.staff;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
-import net.kravuar.staff.domain.Business;
-import net.kravuar.staff.domain.Staff;
-import net.kravuar.staff.domain.StaffInvitation;
-import net.kravuar.staff.domain.commands.StaffAnswerInvitationCommand;
 import net.kravuar.staff.domain.commands.StaffChangeDetailsCommand;
 import net.kravuar.staff.domain.commands.StaffInvitationCommand;
 import net.kravuar.staff.domain.exceptions.AccountNotFoundException;
 import net.kravuar.staff.domain.exceptions.InvitationInvalidStatusException;
+import net.kravuar.staff.model.Business;
+import net.kravuar.staff.model.Staff;
+import net.kravuar.staff.model.StaffDetailed;
+import net.kravuar.staff.model.StaffInvitation;
 import net.kravuar.staff.ports.in.StaffManagementUseCase;
 import net.kravuar.staff.ports.out.*;
 
@@ -53,9 +53,9 @@ public class StaffManagementFacade implements StaffManagementUseCase {
 
     @Override
     @Transactional
-    public void answerInvitation(StaffAnswerInvitationCommand command) {
+    public StaffDetailed acceptInvitation(Long invitationId) {
         StaffInvitation invitation = invitationRetrievalPort.findById(
-                command.invitationId()
+                invitationId
         );
 
         try {
@@ -64,36 +64,52 @@ public class StaffManagementFacade implements StaffManagementUseCase {
             StaffInvitation.Status status = invitation.getStatus();
             if (status != StaffInvitation.Status.WAITING)
                 throw new InvitationInvalidStatusException(status);
-            invitation.setStatus(
-                    command.accept()
-                            ? StaffInvitation.Status.ACCEPTED
-                            : StaffInvitation.Status.DECLINED
-            );
+            invitation.setStatus(StaffInvitation.Status.ACCEPTED);
             invitationPersistencePort.save(invitation);
-            if (command.accept()) {
-                Staff staff = staffRetrievalPort.findByBusinessAndSub(
-                        invitation.getBusiness().getId(),
-                        invitation.getSub(),
-                        false,
-                        false
-                ).orElse(new Staff(
-                        null,
-                        invitation.getSub(),
-                        invitation.getBusiness(),
-                        true,
-                        null
-                ));
-                staff.setActive(true);
-                staffPersistencePort.save(staff);
-                staffNotificationPort.notifyNewStaff(staff);
-            }
+
+            Staff staff = staffRetrievalPort.findByBusinessAndSub(
+                    invitation.getBusiness().getId(),
+                    invitation.getSub(),
+                    false,
+                    false
+            ).orElse(new Staff(
+                    null,
+                    invitation.getSub(),
+                    invitation.getBusiness(),
+                    true,
+                    null
+            ));
+            staff.setActive(true);
+            staffPersistencePort.save(staff);
+            staffNotificationPort.notifyNewStaff(staff);
+            return withDetails(staff);
         } finally {
             staffLockPort.lock(invitation.getBusiness().getId(), invitation.getSub(), false);
         }
     }
 
     @Override
-    public void changeDetails(StaffChangeDetailsCommand command) {
+    public StaffInvitation declineInvitation(Long invitationId) {
+        StaffInvitation invitation = invitationRetrievalPort.findById(
+                invitationId
+        );
+
+        try {
+            staffLockPort.lock(invitation.getBusiness().getId(), invitation.getSub(), true);
+
+            StaffInvitation.Status status = invitation.getStatus();
+            if (status != StaffInvitation.Status.WAITING)
+                throw new InvitationInvalidStatusException(status);
+            invitation.setStatus(StaffInvitation.Status.DECLINED);
+            invitationPersistencePort.save(invitation);
+            return invitation;
+        } finally {
+            staffLockPort.lock(invitation.getBusiness().getId(), invitation.getSub(), false);
+        }
+    }
+
+    @Override
+    public StaffDetailed changeDetails(StaffChangeDetailsCommand command) {
         try {
             staffLockPort.lock(command.staffId(), true);
 
@@ -101,13 +117,14 @@ public class StaffManagementFacade implements StaffManagementUseCase {
             if (command.description() != null)
                 staff.setDescription(command.description());
             staffPersistencePort.save(staff);
+            return withDetails(staff);
         } finally {
             staffLockPort.lock(command.staffId(), false);
         }
     }
 
     @Override
-    public void removeStaff(long staffId) {
+    public StaffDetailed removeStaff(long staffId) {
         try {
             staffLockPort.lock(staffId, true);
 
@@ -115,8 +132,16 @@ public class StaffManagementFacade implements StaffManagementUseCase {
             staff.setActive(false);
             staffPersistencePort.save(staff);
             staffNotificationPort.notifyStaffActiveChanged(staff);
+            return withDetails(staff);
         } finally {
             staffLockPort.lock(staffId, false);
         }
+    }
+
+    private StaffDetailed withDetails(Staff staff) {
+        return new StaffDetailed(
+                staff,
+                accountRetrievalPort.getBySub(staff.getSub())
+        );
     }
 }

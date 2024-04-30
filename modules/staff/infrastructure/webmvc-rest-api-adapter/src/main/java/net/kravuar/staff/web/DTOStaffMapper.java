@@ -1,7 +1,7 @@
 package net.kravuar.staff.web;
 
-import net.kravuar.staff.domain.StaffDetailed;
-import net.kravuar.staff.domain.StaffInvitation;
+import net.kravuar.staff.model.StaffDetailed;
+import net.kravuar.staff.model.StaffInvitation;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = {DTOBusinessMapper.class})

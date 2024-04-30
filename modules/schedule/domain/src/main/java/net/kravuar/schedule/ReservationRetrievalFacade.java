@@ -2,7 +2,7 @@ package net.kravuar.schedule;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
-import net.kravuar.schedule.domain.Reservation;
+import net.kravuar.staff.model.Reservation;
 import net.kravuar.schedule.ports.in.ReservationRetrievalUseCase;
 import net.kravuar.schedule.ports.out.ReservationRetrievalPort;
 

@@ -3,7 +3,7 @@ package net.kravuar.services;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
 import net.kravuar.pageable.Page;
-import net.kravuar.services.domain.Service;
+import net.kravuar.services.model.Service;
 import net.kravuar.services.ports.in.ServiceRetrievalUseCase;
 import net.kravuar.services.ports.out.ServiceRetrievalPort;
 

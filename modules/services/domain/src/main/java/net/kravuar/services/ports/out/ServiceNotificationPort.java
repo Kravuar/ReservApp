@@ -1,7 +1,7 @@
 package net.kravuar.services.ports.out;
 
 
-import net.kravuar.services.domain.Service;
+import net.kravuar.services.model.Service;
 
 public interface ServiceNotificationPort {
     /**

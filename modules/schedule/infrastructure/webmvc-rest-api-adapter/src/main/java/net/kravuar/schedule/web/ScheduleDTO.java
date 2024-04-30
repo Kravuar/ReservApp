@@ -1,6 +1,6 @@
 package net.kravuar.schedule.web;
 
-import net.kravuar.schedule.domain.SchedulePattern;
+import net.kravuar.staff.model.SchedulePattern;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

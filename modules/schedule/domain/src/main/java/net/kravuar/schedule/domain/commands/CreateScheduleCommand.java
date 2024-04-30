@@ -6,9 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.kravuar.schedule.domain.SchedulePattern;
-import net.kravuar.schedule.domain.util.period.Period;
-import net.kravuar.schedule.domain.util.period.StartBeforeEnd;
+import net.kravuar.staff.model.SchedulePattern;
+import net.kravuar.staff.model.util.period.Period;
+import net.kravuar.staff.model.util.period.StartBeforeEnd;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,8 +1,8 @@
 package net.kravuar.schedule.ports.out;
 
-import net.kravuar.schedule.domain.Schedule;
-import net.kravuar.schedule.domain.ScheduleExceptionDay;
-import net.kravuar.schedule.domain.Staff;
+import net.kravuar.staff.model.Schedule;
+import net.kravuar.staff.model.ScheduleExceptionDay;
+import net.kravuar.staff.model.Staff;
 import net.kravuar.schedule.domain.exceptions.ScheduleNotFoundException;
 
 import java.time.LocalDate;

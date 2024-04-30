@@ -2,7 +2,7 @@ package net.kravuar.schedule.ports.in;
 
 import jakarta.validation.Valid;
 import net.kravuar.context.AppValidated;
-import net.kravuar.schedule.domain.Reservation;
+import net.kravuar.staff.model.Reservation;
 import net.kravuar.schedule.domain.commands.CreateReservationCommand;
 import net.kravuar.schedule.domain.exceptions.ReservationNotFoundException;
 import net.kravuar.schedule.domain.exceptions.StaffNotFoundException;
@@ -24,9 +24,10 @@ public interface ReservationManagementUseCase {
      * Cancel a reservation.
      *
      * @param reservationId id of the reservation
+     * @return {@link Reservation} canceled reservation
      * @throws ReservationNotFoundException if reservation wasn't found
      */
-    void cancelReservation(long reservationId);
+    Reservation cancelReservation(long reservationId);
 
     /**
      * Restore a reservation.

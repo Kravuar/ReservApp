@@ -1,6 +1,6 @@
 package net.kravuar.staff.persistence.staff.invitation;
 
-import net.kravuar.staff.domain.StaffInvitation;
+import net.kravuar.staff.model.StaffInvitation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

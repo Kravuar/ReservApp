@@ -7,7 +7,7 @@
 
     <description>Mapping for domain Business</description>
 
-    <entity class="net.kravuar.business.domain.Business" access="FIELD">
+    <entity class="net.kravuar.business.model.Business" access="FIELD">
         <table name="business"/>
         <attributes>
             <id name="id">

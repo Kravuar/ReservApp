@@ -1,6 +1,6 @@
 package net.kravuar.services.persistence.service;
 
-import net.kravuar.services.domain.Service;
+import net.kravuar.services.model.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

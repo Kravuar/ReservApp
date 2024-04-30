@@ -18,5 +18,6 @@
         <module>domain</module>
         <module>infrastructure</module>
         <module>schedule-app</module>
+        <module>model</module>
     </modules>
 </project>

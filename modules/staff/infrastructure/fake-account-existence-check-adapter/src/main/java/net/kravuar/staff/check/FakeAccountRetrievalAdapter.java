@@ -1,7 +1,7 @@
 package net.kravuar.staff.check;
 
 import net.kravuar.context.AppComponent;
-import net.kravuar.staff.domain.AccountDetails;
+import net.kravuar.staff.model.AccountDetails;
 import net.kravuar.staff.ports.out.AccountRetrievalPort;
 
 @AppComponent

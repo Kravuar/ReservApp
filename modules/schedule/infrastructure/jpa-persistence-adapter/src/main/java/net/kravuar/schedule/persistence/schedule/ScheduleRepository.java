@@ -1,6 +1,6 @@
 package net.kravuar.schedule.persistence.schedule;
 
-import net.kravuar.schedule.domain.Schedule;
+import net.kravuar.staff.model.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,6 +1,7 @@
 package net.kravuar.schedule.domain;
 
-import net.kravuar.schedule.domain.weak.ReservationSlot;
+import net.kravuar.staff.model.SchedulePattern;
+import net.kravuar.staff.model.weak.ReservationSlot;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 

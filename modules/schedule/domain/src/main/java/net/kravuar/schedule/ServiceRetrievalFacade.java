@@ -2,7 +2,7 @@ package net.kravuar.schedule;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
-import net.kravuar.schedule.domain.Service;
+import net.kravuar.staff.model.Service;
 import net.kravuar.schedule.ports.in.ServiceRetrievalUseCase;
 import net.kravuar.schedule.ports.out.ServiceRetrievalPort;
 

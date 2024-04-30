@@ -2,7 +2,7 @@ package net.kravuar.staff.persistence.staff.invitation;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.pageable.Page;
-import net.kravuar.staff.domain.StaffInvitation;
+import net.kravuar.staff.model.StaffInvitation;
 import net.kravuar.staff.domain.exceptions.InvitationNotFoundException;
 import net.kravuar.staff.ports.out.InvitationRetrievalPort;
 import org.springframework.data.domain.PageRequest;

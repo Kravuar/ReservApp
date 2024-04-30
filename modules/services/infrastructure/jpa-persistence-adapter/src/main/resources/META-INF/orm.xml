@@ -7,7 +7,7 @@
 
     <description>Mapping for domain Business and Service</description>
 
-    <entity class="net.kravuar.services.domain.Business" access="FIELD">
+    <entity class="net.kravuar.services.model.Business" access="FIELD">
         <table name="business"/>
         <attributes>
             <id name="id"/>
@@ -20,7 +20,7 @@
         </attributes>
     </entity>
 
-    <entity class="net.kravuar.services.domain.Service" access="FIELD">
+    <entity class="net.kravuar.services.model.Service" access="FIELD">
         <table name="service"/>
         <attributes>
             <id name="id">

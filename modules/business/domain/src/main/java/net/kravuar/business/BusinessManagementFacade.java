@@ -1,7 +1,7 @@
 package net.kravuar.business;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.business.domain.Business;
+import net.kravuar.business.model.Business;
 import net.kravuar.business.domain.commands.BusinessChangeActiveCommand;
 import net.kravuar.business.domain.commands.BusinessChangeDetailsCommand;
 import net.kravuar.business.domain.commands.BusinessChangeNameCommand;

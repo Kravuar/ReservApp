@@ -2,8 +2,8 @@ package net.kravuar.schedule.ports.in;
 
 import jakarta.validation.Valid;
 import net.kravuar.context.AppValidated;
-import net.kravuar.schedule.domain.Schedule;
-import net.kravuar.schedule.domain.ScheduleExceptionDay;
+import net.kravuar.staff.model.Schedule;
+import net.kravuar.staff.model.ScheduleExceptionDay;
 import net.kravuar.schedule.domain.commands.*;
 import net.kravuar.schedule.domain.exceptions.ScheduleNotFoundException;
 import net.kravuar.schedule.domain.exceptions.ServiceNotFoundException;
