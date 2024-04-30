@@ -1,9 +1,9 @@
 package net.kravuar.schedule.persistence.local;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.staff.model.Staff;
 import net.kravuar.schedule.domain.exceptions.StaffNotFoundException;
 import net.kravuar.schedule.ports.out.StaffRetrievalPort;
+import net.kravuar.staff.model.Staff;
 import org.springframework.stereotype.Component;
 
 @Component

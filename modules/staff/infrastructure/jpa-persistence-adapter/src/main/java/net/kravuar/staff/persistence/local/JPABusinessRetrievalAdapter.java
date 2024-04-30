@@ -1,8 +1,8 @@
 package net.kravuar.staff.persistence.local;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.staff.model.Business;
 import net.kravuar.staff.domain.exceptions.BusinessNotFoundException;
+import net.kravuar.staff.model.Business;
 import net.kravuar.staff.ports.out.BusinessRetrievalPort;
 import org.springframework.stereotype.Component;
 

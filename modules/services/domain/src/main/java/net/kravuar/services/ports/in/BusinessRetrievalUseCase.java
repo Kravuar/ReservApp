@@ -1,7 +1,7 @@
 package net.kravuar.services.ports.in;
 
-import net.kravuar.services.model.Business;
 import net.kravuar.services.domain.exceptions.BusinessNotFoundException;
+import net.kravuar.services.model.Business;
 
 public interface BusinessRetrievalUseCase {
     /**

@@ -5,7 +5,7 @@
 3. <span style="color:green">(MINOR)</span> Create guide for configuring okta.dev
 4. <span style="color:green">(MINOR)</span> Maybe include some criteria like stuff in domain in RetrievalPorts
 5. <span style="color:green">(MINOR)</span> Make jpa hibernate adapters return references by id (not fetching) or something
-6. <span style="color:green">(MINOR)</span> Kafka deserialization automatic conversion (for now it's the `commons.integration-dto` stuff):
+6. <span style="color:green">(MINOR)</span> Kafka deserialization automatic conversion (for now it's the events dto across the modules):
    - Producer sends {a, b, c}: ProducerClass,
    - Consumer receives {a, c}: ConsumerClass (for example), automatically converts json
      and delegates to correct `@KafkaHandler` (by parameter Type)

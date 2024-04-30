@@ -1,8 +1,8 @@
 package net.kravuar.services.ports.out;
 
 import net.kravuar.pageable.Page;
-import net.kravuar.services.model.Service;
 import net.kravuar.services.domain.exceptions.ServiceNotFoundException;
+import net.kravuar.services.model.Service;
 
 public interface ServiceRetrievalPort {
     /**

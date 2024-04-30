@@ -2,12 +2,12 @@ package net.kravuar.staff.ports.in;
 
 import jakarta.validation.Valid;
 import net.kravuar.context.AppValidated;
-import net.kravuar.staff.model.Staff;
-import net.kravuar.staff.model.StaffDetailed;
-import net.kravuar.staff.model.StaffInvitation;
 import net.kravuar.staff.domain.commands.StaffChangeDetailsCommand;
 import net.kravuar.staff.domain.commands.StaffInvitationCommand;
 import net.kravuar.staff.domain.exceptions.*;
+import net.kravuar.staff.model.Staff;
+import net.kravuar.staff.model.StaffDetailed;
+import net.kravuar.staff.model.StaffInvitation;
 
 @AppValidated
 public interface StaffManagementUseCase {

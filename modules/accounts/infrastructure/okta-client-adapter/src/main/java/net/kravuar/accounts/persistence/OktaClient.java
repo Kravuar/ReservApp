@@ -6,8 +6,8 @@ import com.okta.sdk.resource.api.UserApi;
 import com.okta.sdk.resource.client.ApiException;
 import com.okta.sdk.resource.model.User;
 import com.okta.sdk.resource.user.UserBuilder;
-import net.kravuar.accounts.domain.Account;
 import net.kravuar.accounts.domain.exceptions.AccountException;
+import net.kravuar.accounts.model.Account;
 import net.kravuar.accounts.ports.out.AccountPersistencePort;
 import net.kravuar.context.AppComponent;
 

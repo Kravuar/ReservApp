@@ -1,8 +1,8 @@
 package net.kravuar.accounts.ports.out;
 
-import net.kravuar.accounts.domain.Account;
 import net.kravuar.accounts.domain.exceptions.EmailAlreadyTakenException;
 import net.kravuar.accounts.domain.exceptions.UsernameAlreadyTakenException;
+import net.kravuar.accounts.model.Account;
 
 public interface AccountPersistencePort {
     /**

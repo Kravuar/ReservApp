@@ -2,10 +2,10 @@ package net.kravuar.schedule.ports.in;
 
 import jakarta.validation.Valid;
 import net.kravuar.context.AppValidated;
-import net.kravuar.staff.model.Reservation;
 import net.kravuar.schedule.domain.commands.CreateReservationCommand;
 import net.kravuar.schedule.domain.exceptions.ReservationNotFoundException;
 import net.kravuar.schedule.domain.exceptions.StaffNotFoundException;
+import net.kravuar.staff.model.Reservation;
 
 @AppValidated
 public interface ReservationManagementUseCase {

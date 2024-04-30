@@ -1,17 +1,17 @@
 package net.kravuar.schedule;
 
-import net.kravuar.staff.model.Business;
-import net.kravuar.staff.model.Reservation;
-import net.kravuar.staff.model.Service;
-import net.kravuar.staff.model.Staff;
 import net.kravuar.schedule.domain.commands.CreateReservationCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.exceptions.ReservationOutOfSlotsException;
 import net.kravuar.schedule.domain.exceptions.ReservationOverlappingException;
 import net.kravuar.schedule.domain.exceptions.ReservationSlotNotFoundException;
-import net.kravuar.staff.model.weak.ReservationSlot;
 import net.kravuar.schedule.ports.in.ScheduleRetrievalUseCase;
 import net.kravuar.schedule.ports.out.*;
+import net.kravuar.staff.model.Business;
+import net.kravuar.staff.model.Reservation;
+import net.kravuar.staff.model.Service;
+import net.kravuar.staff.model.Staff;
+import net.kravuar.staff.model.weak.ReservationSlot;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

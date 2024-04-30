@@ -1,8 +1,8 @@
 package net.kravuar.staff.notification.staff;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.integration.staff.StaffActivityChangeDTO;
-import net.kravuar.integration.staff.StaffCreationDTO;
+import net.kravuar.staff.dto.StaffActivityChangeEventDTO;
+import net.kravuar.staff.dto.StaffCreationEventDTO;
 import net.kravuar.staff.model.Staff;
 import net.kravuar.staff.ports.out.StaffNotificationPort;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -18,7 +18,7 @@ class StaffKafkaNotificationAdapter implements StaffNotificationPort {
     public void notifyNewStaff(Staff staff) {
         template.send(
                 staffKafkaProps.getStaffUpdateTopic(),
-                new StaffCreationDTO(
+                new StaffCreationEventDTO(
                         staff.getId(),
                         staff.getBusiness().getId(),
                         staff.getSub(),
@@ -30,7 +30,7 @@ class StaffKafkaNotificationAdapter implements StaffNotificationPort {
     public void notifyStaffActiveChanged(Staff staff) {
         template.send(
                 staffKafkaProps.getStaffUpdateTopic(),
-                new StaffActivityChangeDTO(
+                new StaffActivityChangeEventDTO(
                         staff.getId(),
                         staff.isActive()
                 ));

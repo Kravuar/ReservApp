@@ -1,10 +1,10 @@
 package net.kravuar.accounts.ports.in;
 
 import jakarta.validation.Valid;
-import net.kravuar.accounts.domain.Account;
 import net.kravuar.accounts.domain.commands.AccountCreationCommand;
 import net.kravuar.accounts.domain.exceptions.EmailAlreadyTakenException;
 import net.kravuar.accounts.domain.exceptions.UsernameAlreadyTakenException;
+import net.kravuar.accounts.model.Account;
 import net.kravuar.context.AppValidated;
 
 @AppValidated

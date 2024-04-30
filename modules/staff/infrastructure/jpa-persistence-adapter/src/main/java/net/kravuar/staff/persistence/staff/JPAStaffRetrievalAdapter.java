@@ -2,8 +2,8 @@ package net.kravuar.staff.persistence.staff;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.pageable.Page;
-import net.kravuar.staff.model.Staff;
 import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
+import net.kravuar.staff.model.Staff;
 import net.kravuar.staff.ports.out.StaffRetrievalPort;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;

@@ -21,6 +21,7 @@
         <module>kafka-notification-adapter</module>
         <module>noop-notification-adapter</module>
         <module>local-lock-adapter</module>
+        <module>dto</module>
     </modules>
 
     <dependencies>

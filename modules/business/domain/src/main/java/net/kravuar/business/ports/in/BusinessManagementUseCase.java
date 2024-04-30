@@ -1,13 +1,13 @@
 package net.kravuar.business.ports.in;
 
 import jakarta.validation.Valid;
-import net.kravuar.business.model.Business;
 import net.kravuar.business.domain.commands.BusinessChangeActiveCommand;
 import net.kravuar.business.domain.commands.BusinessChangeDetailsCommand;
 import net.kravuar.business.domain.commands.BusinessChangeNameCommand;
 import net.kravuar.business.domain.commands.BusinessCreationCommand;
 import net.kravuar.business.domain.exceptions.BusinessNameAlreadyTaken;
 import net.kravuar.business.domain.exceptions.BusinessNotFoundException;
+import net.kravuar.business.model.Business;
 import net.kravuar.context.AppValidated;
 
 @AppValidated

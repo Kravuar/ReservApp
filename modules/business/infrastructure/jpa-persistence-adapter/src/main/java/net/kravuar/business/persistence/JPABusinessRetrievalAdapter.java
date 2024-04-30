@@ -1,8 +1,8 @@
 package net.kravuar.business.persistence;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.business.model.Business;
 import net.kravuar.business.domain.exceptions.BusinessNotFoundException;
+import net.kravuar.business.model.Business;
 import net.kravuar.business.ports.out.BusinessRetrievalPort;
 import net.kravuar.pageable.Page;
 import org.springframework.data.domain.PageRequest;

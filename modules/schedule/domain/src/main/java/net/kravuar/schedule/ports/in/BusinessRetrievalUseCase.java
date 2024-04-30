@@ -1,7 +1,7 @@
 package net.kravuar.schedule.ports.in;
 
-import net.kravuar.staff.model.Business;
 import net.kravuar.schedule.domain.exceptions.BusinessNotFoundException;
+import net.kravuar.staff.model.Business;
 
 public interface BusinessRetrievalUseCase {
     /**

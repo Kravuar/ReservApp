@@ -13,8 +13,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.kravuar.commons</groupId>
-            <artifactId>integration-dto</artifactId>
+            <groupId>net.kravuar.staff.infrastructure</groupId>
+            <artifactId>dto</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

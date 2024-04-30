@@ -9,12 +9,20 @@
     <file url="file://$PROJECT_DIR$/business/infrastructure/web-client-account-checking-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/context/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/context/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/dto/business/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/dto/business/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/dto/schedule/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/dto/schedule/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/dto/services/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/dto/services/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/dto/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/dto/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/dto/staff/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons/dto/staff/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/infrastructure-security-core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/infrastructure-security-core/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/infrastructure-security-jwt/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/infrastructure-security-jwt/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/commons/integration-dto/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/commons/integration-dto/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/pagination/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/pagination/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/commons/reservapp-security-core/src/main/java" charset="UTF-8" />
@@ -39,6 +47,8 @@
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/authorization-server-config/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/bcrypt-password-encoder/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/bcrypt-password-encoder/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/dto/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/dto/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/fake-notifier-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/kafka-notifier-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/okta-api-persistence-adapter/src/main/resources" charset="UTF-8" />
@@ -48,6 +58,8 @@
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/webmvc-rest-api-adapter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/infrastructure/webmvc-rest-api-adapter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/accounts/model/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/accounts/model/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/accounts/untitled/src/main/java" charset="UTF-8" />
@@ -58,6 +70,8 @@
     <file url="file://$PROJECT_DIR$/modules/business/business-starter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/business/domain/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/business/domain/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/business/infrastructure/dto/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/business/infrastructure/dto/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/business/infrastructure/fake-email-verification-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/business/infrastructure/h2-persistence-adapter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/business/infrastructure/h2-persistence-adapter/src/main/resources" charset="UTF-8" />
@@ -106,6 +120,8 @@
     <file url="file://$PROJECT_DIR$/modules/resource-servers/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/schedule/domain/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/schedule/domain/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/schedule/infrastructure/dto/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/schedule/infrastructure/dto/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/schedule/infrastructure/jpa-persistence-adapter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/schedule/infrastructure/jpa-persistence-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/schedule/infrastructure/local-lock-adapter/src/main/java" charset="UTF-8" />
@@ -122,6 +138,8 @@
     <file url="file://$PROJECT_DIR$/modules/schedule/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/services/domain/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/services/domain/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/services/infrastructure/dto/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/services/infrastructure/dto/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/services/infrastructure/jpa-persistence-adapter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/services/infrastructure/jpa-persistence-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/services/infrastructure/kafka-in-adapter/src/main/java" charset="UTF-8" />
@@ -146,6 +164,8 @@
     <file url="file://$PROJECT_DIR$/modules/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/staff/domain/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/staff/domain/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/dto/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/dto/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/fake-account-existence-check-adapter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/fake-account-existence-check-adapter/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/modules/staff/infrastructure/jpa-persistence-adapter/src/main/java" charset="UTF-8" />
