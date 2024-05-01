@@ -127,6 +127,6 @@ VALUES (1, '08:25:00', '09:25:00', 500.0, 1),
        (4, '14:55:00', '15:55:00', 1000.0, 1),
        (4, '16:25:00', '17:25:00', 1000.0, 1);
 
-INSERT INTO reservation (date, start, end, client_sub, staff_id, service_id, active, created_at)
-VALUES ('2025-03-03', '09:50:00', '10:50:00', 'client@maile.ru', 2, 2, true, '2024-03-02T08:00:00'),
-       ('2025-03-04', '11:20:00', '12:20:00', 'client@maile.ru', 2, 2, true, '2024-03-02T08:00:00');
+INSERT INTO reservation (date, start, end, cost, client_sub, staff_id, service_id, active, created_at)
+VALUES ('2025-03-03', '09:50:00', '10:50:00', 5, 'client@maile.ru', 2, 2, true, '2024-03-02T08:00:00'),
+       ('2025-03-04', '11:20:00', '12:20:00', 10, 'client@maile.ru', 2, 2, true, '2024-03-02T08:00:00');

@@ -1,4 +1,4 @@
-package net.kravuar.staff.model;
+package net.kravuar.schedule.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +18,7 @@ public class Reservation {
     private LocalDate date;
     private LocalTime start;
     private LocalTime end;
+    private double cost;
     private String clientSub;
     private Staff staff;
     private Service service;

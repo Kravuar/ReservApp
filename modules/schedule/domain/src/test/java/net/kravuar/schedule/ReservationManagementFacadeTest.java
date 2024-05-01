@@ -5,13 +5,13 @@ import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCom
 import net.kravuar.schedule.domain.exceptions.ReservationOutOfSlotsException;
 import net.kravuar.schedule.domain.exceptions.ReservationOverlappingException;
 import net.kravuar.schedule.domain.exceptions.ReservationSlotNotFoundException;
+import net.kravuar.schedule.model.Business;
+import net.kravuar.schedule.model.Reservation;
+import net.kravuar.schedule.model.Service;
+import net.kravuar.schedule.model.Staff;
+import net.kravuar.schedule.model.weak.ReservationSlot;
 import net.kravuar.schedule.ports.in.ScheduleRetrievalUseCase;
 import net.kravuar.schedule.ports.out.*;
-import net.kravuar.staff.model.Business;
-import net.kravuar.staff.model.Reservation;
-import net.kravuar.staff.model.Service;
-import net.kravuar.staff.model.Staff;
-import net.kravuar.staff.model.weak.ReservationSlot;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -174,8 +174,8 @@ class ReservationManagementFacadeTest {
         var existingReservations = new TreeMap<>(Collections.singletonMap(
                 date,
                 List.of(
-                        new Reservation(null, date, reservationSlot.getStart(), reservationSlot.getEnd(), "some sub", staff, service, true),
-                        new Reservation(null, date, reservationSlot.getStart(), reservationSlot.getEnd(), "some sub", staff, service, true)
+                        new Reservation(null, date, reservationSlot.getStart(), reservationSlot.getEnd(), reservationSlot.getCost(), "some sub", staff, service, true),
+                        new Reservation(null, date, reservationSlot.getStart(), reservationSlot.getEnd(), reservationSlot.getCost(), "some sub", staff, service, true)
                 )
         ));
         var existingSlots = new TreeMap<>(Collections.singletonMap(
@@ -238,8 +238,8 @@ class ReservationManagementFacadeTest {
         var existingReservations = new TreeMap<>(Collections.singletonMap(
                 date,
                 List.of(
-                        new Reservation(null, date, reservationSlot.getStart(), reservationSlot.getEnd(), "some sub", staff, service, true),
-                        new Reservation(null, date, reservationSlot.getStart(), reservationSlot.getEnd(), "some sub", staff, service, true)
+                        new Reservation(null, date, reservationSlot.getStart(), reservationSlot.getEnd(), reservationSlot.getCost(), "some sub", staff, service, true),
+                        new Reservation(null, date, reservationSlot.getStart(), reservationSlot.getEnd(), reservationSlot.getCost(), "some sub", staff, service, true)
                 )
         ));
         var existingSlots = new TreeMap<>(Collections.singletonMap(
@@ -293,7 +293,7 @@ class ReservationManagementFacadeTest {
         var existingReservations = new TreeMap<>(Collections.singletonMap(
                 date,
                 List.of(
-                        new Reservation(null, date, reservationSlot.getStart().minusMinutes(30), reservationSlot.getEnd().plusMinutes(30), "existing sub", staff, otherService, true)
+                        new Reservation(null, date, reservationSlot.getStart().minusMinutes(30), reservationSlot.getEnd().plusMinutes(30), 1,"existing sub", staff, otherService, true)
                 )
         ));
         var existingSlots = new TreeMap<>(Collections.singletonMap(
@@ -333,6 +333,7 @@ class ReservationManagementFacadeTest {
                 RESERVATION_DATE_TIME.toLocalDate(),
                 RESERVATION_DATE_TIME.toLocalTime(),
                 RESERVATION_DATE_TIME.toLocalTime(),
+                1,
                 "sub",
                 staff,
                 service,
@@ -370,6 +371,7 @@ class ReservationManagementFacadeTest {
                 RESERVATION_DATE_TIME.toLocalDate(),
                 RESERVATION_DATE_TIME.toLocalTime(),
                 RESERVATION_DATE_TIME.toLocalTime(),
+                1,
                 "sub",
                 staff,
                 service,
@@ -413,6 +415,7 @@ class ReservationManagementFacadeTest {
                 RESERVATION_DATE_TIME.toLocalDate(),
                 RESERVATION_DATE_TIME.toLocalTime(),
                 RESERVATION_DATE_TIME.toLocalTime(),
+                1,
                 "sub",
                 staff,
                 service,
@@ -449,6 +452,7 @@ class ReservationManagementFacadeTest {
                 RESERVATION_DATE_TIME.toLocalDate(),
                 reservationSlot.getStart(),
                 reservationSlot.getEnd(),
+                reservationSlot.getCost(),
                 "other sub",
                 staff,
                 service,
@@ -459,6 +463,7 @@ class ReservationManagementFacadeTest {
                 RESERVATION_DATE_TIME.toLocalDate(),
                 RESERVATION_DATE_TIME.toLocalTime(),
                 RESERVATION_DATE_TIME.toLocalTime(),
+                1,
                 "sub",
                 staff,
                 service,

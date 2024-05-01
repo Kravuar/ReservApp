@@ -6,8 +6,8 @@ import net.kravuar.schedule.domain.commands.*;
 import net.kravuar.schedule.domain.exceptions.ScheduleNotFoundException;
 import net.kravuar.schedule.domain.exceptions.ServiceNotFoundException;
 import net.kravuar.schedule.domain.exceptions.StaffNotFoundException;
-import net.kravuar.staff.model.Schedule;
-import net.kravuar.staff.model.ScheduleExceptionDay;
+import net.kravuar.schedule.model.Schedule;
+import net.kravuar.schedule.model.ScheduleExceptionDay;
 
 @AppValidated
 public interface ScheduleManagementUseCase {

@@ -5,6 +5,7 @@ import net.kravuar.business.model.Business;
 import net.kravuar.pageable.Page;
 
 public interface BusinessRetrievalUseCase {
+
     /**
      * Find business by id.
      *
@@ -14,6 +15,17 @@ public interface BusinessRetrievalUseCase {
      * @throws BusinessNotFoundException if business wasn't found
      */
     Business findById(long id, boolean activeOnly);
+
+    /**
+     * Find business by id.
+     * Will return inactive if sub matches with owner's one.
+     *
+     * @param id         id of the business to find
+     * @param sub        sub of the owner (nullable)
+     * @return {@link Business} associated the with provided businessId
+     * @throws BusinessNotFoundException if business wasn't found
+     */
+    Business findByIdAndSub(long id, String sub);
 
     /**
      * Find businesses by owner sub with pageable.

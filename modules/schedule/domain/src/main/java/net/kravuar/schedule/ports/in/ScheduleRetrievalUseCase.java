@@ -4,10 +4,10 @@ import net.kravuar.schedule.domain.commands.RetrieveScheduleByServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleExceptionDaysByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.exceptions.ScheduleNotFoundException;
-import net.kravuar.staff.model.Schedule;
-import net.kravuar.staff.model.ScheduleExceptionDay;
-import net.kravuar.staff.model.Staff;
-import net.kravuar.staff.model.weak.ReservationSlot;
+import net.kravuar.schedule.model.Schedule;
+import net.kravuar.schedule.model.ScheduleExceptionDay;
+import net.kravuar.schedule.model.Staff;
+import net.kravuar.schedule.model.weak.ReservationSlot;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,4 +1,4 @@
-package net.kravuar.staff.model;
+package net.kravuar.schedule.model;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -7,8 +7,8 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.kravuar.staff.model.util.period.PeriodsNotIntersect;
-import net.kravuar.staff.model.weak.ReservationSlot;
+import net.kravuar.schedule.model.util.period.PeriodsNotIntersect;
+import net.kravuar.schedule.model.weak.ReservationSlot;
 
 import java.util.Collections;
 import java.util.SortedSet;

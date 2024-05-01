@@ -1,4 +1,4 @@
-package net.kravuar.staff.model.util.period;
+package net.kravuar.schedule.model.util.period;
 
 import java.time.temporal.Temporal;
 

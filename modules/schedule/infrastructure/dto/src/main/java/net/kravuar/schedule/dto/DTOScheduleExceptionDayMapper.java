@@ -1,6 +1,6 @@
 package net.kravuar.schedule.dto;
 
-import net.kravuar.staff.model.ScheduleExceptionDay;
+import net.kravuar.schedule.model.ScheduleExceptionDay;
 import org.mapstruct.Mapper;
 
 @Mapper(uses = {DTOServiceMapper.class, DTOStaffMapper.class})

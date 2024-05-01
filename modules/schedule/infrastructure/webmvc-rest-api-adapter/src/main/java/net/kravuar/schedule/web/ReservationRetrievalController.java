@@ -1,9 +1,10 @@
 package net.kravuar.schedule.web;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.schedule.dto.AnonymousReservationDTO;
+import net.kravuar.schedule.dto.AnonymousReservationsByDayDTO;
 import net.kravuar.schedule.dto.DTOReservationMapper;
-import net.kravuar.schedule.dto.ReservationDTO;
+import net.kravuar.schedule.dto.ReservationDetailedDTO;
+import net.kravuar.schedule.dto.ReservationsByDayDTO;
 import net.kravuar.schedule.ports.in.ReservationRetrievalUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/reservation/retrieval")
@@ -27,68 +26,68 @@ class ReservationRetrievalController {
 
     @GetMapping("/by-id/{reservationId}")
     @PreAuthorize("hasPermission(#reservationId, 'Reservation', 'Read')")
-    ReservationDTO byId(@PathVariable("reservationId") long reservationId) {
+    ReservationDetailedDTO byId(@PathVariable("reservationId") long reservationId) {
         return dtoReservationMapper.reservationToDTO(
                 reservationRetrievalUseCase.findById(reservationId)
         );
     }
 
     @GetMapping("/by-service-and-staff/{serviceId}/{staffId}/{from}/{to}")
-    Map<LocalDate, List<AnonymousReservationDTO>> byServiceAndStaff(@PathVariable("serviceId") long serviceId, @PathVariable("staffId") long staffId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+    List<AnonymousReservationsByDayDTO> byServiceAndStaff(@PathVariable("serviceId") long serviceId, @PathVariable("staffId") long staffId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return reservationRetrievalUseCase.findAllByStaff(staffId, from, to).entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> entry.getValue().stream()
+                .map(entry -> new AnonymousReservationsByDayDTO(
+                        entry.getKey(),
+                        entry.getValue().stream()
                                 .filter(reservation -> reservation.getService().getId().equals(serviceId)) // TODO: maybe add another usecase for that
                                 .map(dtoReservationMapper::reservationToAnonymousDTO)
                                 .toList()
-                ));
+                )).toList();
     }
 
     @GetMapping("/by-staff/{staffId}/{from}/{to}")
     @PreAuthorize("hasPermission(#staffId, 'ReservationsOfStaff', 'Read')")
-    Map<LocalDate, List<ReservationDTO>> byStaff(@PathVariable("staffId") long staffId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+    List<ReservationsByDayDTO> byStaff(@PathVariable("staffId") long staffId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return reservationRetrievalUseCase.findAllByStaff(staffId, from, to).entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> entry.getValue().stream()
+                .map(entry -> new ReservationsByDayDTO(
+                        entry.getKey(),
+                        entry.getValue().stream()
                                 .map(dtoReservationMapper::reservationToDTO)
                                 .toList()
-                ));
+                )).toList();
     }
 
     @GetMapping("/by-service/{serviceId}/{from}/{to}")
-    Map<LocalDate, List<AnonymousReservationDTO>> byService(@PathVariable("serviceId") long serviceId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+    List<AnonymousReservationsByDayDTO> byService(@PathVariable("serviceId") long serviceId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return reservationRetrievalUseCase.findAllByService(serviceId, from, to).entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> entry.getValue().stream()
+                .map(entry -> new AnonymousReservationsByDayDTO(
+                        entry.getKey(),
+                        entry.getValue().stream()
                                 .map(dtoReservationMapper::reservationToAnonymousDTO)
                                 .toList()
-                ));
+                )).toList();
     }
 
     @GetMapping("/my/{from}/{to}")
     @PreAuthorize("isAuthenticated()")
-    Map<LocalDate, List<ReservationDTO>> my(@AuthenticationPrincipal Jwt jwt, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+    List<ReservationsByDayDTO> my(@AuthenticationPrincipal Jwt jwt, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return reservationRetrievalUseCase.findAllByClient(jwt.getSubject(), from, to).entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> entry.getValue().stream()
+                .map(entry -> new ReservationsByDayDTO(
+                        entry.getKey(),
+                        entry.getValue().stream()
                                 .map(dtoReservationMapper::reservationToDTO)
                                 .toList()
-                ));
+                )).toList();
     }
 
     @GetMapping("/to-me/{from}/{to}")
     @PreAuthorize("isAuthenticated()")
-    Map<LocalDate, List<ReservationDTO>> toMe(@AuthenticationPrincipal Jwt jwt, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+    List<ReservationsByDayDTO> toMe(@AuthenticationPrincipal Jwt jwt, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return reservationRetrievalUseCase.findAllByStaff(jwt.getSubject(), from, to).entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> entry.getValue().stream()
+                .map(entry -> new ReservationsByDayDTO(
+                        entry.getKey(),
+                        entry.getValue().stream()
                                 .map(dtoReservationMapper::reservationToDTO)
                                 .toList()
-                ));
+                )).toList();
     }
 }

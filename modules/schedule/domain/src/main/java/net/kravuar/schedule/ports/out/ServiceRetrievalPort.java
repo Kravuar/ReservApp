@@ -1,7 +1,7 @@
 package net.kravuar.schedule.ports.out;
 
 import net.kravuar.schedule.domain.exceptions.ServiceNotFoundException;
-import net.kravuar.staff.model.Service;
+import net.kravuar.schedule.model.Service;
 
 public interface ServiceRetrievalPort {
     /**

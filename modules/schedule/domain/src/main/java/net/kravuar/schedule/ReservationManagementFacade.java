@@ -7,13 +7,13 @@ import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCom
 import net.kravuar.schedule.domain.exceptions.ReservationOutOfSlotsException;
 import net.kravuar.schedule.domain.exceptions.ReservationOverlappingException;
 import net.kravuar.schedule.domain.exceptions.ReservationSlotNotFoundException;
+import net.kravuar.schedule.model.Reservation;
+import net.kravuar.schedule.model.Service;
+import net.kravuar.schedule.model.Staff;
+import net.kravuar.schedule.model.weak.ReservationSlot;
 import net.kravuar.schedule.ports.in.ReservationManagementUseCase;
 import net.kravuar.schedule.ports.in.ScheduleRetrievalUseCase;
 import net.kravuar.schedule.ports.out.*;
-import net.kravuar.staff.model.Reservation;
-import net.kravuar.staff.model.Service;
-import net.kravuar.staff.model.Staff;
-import net.kravuar.staff.model.weak.ReservationSlot;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -53,6 +53,7 @@ public class ReservationManagementFacade implements ReservationManagementUseCase
                     date,
                     reservationSlot.getStart(),
                     reservationSlot.getEnd(),
+                    reservationSlot.getCost(),
                     command.sub(),
                     staff,
                     service,

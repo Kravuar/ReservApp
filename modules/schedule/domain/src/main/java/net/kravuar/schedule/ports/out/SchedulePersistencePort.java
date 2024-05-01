@@ -1,7 +1,7 @@
 package net.kravuar.schedule.ports.out;
 
-import net.kravuar.staff.model.Schedule;
-import net.kravuar.staff.model.ScheduleExceptionDay;
+import net.kravuar.schedule.model.Schedule;
+import net.kravuar.schedule.model.ScheduleExceptionDay;
 
 public interface SchedulePersistencePort {
     /**

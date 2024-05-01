@@ -25,24 +25,27 @@ public interface BusinessManagementUseCase {
      * Changes the name of a {@link Business}.
      *
      * @param command the command containing information for changing the business name
+     * @return updated {@link Business}
      * @throws BusinessNotFoundException if business wasn't found
      * @throws BusinessNameAlreadyTaken  if business name already taken
      */
-    void changeName(@Valid BusinessChangeNameCommand command);
+    Business changeName(@Valid BusinessChangeNameCommand command);
 
     /**
      * Enables/disables a {@link Business}.
      *
      * @param command the command containing information for enabling/disabling business
+     * @return updated {@link Business}
      * @throws BusinessNotFoundException if business wasn't found
      */
-    void changeActive(BusinessChangeActiveCommand command);
+    Business changeActive(BusinessChangeActiveCommand command);
 
     /**
      * Changes details for a {@link Business}.
      *
      * @param command the command containing information for details update of the business
+     * @return updated {@link Business}
      * @throws BusinessNotFoundException if business wasn't found
      */
-    void changeDetails(@Valid BusinessChangeDetailsCommand command);
+    Business changeDetails(@Valid BusinessChangeDetailsCommand command);
 }

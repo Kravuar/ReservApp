@@ -24,15 +24,17 @@ public interface ServiceManagementUseCase {
      * Enables/disables a {@link Service}.
      *
      * @param command the command containing information for enabling/disabling service
+     * @return updated {@link Service}
      * @throws ServiceNotFoundException if service wasn't found
      */
-    void changeActive(ServiceChangeActiveCommand command);
+    Service changeActive(ServiceChangeActiveCommand command);
 
     /**
      * Changes details for a {@link Service}.
      *
      * @param command the command containing information for details update of the service
+     * @return updated {@link Service}
      * @throws ServiceNotFoundException if service wasn't found
      */
-    void changeDetails(@Valid ServiceChangeDetailsCommand command);
+    Service changeDetails(@Valid ServiceChangeDetailsCommand command);
 }

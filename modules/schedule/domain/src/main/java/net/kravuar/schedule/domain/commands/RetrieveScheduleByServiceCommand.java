@@ -4,8 +4,8 @@ import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.kravuar.staff.model.util.period.Period;
-import net.kravuar.staff.model.util.period.StartBeforeEnd;
+import net.kravuar.schedule.model.util.period.Period;
+import net.kravuar.schedule.model.util.period.StartBeforeEnd;
 
 import java.time.LocalDate;
 

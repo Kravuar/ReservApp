@@ -1,16 +1,16 @@
 package net.kravuar.gateway.graphql;
 
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.graphql.server.WebGraphQlInterceptor;
 import org.springframework.http.HttpHeaders;
+import reactivefeign.spring.config.EnableReactiveFeignClients;
 
 @Configuration
-@EnableFeignClients
+@EnableReactiveFeignClients
 class GraphQLConfig {
     @Bean
-    public WebGraphQlInterceptor intercept() {
+    WebGraphQlInterceptor intercept() {
         return (webInput, chain) -> {
             String authorization = webInput.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
             webInput.configureExecutionInput((input, inputBuilder) ->

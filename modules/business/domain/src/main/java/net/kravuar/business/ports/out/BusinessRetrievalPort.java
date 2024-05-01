@@ -26,8 +26,8 @@ public interface BusinessRetrievalPort {
     /**
      * Find businesses by owner with pageable.
      *
-     * @param page page number
-     * @param pageSize size of the page
+     * @param page       page number
+     * @param pageSize   size of the page
      * @param sub        sub of the owner
      * @param activeOnly whether to search active only
      * @return page of businesses associated the with provided owner {@code sub}
@@ -37,7 +37,7 @@ public interface BusinessRetrievalPort {
     /**
      * Find active with pageable.
      *
-     * @param page page number
+     * @param page     page number
      * @param pageSize size of the page
      * @return page of existing and active businesses
      */

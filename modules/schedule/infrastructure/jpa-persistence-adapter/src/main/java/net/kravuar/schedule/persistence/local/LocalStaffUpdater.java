@@ -1,10 +1,10 @@
 package net.kravuar.schedule.persistence.local;
 
 import lombok.RequiredArgsConstructor;
+import net.kravuar.schedule.model.Business;
+import net.kravuar.schedule.model.Staff;
 import net.kravuar.staff.dto.StaffActivityChangeEventDTO;
 import net.kravuar.staff.dto.StaffCreationEventDTO;
-import net.kravuar.staff.model.Business;
-import net.kravuar.staff.model.Staff;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;

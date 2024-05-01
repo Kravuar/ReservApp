@@ -18,7 +18,6 @@ class AuthorizationHandler implements PermissionEvaluator {
     private final Map<String, Map<String, BiFunction<String, Object, Boolean>>> permissionEvaluators = Map.of(
             "Business", Map.of(
                     "Read", (subject, id) -> isOwner((long) id, subject),
-                    "ReadDirect", (subject, id) -> isOwner((long) id, subject),
                     "Update", (subject, id) -> isOwner((long) id, subject)
             )
     );

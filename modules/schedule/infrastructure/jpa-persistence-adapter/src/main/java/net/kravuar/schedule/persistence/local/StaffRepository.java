@@ -1,6 +1,6 @@
 package net.kravuar.schedule.persistence.local;
 
-import net.kravuar.staff.model.Staff;
+import net.kravuar.schedule.model.Staff;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,6 +1,7 @@
 package net.kravuar.business;
 
 import lombok.RequiredArgsConstructor;
+import net.kravuar.business.domain.exceptions.BusinessNotFoundException;
 import net.kravuar.business.model.Business;
 import net.kravuar.business.ports.in.BusinessRetrievalUseCase;
 import net.kravuar.business.ports.out.BusinessRetrievalPort;
@@ -13,8 +14,19 @@ public class BusinessRetrievalFacade implements BusinessRetrievalUseCase {
     private final BusinessRetrievalPort businessRetrievalPort;
 
     @Override
-    public Business findById(long id, boolean activeOnly) {
-        return businessRetrievalPort.findById(id, activeOnly);
+    public Business findById(long businessId, boolean activeOnly) {
+        return businessRetrievalPort.findById(businessId, true);
+    }
+
+    @Override
+    public Business findByIdAndSub(long businessId, String sub) {
+        Business business = businessRetrievalPort.findById(businessId, false);
+        if (business.getOwnerSub().equals(sub)) {
+            return business;
+        }
+        else {
+            throw new BusinessNotFoundException();
+        }
     }
 
     @Override

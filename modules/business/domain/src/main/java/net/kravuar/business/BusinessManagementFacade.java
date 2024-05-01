@@ -45,7 +45,7 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
     }
 
     @Override
-    public void changeName(BusinessChangeNameCommand command) {
+    public Business changeName(BusinessChangeNameCommand command) {
         try {
             businessLockPort.lock(command.businessId(), true);
             businessLockPort.lock(command.newName(), true);
@@ -55,6 +55,7 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
             Business business = businessRetrievalPort.findById(command.businessId(), false);
             business.setName(command.newName());
             businessPersistencePort.save(business);
+            return business;
         } finally {
             businessLockPort.lock(command.newName(), false);
             businessLockPort.lock(command.businessId(), false);
@@ -62,7 +63,7 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
     }
 
     @Override
-    public void changeActive(BusinessChangeActiveCommand command) {
+    public Business changeActive(BusinessChangeActiveCommand command) {
         try {
             businessLockPort.lock(command.businessId(), true);
 
@@ -77,6 +78,7 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
                 business.setActive(command.active());
                 businessPersistencePort.save(business);
                 businessNotificationPort.notifyBusinessActiveChanged(business);
+                return business;
             } finally {
                 businessLockPort.lock(business.getName(), false);
             }
@@ -86,9 +88,10 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
     }
 
     @Override
-    public void changeDetails(BusinessChangeDetailsCommand command) {
+    public Business changeDetails(BusinessChangeDetailsCommand command) {
         Business business = businessRetrievalPort.findById(command.businessId(), false);
         business.setDescription(command.description());
         businessPersistencePort.save(business);
+        return business;
     }
 }

@@ -2,8 +2,8 @@ package net.kravuar.schedule.persistence.local;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.schedule.domain.exceptions.BusinessNotFoundException;
+import net.kravuar.schedule.model.Business;
 import net.kravuar.schedule.ports.out.BusinessRetrievalPort;
-import net.kravuar.staff.model.Business;
 import org.springframework.stereotype.Component;
 
 @Component

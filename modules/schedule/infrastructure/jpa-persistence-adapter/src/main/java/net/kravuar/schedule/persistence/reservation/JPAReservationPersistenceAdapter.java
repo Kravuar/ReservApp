@@ -1,8 +1,8 @@
 package net.kravuar.schedule.persistence.reservation;
 
 import lombok.RequiredArgsConstructor;
+import net.kravuar.schedule.model.Reservation;
 import net.kravuar.schedule.ports.out.ReservationPersistencePort;
-import net.kravuar.staff.model.Reservation;
 import org.springframework.stereotype.Component;
 
 @Component

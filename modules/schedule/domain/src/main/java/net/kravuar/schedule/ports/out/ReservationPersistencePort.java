@@ -1,6 +1,6 @@
 package net.kravuar.schedule.ports.out;
 
-import net.kravuar.staff.model.Reservation;
+import net.kravuar.schedule.model.Reservation;
 
 public interface ReservationPersistencePort {
     /**

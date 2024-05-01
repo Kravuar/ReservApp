@@ -36,7 +36,7 @@ public class ServiceManagementFacade implements ServiceManagementUseCase {
     }
 
     @Override
-    public void changeActive(ServiceChangeActiveCommand command) {
+    public Service changeActive(ServiceChangeActiveCommand command) {
         try {
             serviceLockPort.lock(command.serviceId(), true);
 
@@ -44,13 +44,14 @@ public class ServiceManagementFacade implements ServiceManagementUseCase {
             service.setActive(command.active());
             service = servicePersistencePort.save(service);
             serviceNotificationPort.notifyServiceActiveChanged(service);
+            return service;
         } finally {
             serviceLockPort.lock(command.serviceId(), false);
         }
     }
 
     @Override
-    public void changeDetails(ServiceChangeDetailsCommand command) {
+    public Service changeDetails(ServiceChangeDetailsCommand command) {
         try {
             serviceLockPort.lock(command.serviceId(), true);
 
@@ -61,6 +62,7 @@ public class ServiceManagementFacade implements ServiceManagementUseCase {
                 service.setDescription(command.description());
 
             servicePersistencePort.save(service);
+            return service;
         } finally {
             serviceLockPort.lock(command.serviceId(), false);
         }

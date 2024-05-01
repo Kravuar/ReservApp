@@ -1,45 +1,62 @@
 type Query {
-    services(page: Int, pageSize: Int): ServicesPage!
-    service(serviceId: ID): Service
+    services(page: Int!, pageSize: Int!): ServicesPage!
+    service(serviceId: ID!): Service!
 
-    businesses(page: Int, pageSize: Int): BusinessesPage!
-    business(businessId: ID): Business
+    businesses(page: Int!, pageSize: Int!): BusinessesPage!
+    myBusinesses(page: Int!, pageSize: Int!): BusinessesPage!
+    businessesByOwner(owner: String!, page: Int!, pageSize: Int!): BusinessesPage!
+    business(businessId: ID!): Business!
 
-    staffs(page: Int, pageSize: Int): StaffPage!
-    staff(staffId: ID): Staff
+    staff(staffId: ID!): Staff!
+    myInvitations(page: Int!, pageSize: Int!): StaffInvitationsPage!
+
+    schedule(scheduleId: ID!): ManageableSchedule!
+    myReservations(from: LocalDate!, to: LocalDate!): Reservations!
+    reservationsToMe(from: LocalDate!, to: LocalDate!): Reservations!
 }
 
 type Mutation {
     createBusiness(input: BusinessInput!): Business!
+    changeBusinessDetails(businessId: Int!, input: BusinessDetailsInput!): Business!
+    changeBusinessName(businessId: Int!, name: String!): Business!
+    changeBusinessActiveness(businessId: Int!, active: Boolean!): Business!
+
     createService(input: ServiceInput!): Service!
-    inviteStaff(input: StaffInvitationInput!): StaffInvitation!
+    changeServiceDetails(serviceId: Int!, input: ServiceInput!): Service!
+    changeServiceActiveness(serviceId: Int!, active: Boolean!): Service!
+
+    inviteStaff(userSub: String!, businessId: Int!): StaffInvitation!
     acceptInvitation(invitationId: ID!): Staff!
     declineInvitation(invitationId: ID!): StaffInvitation!
-    reserveSlot(input: ReservationInput!): Reservation!
-    cancelReservation(reservationId: ID!): Reservation!
+    changeStaffDetails(staffId: Int!, input: StaffDetailsInput!): Staff!
+    removeStaff(staffId: Int!): Staff!
+
+    reserveSlot(LocalDateTime: LocalDateTime!, staffId: ID!, serviceId: ID!): ReservationDetailed!
+    cancelReservation(reservationId: ID!): ReservationDetailed!
+    restoreReservation(reservationId: ID!): ReservationDetailed!
 }
 
 interface Page {
-    totalCount: Int
+    totalCount: Int!
 }
 
 type ServicesPage implements Page {
-    totalCount: Int
+    totalCount: Int!
     content: [Service!]!
 }
 
 type BusinessesPage implements Page {
-    totalCount: Int
+    totalCount: Int!
     content: [Business!]!
 }
 
 type StaffPage implements Page {
-    totalCount: Int
+    totalCount: Int!
     content: [Staff!]!
 }
 
 type StaffInvitationsPage implements Page {
-    totalCount: Int
+    totalCount: Int!
     content: [StaffInvitation!]!
 }
 
@@ -47,8 +64,14 @@ type Business {
     id: ID!
     name: String!
     description: String
-    services: [Service!]!
-    staff: [Staff!]!
+    services(page: Int!, pageSize: Int!): ServicesPage!
+    myServices(page: Int!, pageSize: Int!): ServicesPage!
+    staff(page: Int!, pageSize: Int!): StaffPage!
+    staffInvitations(page: Int!, pageSize: Int!): StaffInvitationsPage!
+}
+
+input BusinessDetailsInput {
+    description: String
 }
 
 input BusinessInput {
@@ -61,9 +84,14 @@ type Service {
     name: String!
     description: String
     business: Business!
-    schedule(from: Date, to: Date): [ScheduleOfDay!]!
-    schedule_of_staff(staff_id: ID, from: Date, to: Date): [ScheduleOfDay!]!
-    assigned_staff: [Staff!]!
+    schedule(from: LocalDate, to: LocalDate): [ScheduleOfDay!]!
+    scheduleByStaff(staffId: ID!, from: LocalDate!, to: LocalDate!): [ScheduleOfDay!]!
+    anonymousReservationsByStaff(staffId: ID!, from: LocalDate!, to: LocalDate!): AnonymousReservations!
+}
+
+input ServiceDetailsInput {
+    name: String!
+    description: String
 }
 
 input ServiceInput {
@@ -76,74 +104,83 @@ type Staff {
     id: ID!
     sub: String!
     name: String!
+    description: String
     business: Business!
     invitations: [StaffInvitation!]!
-    schedule_for_service(service_id: ID, from: Date, to: Date): [ScheduleOfDay!]!
+    scheduleByService(serviceId: ID!, from: LocalDate!, to: LocalDate!): [ScheduleOfDay!]!
+    activeSchedules(serviceId: ID!): [ManageableSchedule!]!
+    anonymousReservationsByService(serviceId: ID!, from: LocalDate!, to: LocalDate!): AnonymousReservations!
+    reservations(from: LocalDate!, to: LocalDate!): Reservations!
+}
+
+input StaffDetailsInput {
+    description: String
 }
 
 type StaffInvitation {
     id: ID!
     sub: String!
     business: Business!
-    created_at: DateTime!
+    createdAt: LocalDateTime!
     status: StaffInvitationStatus!
 }
 
-input StaffInvitationInput {
-    sub: String!
-    businessId: ID!
-}
-
 type ScheduleOfDay {
-    date: Date!
+    LocalDate: LocalDate!
     slots: [ReservationSlot!]!
 }
 
 type ManageableSchedule {
     id: ID!
-    start: Date!
-    end: Date!
+    start: LocalDate!
+    end: LocalDate!
     staff: Staff!
     service: Service!
     patterns: [SchedulePattern!]!
-    exceptionDays: [ScheduleExceptionDay!]!
-    createdAt: DateTime!
+    createdAt: LocalDateTime!
 }
 
 type ReservationSlot {
-    service: Service!
-    staff: Staff!
-    start: Time!
-    end: Time!
+    start: LocalTime!
+    end: LocalTime!
     cost: Float!
     maxReservations: Int!
-    reservations: [Reservation!]!
 }
 
-type SchedulePattern {
-    id: ID!
-    repeatDays: Int
-    pauseDays: Int
-    slots: [ReservationSlot!]!
-}
-
-type ScheduleExceptionDay {
+type ReservationDetailed {
+    id: Int!
     service: Service!
     staff: Staff!
-    date: Date!
-    slots: [ReservationSlot!]!
+    start: LocalTime!
+    end: LocalTime!
+    cost: Float!
+    clientSub: String!
 }
 
 type Reservation {
     id: Int!
-    slot: ReservationSlot!
-    clientSub: String!
+    service: Service!
+    staff: Staff!
+    start: LocalTime!
+    end: LocalTime!
+    cost: Float!
 }
 
-input ReservationInput {
-    dateTime: DateTime!
-    staffId: ID!
-    serviceId: ID!
+type SchedulePattern {
+    id: ID!
+    repeatDays: Int!
+    pauseDays: Int!
+    slots: [ReservationSlot!]!
+}
+
+type Reservations {
+    LocalDate: LocalDate
+    reservations: [ReservationDetailed!]!
+}
+
+type AnonymousReservations {
+    LocalDate: LocalDate
+    reservations: [Reservation!]!
 }
 
 enum StaffInvitationStatus {
@@ -151,6 +188,6 @@ enum StaffInvitationStatus {
     DECLINED
     WAITING
 }
-scalar Date
-scalar Time
-scalar DateTime
+scalar LocalDate
+scalar LocalTime
+scalar LocalDateTime

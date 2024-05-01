@@ -44,34 +44,34 @@ class StaffRetrievalController {
         );
     }
 
-    @GetMapping("/invitations-by-sub/{page}/{pageSize}")
-    Page<StaffInvitationDTO> findInvitationsBySub(@AuthenticationPrincipal Jwt principal, @PathVariable("page") int page, @PathVariable("pageSize") int pageSize) {
-        Page<StaffInvitation> staff = staffRetrieval.findStaffInvitationsBySubject(
+    @GetMapping("/my-invitations/{page}/{pageSize}")
+    Page<StaffInvitationDTO> findMyInvitations(@AuthenticationPrincipal Jwt principal, @PathVariable("page") int page, @PathVariable("pageSize") int pageSize) {
+        Page<StaffInvitation> invitations = staffRetrieval.findStaffInvitationsBySubject(
                 principal.getSubject(),
                 page,
                 pageSize
         );
         return new Page<>(
-                staff.content().stream()
+                invitations.content().stream()
                         .map(dtoStaffMapper::invitationToDTO)
                         .toList(),
-                staff.totalPages()
+                invitations.totalPages()
         );
     }
 
     @GetMapping("/invitations-by-business/{businessId}/{page}/{pageSize}")
     @PreAuthorize("hasPermission(#businessId, 'Invitation', 'Read')")
     Page<StaffInvitationDTO> findInvitationsByBusiness(@PathVariable("businessId") long businessId, @PathVariable("page") int page, @PathVariable("pageSize") int pageSize) {
-        Page<StaffInvitation> staff = staffRetrieval.findStaffInvitationsByBusiness(
+        Page<StaffInvitation> invitations = staffRetrieval.findStaffInvitationsByBusiness(
                 businessId,
                 page,
                 pageSize
         );
         return new Page<>(
-                staff.content().stream()
+                invitations.content().stream()
                         .map(dtoStaffMapper::invitationToDTO)
                         .toList(),
-                staff.totalPages()
+                invitations.totalPages()
         );
     }
 }

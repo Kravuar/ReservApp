@@ -1,6 +1,6 @@
 package net.kravuar.schedule.dto;
 
-import net.kravuar.staff.model.Business;
+import net.kravuar.schedule.model.Business;
 import org.mapstruct.Mapper;
 
 @Mapper

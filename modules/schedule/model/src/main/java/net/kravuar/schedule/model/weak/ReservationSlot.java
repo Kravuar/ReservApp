@@ -1,4 +1,4 @@
-package net.kravuar.staff.model.weak;
+package net.kravuar.schedule.model.weak;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -7,8 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.kravuar.staff.model.util.period.Period;
-import net.kravuar.staff.model.util.period.StartBeforeEnd;
+import net.kravuar.schedule.model.util.period.Period;
+import net.kravuar.schedule.model.util.period.StartBeforeEnd;
 
 import java.time.LocalTime;
 
@@ -25,7 +25,7 @@ public class ReservationSlot implements Period<LocalTime>, Comparable<Reservatio
     @PositiveOrZero
     private double cost;
     @Positive
-    private int maxReservations;
+    private Integer maxReservations;
 
     @Override
     public int compareTo(ReservationSlot other) {

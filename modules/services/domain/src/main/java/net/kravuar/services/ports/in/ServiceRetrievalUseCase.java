@@ -34,4 +34,15 @@ public interface ServiceRetrievalUseCase {
      * @return page of active services.
      */
     Page<Service> findActive(int page, int pageSize);
+
+    /**
+     * Find service by id.
+     * Will return inactive if sub matches with owner's one.
+     *
+     * @param serviceId         id of the service to find
+     * @param sub        sub of the owner (nullable)
+     * @return {@link Service} associated the with provided serviceId
+     * @throws ServiceNotFoundException if service wasn't found
+     */
+    Service findByIdAndSub(long serviceId, String sub);
 }

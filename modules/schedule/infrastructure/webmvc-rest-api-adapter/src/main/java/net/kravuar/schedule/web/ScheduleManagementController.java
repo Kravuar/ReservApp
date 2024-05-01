@@ -3,8 +3,8 @@ package net.kravuar.schedule.web;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.schedule.domain.commands.*;
 import net.kravuar.schedule.dto.*;
+import net.kravuar.schedule.model.SchedulePattern;
 import net.kravuar.schedule.ports.in.ScheduleManagementUseCase;
-import net.kravuar.staff.model.SchedulePattern;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 

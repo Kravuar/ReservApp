@@ -40,15 +40,12 @@ class BusinessRetrievalController {
         );
     }
 
-    @GetMapping("/my/by-id/{businessId}")
-    @PreAuthorize("hasPermission(#businessId, 'Business', 'ReadDirect')")
-    BusinessDTO myById(@PathVariable("businessId") long businessId) {
-        return dtoMapper.toDTO(businessRetrieval.findById(businessId, false));
-    }
-
     @GetMapping("/by-id/{businessId}")
-    BusinessDTO byId(@PathVariable("businessId") long businessId) {
-        return dtoMapper.toDTO(businessRetrieval.findById(businessId, true));
+    BusinessDTO byId(@PathVariable("businessId") long businessId, @AuthenticationPrincipal Jwt jwt) {
+        String sub = jwt == null
+                ? null
+                : jwt.getSubject();
+        return dtoMapper.toDTO(businessRetrieval.findByIdAndSub(businessId, sub));
     }
 
     @GetMapping("/by-owner/{sub}/{page}/{pageSize}")

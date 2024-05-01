@@ -35,28 +35,34 @@ class BusinessManagementController {
 
     @PutMapping("/change-name/{businessId}")
     @PreAuthorize("hasPermission(#businessId, 'Business', 'Update')")
-    void changeName(@PathVariable("businessId") long businessId, @RequestBody String name) {
-        businessManagement.changeName(new BusinessChangeNameCommand(
-                businessId,
-                name
-        ));
+    BusinessDTO changeName(@PathVariable("businessId") long businessId, @RequestBody String name) {
+        return dtoMapper.toDTO(
+                businessManagement.changeName(new BusinessChangeNameCommand(
+                        businessId,
+                        name
+                ))
+        );
     }
 
     @PutMapping("/change-active/{businessId}/{active}")
     @PreAuthorize("hasPermission(#businessId, 'Business', 'Update')")
-    public void changeActive(@PathVariable("businessId") long businessId, @PathVariable("active") boolean active) {
-        businessManagement.changeActive(new BusinessChangeActiveCommand(
-                businessId,
-                active
-        ));
+    BusinessDTO changeActive(@PathVariable("businessId") long businessId, @PathVariable("active") boolean active) {
+        return dtoMapper.toDTO(
+                businessManagement.changeActive(new BusinessChangeActiveCommand(
+                        businessId,
+                        active
+                ))
+        );
     }
 
     @PutMapping("/update-details/{businessId}")
     @PreAuthorize("hasPermission(#businessId, 'Business', 'Update')")
-    public void updateDetails(@PathVariable("businessId") long businessId, @RequestBody BusinessDetailsDTO details) {
-        businessManagement.changeDetails(new BusinessChangeDetailsCommand(
-                businessId,
-                details.description()
-        ));
+    BusinessDTO updateDetails(@PathVariable("businessId") long businessId, @RequestBody BusinessDetailsDTO details) {
+        return dtoMapper.toDTO(
+                businessManagement.changeDetails(new BusinessChangeDetailsCommand(
+                        businessId,
+                        details.description()
+                ))
+        );
     }
 }

@@ -1,4 +1,4 @@
-package net.kravuar.staff.model.util.period;
+package net.kravuar.schedule.model.util.period;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -12,10 +12,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({FIELD, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = {StartEndTimeValidator.class, StartEndDateValidator.class})
+@Constraint(validatedBy = {TimePeriodsIntersectionValidator.class, DatePeriodsIntersectionValidator.class})
 @Documented
-public @interface StartBeforeEnd {
-    String message() default "Start must be before end";
+public @interface PeriodsNotIntersect {
+    String message() default "Periods should not intersect";
 
     Class<?>[] groups() default {};
 

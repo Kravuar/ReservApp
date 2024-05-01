@@ -1,4 +1,4 @@
-package net.kravuar.staff.model;
+package net.kravuar.schedule.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Service {
+public class Business {
     private Long id;
-    private Business business;
+    private String ownerSub;
     private boolean active;
 }

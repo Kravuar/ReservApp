@@ -3,7 +3,7 @@ package net.kravuar.schedule.web;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.schedule.domain.commands.CreateReservationCommand;
 import net.kravuar.schedule.dto.DTOReservationMapper;
-import net.kravuar.schedule.dto.ReservationDTO;
+import net.kravuar.schedule.dto.ReservationDetailedDTO;
 import net.kravuar.schedule.ports.in.ReservationManagementUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,7 +21,7 @@ class ReservationManagementController {
 
     @PostMapping("/reserve/{staffId}/{serviceId}/{dateTime}")
     @PreAuthorize("isAuthenticated()")
-    ReservationDTO reserve(@AuthenticationPrincipal Jwt jwt, @PathVariable("staffId") long staffId, @PathVariable("serviceId") long serviceId, @PathVariable("dateTime") LocalDateTime dateTime) {
+    ReservationDetailedDTO reserve(@AuthenticationPrincipal Jwt jwt, @PathVariable("staffId") long staffId, @PathVariable("serviceId") long serviceId, @PathVariable("dateTime") LocalDateTime dateTime) {
 
         return dtoReservationMapper.reservationToDTO(
                 reservationManagementUseCase.createReservation(new CreateReservationCommand(
@@ -36,7 +36,7 @@ class ReservationManagementController {
 
     @DeleteMapping("/cancel/{reservationId}")
     @PreAuthorize("hasPermission(#reservationId, 'Reservation', 'Cancel')")
-    ReservationDTO cancel(@PathVariable("reservationId") long reservationId) {
+    ReservationDetailedDTO cancel(@PathVariable("reservationId") long reservationId) {
         return dtoReservationMapper.reservationToDTO(
                 reservationManagementUseCase.cancelReservation(reservationId)
         );
@@ -44,7 +44,7 @@ class ReservationManagementController {
 
     @PostMapping("/restore/{reservationId}")
     @PreAuthorize("hasPermission(#reservationId, 'Reservation', 'Restore')")
-    ReservationDTO restore(@PathVariable("reservationId") long reservationId) {
+    ReservationDetailedDTO restore(@PathVariable("reservationId") long reservationId) {
         return dtoReservationMapper.reservationToDTO(
                 reservationManagementUseCase.restoreReservation(reservationId)
         );

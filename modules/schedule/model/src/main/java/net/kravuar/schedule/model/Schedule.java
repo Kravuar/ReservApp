@@ -1,11 +1,11 @@
-package net.kravuar.staff.model;
+package net.kravuar.schedule.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.kravuar.staff.model.util.period.Period;
-import net.kravuar.staff.model.weak.ReservationSlot;
+import net.kravuar.schedule.model.util.period.Period;
+import net.kravuar.schedule.model.weak.ReservationSlot;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

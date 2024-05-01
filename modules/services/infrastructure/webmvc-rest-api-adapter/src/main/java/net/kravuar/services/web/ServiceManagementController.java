@@ -30,20 +30,24 @@ class ServiceManagementController {
 
     @PutMapping("/change-active/{serviceId}/{active}")
     @PreAuthorize("hasPermission(#serviceId, 'Service', 'Update')")
-    public void changeActive(@PathVariable("serviceId") long serviceId, @PathVariable("active") boolean active) {
-        serviceManagement.changeActive(new ServiceChangeActiveCommand(
-                serviceId,
-                active
-        ));
+    public ServiceDTO changeActive(@PathVariable("serviceId") long serviceId, @PathVariable("active") boolean active) {
+        return dtoServiceMapper.toDTO(
+                serviceManagement.changeActive(new ServiceChangeActiveCommand(
+                        serviceId,
+                        active
+                ))
+        );
     }
 
     @PutMapping("/update-details/{serviceId}")
     @PreAuthorize("hasPermission(#serviceId, 'Service', 'Update')")
-    public void updateDetails(@PathVariable("serviceId") long serviceId, @RequestBody ServiceDetailsDTO details) {
-        serviceManagement.changeDetails(new ServiceChangeDetailsCommand(
-                serviceId,
-                details.name(),
-                details.description()
-        ));
+    public ServiceDTO updateDetails(@PathVariable("serviceId") long serviceId, @RequestBody ServiceDetailsDTO details) {
+        return dtoServiceMapper.toDTO(
+                serviceManagement.changeDetails(new ServiceChangeDetailsCommand(
+                        serviceId,
+                        details.name(),
+                        details.description()
+                ))
+        );
     }
 }

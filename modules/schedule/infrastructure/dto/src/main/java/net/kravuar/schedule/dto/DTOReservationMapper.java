@@ -1,10 +1,11 @@
 package net.kravuar.schedule.dto;
 
-import net.kravuar.staff.model.Reservation;
+import net.kravuar.schedule.model.Reservation;
 import org.mapstruct.Mapper;
 
 @Mapper(uses = {DTOStaffMapper.class, DTOServiceMapper.class})
 public interface DTOReservationMapper {
-    ReservationDTO reservationToDTO(Reservation reservation);
-    AnonymousReservationDTO reservationToAnonymousDTO(Reservation reservation);
+    ReservationDetailedDTO reservationToDTO(Reservation reservation);
+
+    ReservationDTO reservationToAnonymousDTO(Reservation reservation);
 }

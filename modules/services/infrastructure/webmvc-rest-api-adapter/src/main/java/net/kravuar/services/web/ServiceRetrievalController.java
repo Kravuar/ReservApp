@@ -7,6 +7,8 @@ import net.kravuar.services.dto.ServiceDTO;
 import net.kravuar.services.model.Service;
 import net.kravuar.services.ports.in.ServiceRetrievalUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,12 +39,6 @@ class ServiceRetrievalController {
         );
     }
 
-    @GetMapping("/my/by-id/{serviceId}")
-    @PreAuthorize("hasPermission(#serviceId, 'Service', 'ReadDirect')")
-    ServiceDTO myById(@PathVariable("serviceId") long serviceId) {
-        return dtoServiceMapper.toDTO(serviceRetrieval.findById(serviceId, false));
-    }
-
     @GetMapping("/by-business/{businessId}/{page}/{pageSize}")
     Page<ServiceDTO> byBusiness(@PathVariable("businessId") long businessId, @PathVariable("page") int page, @PathVariable("pageSize") int pageSize) {
         Page<Service> services = serviceRetrieval
@@ -61,8 +57,11 @@ class ServiceRetrievalController {
     }
 
     @GetMapping("/by-id/{serviceId}")
-    ServiceDTO byId(@PathVariable("serviceId") long serviceId) {
-        return dtoServiceMapper.toDTO(serviceRetrieval.findById(serviceId, true));
+    ServiceDTO byId(@PathVariable("serviceId") long serviceId, @AuthenticationPrincipal Jwt jwt) {
+        String sub = jwt == null
+                ? null
+                : jwt.getSubject();
+        return dtoServiceMapper.toDTO(serviceRetrieval.findByIdAndSub(serviceId, sub));
     }
 
     @GetMapping("/active/{page}/{pageSize}")

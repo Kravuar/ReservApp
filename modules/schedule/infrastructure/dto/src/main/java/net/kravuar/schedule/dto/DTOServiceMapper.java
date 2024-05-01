@@ -1,6 +1,6 @@
 package net.kravuar.schedule.dto;
 
-import net.kravuar.staff.model.Service;
+import net.kravuar.schedule.model.Service;
 import org.mapstruct.Mapper;
 
 @Mapper(uses = {DTOBusinessMapper.class})

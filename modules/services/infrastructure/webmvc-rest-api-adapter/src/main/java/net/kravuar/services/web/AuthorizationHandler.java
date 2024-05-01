@@ -21,7 +21,6 @@ class AuthorizationHandler implements PermissionEvaluator {
             "Service", Map.of(
                     "Create", (subject, id) -> isOwnerOfBusiness((long) id, subject),
                     "Read", (subject, id) -> isOwnerOfBusiness((long) id, subject),
-                    "ReadDirect", (subject, id) -> isOwnerOfService((long) id, subject),
                     "Update", (subject, id) -> isOwnerOfService((long) id, subject)
             )
     );

@@ -1,6 +1,6 @@
 package net.kravuar.schedule.dto;
 
-import net.kravuar.staff.model.SchedulePattern;
+import net.kravuar.schedule.model.SchedulePattern;
 
 import java.time.LocalDate;
 import java.util.List;
