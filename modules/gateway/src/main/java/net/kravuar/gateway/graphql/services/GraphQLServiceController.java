@@ -68,12 +68,12 @@ class GraphQLServiceController {
 
     @SchemaMapping(typeName = "Reservation")
     Mono<ServiceDTO> service(ReservationDTO reservationDTO, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
-        return serviceRetrievalClient.byId(reservationDTO.getService().id(), requester);
+        return serviceRetrievalClient.byId(reservationDTO.service().id(), requester);
     }
 
     @SchemaMapping(typeName = "ReservationDetailed")
     Mono<ServiceDTO> service(ReservationDetailedDTO reservationDTO, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
-        return serviceRetrievalClient.byId(reservationDTO.getService().id(), requester);
+        return serviceRetrievalClient.byId(reservationDTO.service().id(), requester);
     }
 
     // ================= Relation from Schedule ================= //

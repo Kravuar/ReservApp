@@ -1,11 +1,12 @@
 package net.kravuar.gateway.graphql.staff;
 
 import lombok.RequiredArgsConstructor;
+import net.kravuar.business.dto.BusinessDTO;
 import net.kravuar.pageable.Page;
 import net.kravuar.schedule.dto.ReservationDTO;
 import net.kravuar.schedule.dto.ReservationDetailedDTO;
 import net.kravuar.schedule.dto.ScheduleDTO;
-import net.kravuar.staff.dto.BusinessDTO;
+import net.kravuar.schedule.dto.ScheduleOfStaffDTO;
 import net.kravuar.staff.dto.StaffDTO;
 import net.kravuar.staff.dto.StaffDetailsDTO;
 import net.kravuar.staff.dto.StaffInvitationDTO;
@@ -78,12 +79,17 @@ class GraphQLStaffController {
 
     @SchemaMapping(typeName = "Reservation")
     Mono<StaffDTO> staff(ReservationDTO reservationDTO) {
-        return staffRetrievalClient.byId(reservationDTO.getService().id());
+        return staffRetrievalClient.byId(reservationDTO.service().id());
     }
 
     @SchemaMapping(typeName = "ReservationDetailed")
     Mono<StaffDTO> staff(ReservationDetailedDTO reservationDTO) {
-        return staffRetrievalClient.byId(reservationDTO.getService().id());
+        return staffRetrievalClient.byId(reservationDTO.service().id());
+    }
+
+    @SchemaMapping(typeName = "ScheduleOfStaff")
+    Mono<StaffDTO> staff(ScheduleOfStaffDTO schedule) {
+        return staffRetrievalClient.byId(schedule.staff().id());
     }
 
     // ================= Relation from Schedule ================= //

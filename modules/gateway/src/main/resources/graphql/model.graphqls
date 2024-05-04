@@ -11,8 +11,8 @@ type Query {
     myInvitations(page: Int!, pageSize: Int!): StaffInvitationsPage!
 
     schedule(scheduleId: ID!): ManageableSchedule!
-    myReservations(from: LocalDate!, to: LocalDate!): Reservations!
-    reservationsToMe(from: LocalDate!, to: LocalDate!): Reservations!
+    myReservations(from: LocalDate!, to: LocalDate!): ReservationsByDayDetailed!
+    reservationsToMe(from: LocalDate!, to: LocalDate!): ReservationsByDayDetailed!
 }
 
 type Mutation {
@@ -89,9 +89,10 @@ type Service {
     name: String!
     description: String
     business: Business!
-    schedule(from: LocalDate, to: LocalDate): [ScheduleOfDay!]!
-    scheduleByStaff(staffId: ID!, from: LocalDate!, to: LocalDate!): [ScheduleOfDay!]!
-    anonymousReservationsByStaff(staffId: ID!, from: LocalDate!, to: LocalDate!): AnonymousReservations!
+    schedule(from: LocalDate!, to: LocalDate!): [ScheduleOfDay!]!
+    schedulePerStaff(from: LocalDate!, to: LocalDate!): [ScheduleOfStaff!]!
+    scheduleOfStaff(staffId: ID!, from: LocalDate!, to: LocalDate!): [ScheduleOfDay!]!
+    anonymousReservationsByStaff(staffId: ID!, from: LocalDate!, to: LocalDate!): [ReservationsByDay]!
 }
 
 input ServiceDetailsInput {
@@ -112,10 +113,10 @@ type Staff {
     description: String
     business: Business!
     invitations: [StaffInvitation!]!
-    scheduleByService(serviceId: ID!, from: LocalDate!, to: LocalDate!): [ScheduleOfDay!]!
+    scheduleOnService(serviceId: ID!, from: LocalDate!, to: LocalDate!): [ScheduleOfDay!]!
     activeSchedules(serviceId: ID!): [ManageableSchedule!]!
-    anonymousReservationsByService(serviceId: ID!, from: LocalDate!, to: LocalDate!): AnonymousReservations!
-    reservations(from: LocalDate!, to: LocalDate!): Reservations!
+    anonymousReservationsByService(serviceId: ID!, from: LocalDate!, to: LocalDate!): [ReservationsByDay]!
+    reservations(from: LocalDate!, to: LocalDate!): ReservationsByDayDetailed!
 }
 
 input StaffDetailsInput {
@@ -128,6 +129,11 @@ type StaffInvitation {
     business: Business!
     createdAt: LocalDateTime!
     status: StaffInvitationStatus!
+}
+
+type ScheduleOfStaff {
+    staff: Staff
+    schedule: [ScheduleOfDay!]!
 }
 
 type ScheduleOfDay {
@@ -150,6 +156,8 @@ type ReservationSlot {
     end: LocalTime!
     cost: Float!
     maxReservations: Int!
+    reservations: [Reservation!]!
+    reservationsDetailed: [ReservationDetailed!]!
 }
 
 type ReservationDetailed {
@@ -178,12 +186,12 @@ type SchedulePattern {
     slots: [ReservationSlot!]!
 }
 
-type Reservations {
+type ReservationsByDayDetailed {
     date: LocalDate
     reservations: [ReservationDetailed!]!
 }
 
-type AnonymousReservations {
+type ReservationsByDay {
     date: LocalDate
     reservations: [Reservation!]!
 }

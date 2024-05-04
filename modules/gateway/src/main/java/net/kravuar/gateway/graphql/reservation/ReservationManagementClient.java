@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Component
 @ReactiveFeignClient(
         name = "reservationManagement",
-        url = "http://schedule:8085/api-v1/reservation/management"
+        url = "http://schedule:8085/schedule/api-v1/reservation/management"
 )
 interface ReservationManagementClient {
 

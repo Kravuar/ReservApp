@@ -1,9 +1,9 @@
 package net.kravuar.gateway.graphql.schedule;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.schedule.dto.ScheduleByServiceDTO;
 import net.kravuar.schedule.dto.ScheduleDTO;
 import net.kravuar.schedule.dto.ScheduleOfDayDTO;
+import net.kravuar.schedule.dto.ScheduleOfStaffDTO;
 import net.kravuar.services.dto.ServiceDTO;
 import net.kravuar.staff.dto.StaffDTO;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -22,6 +22,14 @@ import java.time.LocalDate;
 class GraphQLScheduleController {
     private final ScheduleRetrievalClient scheduleRetrievalClient;
     private final ScheduleManagementClient scheduleManagementClient;
+
+    // ================= Properties ================= //
+
+
+    // ================= Properties ================= //
+
+
+
 
     // ================= Queries and Mutations ================= //
 
@@ -43,7 +51,7 @@ class GraphQLScheduleController {
     }
 
     @SchemaMapping(typeName = "Staff")
-    Flux<ScheduleOfDayDTO> scheduleByService(StaffDTO staff, @Argument long serviceId, @Argument LocalDate from, @Argument LocalDate to) {
+    Flux<ScheduleOfDayDTO> scheduleOnService(StaffDTO staff, @Argument long serviceId, @Argument LocalDate from, @Argument LocalDate to) {
         return scheduleRetrievalClient.byServiceAndStaff(serviceId, staff.id(), from, to);
     }
 
@@ -55,12 +63,17 @@ class GraphQLScheduleController {
     // ================= Relation from Service ================= //
 
     @SchemaMapping(typeName = "Service")
-    Flux<ScheduleByServiceDTO> schedule(ServiceDTO service, @Argument LocalDate from, @Argument LocalDate to) {
+    Flux<ScheduleOfStaffDTO> schedulePerStaff(ServiceDTO service, @Argument LocalDate from, @Argument LocalDate to) {
         return scheduleRetrievalClient.byService(service.id(), from, to);
     }
 
     @SchemaMapping(typeName = "Service")
-    Flux<ScheduleOfDayDTO> scheduleByStaff(ServiceDTO service, @Argument long staffId, @Argument LocalDate from, @Argument LocalDate to) {
+    Flux<ScheduleOfDayDTO> schedule(ServiceDTO service, @Argument LocalDate from, @Argument LocalDate to) {
+        return scheduleRetrievalClient.byServiceFlat(service.id(), from, to);
+    }
+
+    @SchemaMapping(typeName = "Service")
+    Flux<ScheduleOfDayDTO> scheduleOfStaff(ServiceDTO service, @Argument long staffId, @Argument LocalDate from, @Argument LocalDate to) {
         return scheduleRetrievalClient.byServiceAndStaff(service.id(), staffId, from, to);
     }
 

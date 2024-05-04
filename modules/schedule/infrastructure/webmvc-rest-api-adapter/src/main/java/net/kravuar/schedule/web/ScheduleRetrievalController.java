@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -58,18 +57,39 @@ class ScheduleRetrievalController {
     }
 
     @GetMapping("/by-service/{serviceId}/{from}/{to}")
-    List<ScheduleByServiceDTO> byService(@PathVariable("serviceId") long serviceId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+    List<ScheduleOfStaffDTO> byService(@PathVariable("serviceId") long serviceId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return scheduleRetrievalUseCase.findActiveScheduleByServiceInPerDay(new RetrieveScheduleByServiceCommand(
                 serviceId,
                 from,
                 to
-        )).entrySet().stream().map(byStaffEntry -> new ScheduleByServiceDTO(
+        )).entrySet().stream().map(byStaffEntry -> new ScheduleOfStaffDTO(
                 dtoStaffMapper.staffToDTO(byStaffEntry.getKey()),
                 byStaffEntry.getValue().entrySet().stream().map(entry -> new ScheduleOfDayDTO(
                         entry.getKey(),
                         new ArrayList<>(entry.getValue())
                 )).toList()
         )).toList();
+    }
+
+    @GetMapping("/by-service/flat/{serviceId}/{from}/{to}")
+    List<ScheduleOfDayDTO> byServiceFlat(@PathVariable("serviceId") long serviceId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+        return scheduleRetrievalUseCase.findActiveScheduleByServiceInPerDay(new RetrieveScheduleByServiceCommand(
+                                serviceId,
+                                from,
+                                to
+                        )
+                ).values().stream()
+                .map(SortedMap::entrySet)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> new TreeSet<>(entry.getValue()),
+                        (first, second) -> {first.addAll(second); return first;}
+                )).entrySet().stream()
+                .map(entry -> new ScheduleOfDayDTO(
+                        entry.getKey(),
+                        entry.getValue().stream().toList()
+                )).toList();
     }
 
     @GetMapping("/by-service-and-staff/{serviceId}/{staffId}/{from}/{to}")
