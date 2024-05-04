@@ -36,6 +36,7 @@ class BusinessRetrievalController {
                         .stream()
                         .map(dtoMapper::toDTO)
                         .toList(),
+                businesses.totalElements(),
                 businesses.totalPages()
         );
     }
@@ -62,6 +63,7 @@ class BusinessRetrievalController {
                         .stream()
                         .map(dtoMapper::toDTO)
                         .toList(),
+                businesses.totalElements(),
                 businesses.totalPages()
         );
     }
@@ -75,6 +77,7 @@ class BusinessRetrievalController {
                         .stream()
                         .map(dtoMapper::toDTO)
                         .toList(),
+                businesses.totalElements(),
                 businesses.totalPages()
         );
     }

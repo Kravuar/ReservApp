@@ -30,6 +30,7 @@ class JPAInvitationRetrievalAdapter implements InvitationRetrievalPort {
         var invitations = invitationRepository.findBySub(sub, PageRequest.of(page, pageSize));
         return new Page<>(
                 invitations.getContent(),
+                invitations.getTotalElements(),
                 invitations.getTotalPages()
         );
     }
@@ -39,6 +40,7 @@ class JPAInvitationRetrievalAdapter implements InvitationRetrievalPort {
         var invitations = invitationRepository.findByBusiness(businessId, PageRequest.of(page, pageSize));
         return new Page<>(
                 invitations.getContent(),
+                invitations.getTotalElements(),
                 invitations.getTotalPages()
         );
     }

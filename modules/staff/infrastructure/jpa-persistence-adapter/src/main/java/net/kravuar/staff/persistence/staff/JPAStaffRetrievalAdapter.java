@@ -30,6 +30,7 @@ class JPAStaffRetrievalAdapter implements StaffRetrievalPort {
         );
         return new Page<>(
                 staff.getContent(),
+                staff.getTotalElements(),
                 staff.getTotalPages()
         );
     }

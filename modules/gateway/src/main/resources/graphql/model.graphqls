@@ -37,26 +37,31 @@ type Mutation {
 }
 
 interface Page {
-    totalCount: Int!
+    totalElements: Int!
+    totalPages: Int!
 }
 
 type ServicesPage implements Page {
-    totalCount: Int!
+    totalElements: Int!
+    totalPages: Int!
     content: [Service!]!
 }
 
 type BusinessesPage implements Page {
-    totalCount: Int!
+    totalElements: Int!
+    totalPages: Int!
     content: [Business!]!
 }
 
 type StaffPage implements Page {
-    totalCount: Int!
+    totalElements: Int!
+    totalPages: Int!
     content: [Staff!]!
 }
 
 type StaffInvitationsPage implements Page {
-    totalCount: Int!
+    totalElements: Int!
+    totalPages: Int!
     content: [StaffInvitation!]!
 }
 
@@ -126,7 +131,7 @@ type StaffInvitation {
 }
 
 type ScheduleOfDay {
-    LocalDate: LocalDate!
+    date: LocalDate!
     slots: [ReservationSlot!]!
 }
 
@@ -174,12 +179,12 @@ type SchedulePattern {
 }
 
 type Reservations {
-    LocalDate: LocalDate
+    date: LocalDate
     reservations: [ReservationDetailed!]!
 }
 
 type AnonymousReservations {
-    LocalDate: LocalDate
+    date: LocalDate
     reservations: [Reservation!]!
 }
 

@@ -35,6 +35,7 @@ class ServiceRetrievalController {
                 services.content().stream()
                         .map(dtoServiceMapper::toDTO)
                         .toList(),
+                services.totalElements(),
                 services.totalPages()
         );
     }
@@ -52,6 +53,7 @@ class ServiceRetrievalController {
                 services.content().stream()
                         .map(dtoServiceMapper::toDTO)
                         .toList(),
+                services.totalElements(),
                 services.totalPages()
         );
     }
@@ -71,6 +73,7 @@ class ServiceRetrievalController {
                 services.content().stream()
                         .map(dtoServiceMapper::toDTO)
                         .toList(),
+                services.totalElements(),
                 services.totalPages()
         );
     }

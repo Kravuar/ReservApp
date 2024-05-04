@@ -33,6 +33,7 @@ class JPABusinessRetrievalAdapter implements BusinessRetrievalPort {
         );
         return new Page<>(
             businesses.getContent(),
+            businesses.getTotalElements(),
             businesses.getTotalPages()
         );
     }
@@ -42,6 +43,7 @@ class JPABusinessRetrievalAdapter implements BusinessRetrievalPort {
         var businesses = businessRepository.findByActiveIsTrue(PageRequest.of(page, pageSize));
         return new Page<>(
                 businesses.getContent(),
+                businesses.getTotalElements(),
                 businesses.getTotalPages()
         );
     }

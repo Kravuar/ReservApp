@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 @Component
 @ReactiveFeignClient(
         name = "serviceManagement",
-        url = "http://service:8080/service/api-v1/management"
+        url = "http://services:8083/service/api-v1/management"
 )
 interface ServiceManagementClient {
 

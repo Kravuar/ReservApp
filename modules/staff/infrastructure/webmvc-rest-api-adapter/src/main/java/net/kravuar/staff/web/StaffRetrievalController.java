@@ -40,6 +40,7 @@ class StaffRetrievalController {
                 staff.content().stream()
                         .map(dtoStaffMapper::staffToDTO)
                         .toList(),
+                staff.totalElements(),
                 staff.totalPages()
         );
     }
@@ -55,6 +56,7 @@ class StaffRetrievalController {
                 invitations.content().stream()
                         .map(dtoStaffMapper::invitationToDTO)
                         .toList(),
+                invitations.totalElements(),
                 invitations.totalPages()
         );
     }
@@ -71,6 +73,7 @@ class StaffRetrievalController {
                 invitations.content().stream()
                         .map(dtoStaffMapper::invitationToDTO)
                         .toList(),
+                invitations.totalElements(),
                 invitations.totalPages()
         );
     }

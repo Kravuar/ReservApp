@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 @ReactiveFeignClient(
         name = "scheduleManagement",
-        url = "http://schedule:8080/schedule/api-v1/management"
+        url = "http://schedule:8085/schedule/api-v1/management"
 )
 interface ScheduleManagementClient {
 

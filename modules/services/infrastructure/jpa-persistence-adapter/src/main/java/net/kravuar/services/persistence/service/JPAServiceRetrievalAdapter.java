@@ -30,6 +30,7 @@ class JPAServiceRetrievalAdapter implements ServiceRetrievalPort {
                 );
         return new Page<>(
                 services.getContent(),
+                services.getTotalElements(),
                 services.getTotalPages()
         );
     }
@@ -39,6 +40,7 @@ class JPAServiceRetrievalAdapter implements ServiceRetrievalPort {
         var services = servicesRepository.findFullyActive(PageRequest.of(page, pageSize));
         return new Page<>(
                 services.getContent(),
+                services.getTotalElements(),
                 services.getTotalPages()
         );
     }

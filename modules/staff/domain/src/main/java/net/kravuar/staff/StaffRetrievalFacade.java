@@ -30,6 +30,7 @@ public class StaffRetrievalFacade implements StaffRetrievalUseCase {
                 staffPage.content().stream()
                         .map(this::withDetails)
                         .toList(),
+                staffPage.totalElements(),
                 staffPage.totalPages()
         );
     }

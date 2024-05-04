@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Component
 @ReactiveFeignClient(
         name = "scheduleRetrieval",
-        url = "http://schedule:8080/schedule/api-v1/retrieval"
+        url = "http://schedule:8085/schedule/api-v1/retrieval"
 )
 interface ScheduleRetrievalClient {
 
