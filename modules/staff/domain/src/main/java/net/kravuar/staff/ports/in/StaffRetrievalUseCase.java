@@ -6,6 +6,10 @@ import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
 import net.kravuar.staff.model.StaffDetailed;
 import net.kravuar.staff.model.StaffInvitation;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+
 public interface StaffRetrievalUseCase {
     /**
      * Find staff member with details by ID.
@@ -56,4 +60,13 @@ public interface StaffRetrievalUseCase {
      * @return page of staff invitations associated with the provided {@code businessId}
      */
     Page<StaffInvitation> findStaffInvitationsByBusiness(long businessId, int page, int pageSize);
+
+    /**
+     * Find staff by ids.
+     *
+     * @param staffIds         ids of the staff to find
+     * @param activeOnly whether to search active only
+     * @return list of {@link StaffDetailed} entities associated the with provided ids
+     */
+    List<StaffDetailed> findByIds(Set<Long> staffIds, boolean activeOnly);
 }

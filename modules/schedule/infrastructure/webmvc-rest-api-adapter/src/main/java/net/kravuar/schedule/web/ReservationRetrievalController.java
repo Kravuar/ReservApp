@@ -1,10 +1,9 @@
 package net.kravuar.schedule.web;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.schedule.dto.AnonymousReservationsByDayDTO;
 import net.kravuar.schedule.dto.DTOReservationMapper;
+import net.kravuar.schedule.dto.ReservationDTO;
 import net.kravuar.schedule.dto.ReservationDetailedDTO;
-import net.kravuar.schedule.dto.ReservationsByDayDTO;
 import net.kravuar.schedule.ports.in.ReservationRetrievalUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,61 +32,59 @@ class ReservationRetrievalController {
     }
 
     @GetMapping("/by-service-and-staff/{serviceId}/{staffId}/{from}/{to}")
-    List<AnonymousReservationsByDayDTO> byServiceAndStaff(@PathVariable("serviceId") long serviceId, @PathVariable("staffId") long staffId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+    List<ReservationDTO> byServiceAndStaff(@PathVariable("serviceId") long serviceId, @PathVariable("staffId") long staffId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return reservationRetrievalUseCase.findAllByStaff(staffId, from, to).entrySet().stream()
-                .map(entry -> new AnonymousReservationsByDayDTO(
-                        entry.getKey(),
-                        entry.getValue().stream()
-                                .filter(reservation -> reservation.getService().getId().equals(serviceId)) // TODO: maybe add another usecase for that
-                                .map(dtoReservationMapper::reservationToAnonymousDTO)
-                                .toList()
-                )).toList();
+                .flatMap(entry -> entry.getValue().stream()
+                        .filter(reservation -> reservation.getService().getId().equals(serviceId)) // TODO: maybe add another usecase for that
+                        .map(dtoReservationMapper::reservationToAnonymousDTO)
+                ).toList();
     }
 
     @GetMapping("/by-staff/{staffId}/{from}/{to}")
-    @PreAuthorize("hasPermission(#staffId, 'ReservationsOfStaff', 'Read')")
-    List<ReservationsByDayDTO> byStaff(@PathVariable("staffId") long staffId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+    List<ReservationDTO> byStaff(@PathVariable("staffId") long staffId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return reservationRetrievalUseCase.findAllByStaff(staffId, from, to).entrySet().stream()
-                .map(entry -> new ReservationsByDayDTO(
-                        entry.getKey(),
-                        entry.getValue().stream()
-                                .map(dtoReservationMapper::reservationToDTO)
-                                .toList()
-                )).toList();
+                .flatMap(entry -> entry.getValue().stream()
+                        .map(dtoReservationMapper::reservationToAnonymousDTO)
+                ).toList();
     }
 
     @GetMapping("/by-service/{serviceId}/{from}/{to}")
-    List<AnonymousReservationsByDayDTO> byService(@PathVariable("serviceId") long serviceId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+    List<ReservationDTO> byService(@PathVariable("serviceId") long serviceId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return reservationRetrievalUseCase.findAllByService(serviceId, from, to).entrySet().stream()
-                .map(entry -> new AnonymousReservationsByDayDTO(
-                        entry.getKey(),
-                        entry.getValue().stream()
-                                .map(dtoReservationMapper::reservationToAnonymousDTO)
-                                .toList()
-                )).toList();
+                .flatMap(entry -> entry.getValue().stream()
+                        .map(dtoReservationMapper::reservationToAnonymousDTO)
+                ).toList();
+    }
+
+    @GetMapping("/by-service/detailed/{serviceId}/{from}/{to}")
+    @PreAuthorize("hasPermission(#serviceId, 'ReservationsOfService', 'Read')")
+    List<ReservationDetailedDTO> byServiceDetailed(@PathVariable("serviceId") long serviceId, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+        return reservationRetrievalUseCase.findAllByService(serviceId, from, to).entrySet().stream()
+                .flatMap(entry -> entry.getValue().stream()
+                        .map(dtoReservationMapper::reservationToDTO)
+                ).toList();
     }
 
     @GetMapping("/my/{from}/{to}")
     @PreAuthorize("isAuthenticated()")
-    List<ReservationsByDayDTO> my(@AuthenticationPrincipal Jwt jwt, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+    List<ReservationDetailedDTO> my(@AuthenticationPrincipal Jwt jwt, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return reservationRetrievalUseCase.findAllByClient(jwt.getSubject(), from, to).entrySet().stream()
-                .map(entry -> new ReservationsByDayDTO(
-                        entry.getKey(),
-                        entry.getValue().stream()
-                                .map(dtoReservationMapper::reservationToDTO)
-                                .toList()
-                )).toList();
+                .flatMap(entry -> entry.getValue().stream()
+                        .map(dtoReservationMapper::reservationToDTO)
+                ).toList();
     }
 
     @GetMapping("/to-me/{from}/{to}")
     @PreAuthorize("isAuthenticated()")
-    List<ReservationsByDayDTO> toMe(@AuthenticationPrincipal Jwt jwt, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+    List<ReservationDetailedDTO> toMe(@AuthenticationPrincipal Jwt jwt, @PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
         return reservationRetrievalUseCase.findAllByStaff(jwt.getSubject(), from, to).entrySet().stream()
-                .map(entry -> new ReservationsByDayDTO(
-                        entry.getKey(),
-                        entry.getValue().stream()
-                                .map(dtoReservationMapper::reservationToDTO)
-                                .toList()
-                )).toList();
+                .flatMap(entry -> entry.getValue().stream()
+                        .map(dtoReservationMapper::reservationToDTO)
+                ).toList();
     }
+
+//    @GetMapping("/by-slots")
+//    List<ReservationDTO> bySlots() {
+//
+//    }
 }

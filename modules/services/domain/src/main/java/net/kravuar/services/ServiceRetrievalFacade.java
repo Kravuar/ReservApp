@@ -8,6 +8,9 @@ import net.kravuar.services.model.Service;
 import net.kravuar.services.ports.in.ServiceRetrievalUseCase;
 import net.kravuar.services.ports.out.ServiceRetrievalPort;
 
+import java.util.List;
+import java.util.Set;
+
 @AppComponent
 @RequiredArgsConstructor
 public class ServiceRetrievalFacade implements ServiceRetrievalUseCase {
@@ -37,5 +40,10 @@ public class ServiceRetrievalFacade implements ServiceRetrievalUseCase {
         else {
             throw new ServiceNotFoundException();
         }
+    }
+
+    @Override
+    public List<Service> findByIds(Set<Long> serviceIds, boolean activeOnly) {
+        return serviceRetrievalPort.findByIds(serviceIds, activeOnly);
     }
 }

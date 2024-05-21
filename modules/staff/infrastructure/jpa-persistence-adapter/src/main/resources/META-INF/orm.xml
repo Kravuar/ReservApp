@@ -22,7 +22,7 @@
             <basic name="status">
                 <enumerated>ORDINAL</enumerated>
             </basic>
-            <many-to-one name="business" fetch="LAZY" optional="false">
+            <many-to-one name="business" fetch="EAGER" optional="false">
                 <join-column name="businessId"/>
             </many-to-one>
         </attributes>
@@ -40,7 +40,7 @@
             <basic name="active">
                 <column nullable="false"/>
             </basic>
-            <many-to-one name="business" fetch="LAZY" optional="false">
+            <many-to-one name="business" fetch="EAGER" optional="false">
                 <join-column name="businessId"/>
             </many-to-one>
         </attributes>

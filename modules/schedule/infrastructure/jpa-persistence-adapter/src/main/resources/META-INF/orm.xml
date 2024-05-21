@@ -36,10 +36,10 @@
                 <column nullable="false"/>
             </basic>
 
-            <many-to-one name="staff" fetch="LAZY" optional="false">
+            <many-to-one name="staff" fetch="EAGER" optional="false">
                 <join-column name="staffId"/>
             </many-to-one>
-            <many-to-one name="service" fetch="LAZY" optional="false">
+            <many-to-one name="service" fetch="EAGER" optional="false">
                 <join-column name="serviceId"/>
             </many-to-one>
         </attributes>
@@ -59,10 +59,10 @@
                 <column nullable="false"/>
             </basic>
 
-            <many-to-one name="staff" fetch="LAZY" optional="false">
+            <many-to-one name="staff" fetch="EAGER" optional="false">
                 <join-column name="staffId"/>
             </many-to-one>
-            <many-to-one name="service" fetch="LAZY" optional="false">
+            <many-to-one name="service" fetch="EAGER" optional="false">
                 <join-column name="serviceId"/>
             </many-to-one>
 
@@ -88,10 +88,10 @@
                 <column nullable="false"/>
             </basic>
 
-            <many-to-one name="staff" fetch="LAZY" optional="false">
+            <many-to-one name="staff" fetch="EAGER" optional="false">
                 <join-column name="staffId"/>
             </many-to-one>
-            <many-to-one name="service" fetch="LAZY" optional="false">
+            <many-to-one name="service" fetch="EAGER" optional="false">
                 <join-column name="serviceId"/>
             </many-to-one>
             <element-collection target-class="net.kravuar.schedule.model.weak.ReservationSlot" name="reservationSlots"
@@ -136,7 +136,7 @@
             <basic name="sub">
                 <column nullable="false"/>
             </basic>
-            <many-to-one name="business" fetch="LAZY" optional="false">
+            <many-to-one name="business" fetch="EAGER" optional="false">
                 <join-column name="businessId"/>
             </many-to-one>
         </attributes>
@@ -151,7 +151,7 @@
             <basic name="active">
                 <column nullable="false"/>
             </basic>
-            <many-to-one name="business" fetch="LAZY" optional="false">
+            <many-to-one name="business" fetch="EAGER" optional="false">
                 <join-column name="businessId"/>
             </many-to-one>
         </attributes>

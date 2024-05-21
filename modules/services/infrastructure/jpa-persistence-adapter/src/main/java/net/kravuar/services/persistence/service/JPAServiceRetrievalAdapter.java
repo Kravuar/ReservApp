@@ -8,6 +8,9 @@ import net.kravuar.services.ports.out.ServiceRetrievalPort;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Set;
+
 @Component
 @RequiredArgsConstructor
 class JPAServiceRetrievalAdapter implements ServiceRetrievalPort {
@@ -43,5 +46,10 @@ class JPAServiceRetrievalAdapter implements ServiceRetrievalPort {
                 services.getTotalElements(),
                 services.getTotalPages()
         );
+    }
+
+    @Override
+    public List<Service> findByIds(Set<Long> serviceIds, boolean activeOnly) {
+        return servicesRepository.findByIdsAndActive(serviceIds, activeOnly);
     }
 }

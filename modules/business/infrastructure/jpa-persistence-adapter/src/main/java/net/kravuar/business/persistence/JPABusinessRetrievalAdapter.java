@@ -8,6 +8,9 @@ import net.kravuar.pageable.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Set;
+
 @Component
 @RequiredArgsConstructor
 class JPABusinessRetrievalAdapter implements BusinessRetrievalPort {
@@ -46,5 +49,10 @@ class JPABusinessRetrievalAdapter implements BusinessRetrievalPort {
                 businesses.getTotalElements(),
                 businesses.getTotalPages()
         );
+    }
+
+    @Override
+    public List<Business> findByIds(Set<Long> ids, boolean activeOnly) {
+        return businessRepository.findByIdsAndActive(ids, activeOnly);
     }
 }

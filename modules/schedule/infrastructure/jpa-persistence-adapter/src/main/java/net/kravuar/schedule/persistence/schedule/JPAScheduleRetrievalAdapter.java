@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.kravuar.schedule.domain.exceptions.ScheduleNotFoundException;
 import net.kravuar.schedule.model.Schedule;
 import net.kravuar.schedule.model.ScheduleExceptionDay;
+import net.kravuar.schedule.model.Service;
 import net.kravuar.schedule.model.Staff;
 import net.kravuar.schedule.ports.out.ScheduleRetrievalPort;
 import org.springframework.stereotype.Component;
@@ -54,6 +55,18 @@ public class JPAScheduleRetrievalAdapter implements ScheduleRetrievalPort {
     }
 
     @Override
+    public Map<Service, Map<Staff, List<Schedule>>> findActiveSchedulesByServices(Set<Long> serviceIds, LocalDate from, LocalDate to) {
+        return scheduleRepository.findAllByServices(
+                serviceIds,
+                from,
+                to
+        ).stream().collect(Collectors.groupingBy(
+                Schedule::getService,
+                Collectors.groupingBy(Schedule::getStaff)
+        ));
+    }
+
+    @Override
     public Optional<ScheduleExceptionDay> findActiveExceptionDayByStaffAndService(long staffId, long serviceId, LocalDate date) {
         return exceptionDayRepository.findFullyActiveByStaffAndService(
                 staffId,
@@ -92,5 +105,24 @@ public class JPAScheduleRetrievalAdapter implements ScheduleRetrievalPort {
                         TreeMap::new
                 )
         ));
+    }
+
+    @Override
+    public Map<Service, Map<Staff, NavigableMap<LocalDate, ScheduleExceptionDay>>> findActiveExceptionDaysByServices(Set<Long> serviceIds, LocalDate from, LocalDate to) {
+        return exceptionDayRepository.findAllFullyActiveByServices(
+                serviceIds,
+                from,
+                to
+        ).stream().collect(Collectors.groupingBy(
+                ScheduleExceptionDay::getService,
+                Collectors.groupingBy(
+                        ScheduleExceptionDay::getStaff,
+                        Collectors.toMap(
+                                ScheduleExceptionDay::getDate,
+                                Function.identity(),
+                                (existing, overlap) -> existing,
+                                TreeMap::new
+                        )
+                )));
     }
 }

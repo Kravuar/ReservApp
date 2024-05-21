@@ -8,6 +8,9 @@ import net.kravuar.business.ports.out.BusinessRetrievalPort;
 import net.kravuar.context.AppComponent;
 import net.kravuar.pageable.Page;
 
+import java.util.List;
+import java.util.Set;
+
 @AppComponent
 @RequiredArgsConstructor
 public class BusinessRetrievalFacade implements BusinessRetrievalUseCase {
@@ -37,5 +40,10 @@ public class BusinessRetrievalFacade implements BusinessRetrievalUseCase {
     @Override
     public Page<Business> findActive(int page, int pageSize) {
         return businessRetrievalPort.findActive(page, pageSize);
+    }
+
+    @Override
+    public List<Business> findByIds(Set<Long> businessIds, boolean activeOnly) {
+        return businessRetrievalPort.findByIds(businessIds, activeOnly);
     }
 }

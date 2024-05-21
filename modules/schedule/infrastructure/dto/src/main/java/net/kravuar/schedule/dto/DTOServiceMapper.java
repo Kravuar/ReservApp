@@ -5,5 +5,5 @@ import org.mapstruct.Mapper;
 
 @Mapper(uses = {DTOBusinessMapper.class})
 public interface DTOServiceMapper {
-    ServiceDTO staffToDTO(Service service);
+    ServiceDTO serviceToDTO(Service service);
 }

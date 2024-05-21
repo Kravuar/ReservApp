@@ -11,6 +11,9 @@ import net.kravuar.staff.ports.out.AccountRetrievalPort;
 import net.kravuar.staff.ports.out.InvitationRetrievalPort;
 import net.kravuar.staff.ports.out.StaffRetrievalPort;
 
+import java.util.List;
+import java.util.Set;
+
 @AppComponent
 @RequiredArgsConstructor
 public class StaffRetrievalFacade implements StaffRetrievalUseCase {
@@ -48,6 +51,13 @@ public class StaffRetrievalFacade implements StaffRetrievalUseCase {
     @Override
     public Page<StaffInvitation> findStaffInvitationsByBusiness(long businessId, int page, int pageSize) {
         return invitationRetrievalPort.findByBusiness(businessId, page, pageSize);
+    }
+
+    @Override
+    public List<StaffDetailed> findByIds(Set<Long> staffIds, boolean activeOnly) {
+        return staffRetrievalPort.findByIds(staffIds, activeOnly).stream()
+                .map(this::withDetails)
+                .toList();
     }
 
     private StaffDetailed withDetails(Staff staff) {

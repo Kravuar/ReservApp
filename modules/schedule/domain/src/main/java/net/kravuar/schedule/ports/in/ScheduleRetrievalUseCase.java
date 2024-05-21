@@ -1,11 +1,13 @@
 package net.kravuar.schedule.ports.in;
 
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByServiceCommand;
+import net.kravuar.schedule.domain.commands.RetrieveScheduleByServicesCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleExceptionDaysByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.exceptions.ScheduleNotFoundException;
 import net.kravuar.schedule.model.Schedule;
 import net.kravuar.schedule.model.ScheduleExceptionDay;
+import net.kravuar.schedule.model.Service;
 import net.kravuar.schedule.model.Staff;
 import net.kravuar.schedule.model.weak.ReservationSlot;
 
@@ -53,10 +55,18 @@ public interface ScheduleRetrievalUseCase {
     Map<Staff, NavigableMap<LocalDate, SortedSet<ReservationSlot>>> findActiveScheduleByServiceInPerDay(RetrieveScheduleByServiceCommand command);
 
     /**
+     * Find active schedule for specified services in per day format.
+     *
+     * @param command command containing details of the schedule retrieval
+     * @return {@code Map<Service, Map<Staff, NavigableMap<LocalDate, SortedSet<ReservationSlot>>>>} mapping date to reservation slots for each staff for each service
+     */
+    Map<Service, Map<Staff, NavigableMap<LocalDate, SortedSet<ReservationSlot>>>> findActiveScheduleByServicesInPerDay(RetrieveScheduleByServicesCommand command);
+
+    /**
      * Find schedule exception days by staff and service.
      *
      * @param command command containing details of the schedule retrieval
      * @return {@code Map<LocalDate, ScheduleExceptionDay>} mapping date to schedule exception day information
      */
-    NavigableMap<LocalDate, ScheduleExceptionDay> findActiveExceptionDaysByStaffAndService(RetrieveScheduleExceptionDaysByStaffAndServiceCommand command);
+    Map<LocalDate, ScheduleExceptionDay> findActiveExceptionDaysByStaffAndService(RetrieveScheduleExceptionDaysByStaffAndServiceCommand command);
 }

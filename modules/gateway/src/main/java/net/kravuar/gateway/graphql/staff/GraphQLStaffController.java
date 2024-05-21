@@ -5,15 +5,25 @@ import net.kravuar.business.dto.BusinessDTO;
 import net.kravuar.pageable.Page;
 import net.kravuar.schedule.dto.ReservationDTO;
 import net.kravuar.schedule.dto.ReservationDetailedDTO;
+import net.kravuar.schedule.dto.ReservationSlotDTO;
 import net.kravuar.schedule.dto.ScheduleDTO;
-import net.kravuar.schedule.dto.ScheduleOfStaffDTO;
 import net.kravuar.staff.dto.StaffDTO;
 import net.kravuar.staff.dto.StaffDetailsDTO;
 import net.kravuar.staff.dto.StaffInvitationDTO;
-import org.springframework.graphql.data.method.annotation.*;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.BatchMapping;
+import org.springframework.graphql.data.method.annotation.ContextValue;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.Map;
+
+import static net.kravuar.gateway.graphql.BatchHelper.mapEntitiesToRelatedData;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,8 +34,8 @@ class GraphQLStaffController {
     // ================= Queries and Mutations ================= //
 
     @QueryMapping
-    Mono<StaffDTO> staff(@Argument long staffId) {
-        return staffRetrievalClient.byId(staffId);
+    Mono<StaffDTO> staff(@Argument long staffId, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
+        return staffRetrievalClient.byId(staffId, requester);
     }
 
     @QueryMapping
@@ -65,9 +75,14 @@ class GraphQLStaffController {
 
     // ================= Relation from Schedule ================= //
 
-    @SchemaMapping(typeName = "ManageableSchedule")
-    Mono<StaffDTO> staff(ScheduleDTO schedule) {
-        return staffRetrievalClient.byId(schedule.staff().id());
+    @BatchMapping(typeName = "ManageableSchedule", field = "staff")
+    Mono<Map<ScheduleDTO, StaffDTO>> staffBySchedules(List<ScheduleDTO> schedules, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+        return mapEntitiesToRelatedData(
+                schedules,
+                StaffDTO::id,
+                schedule -> schedule.staff().id(),
+                ids -> staffRetrievalClient.byIds(ids, requester)
+        );
     }
 
     // ================= Relation from Schedule ================= //
@@ -75,24 +90,29 @@ class GraphQLStaffController {
 
 
 
-    // ================= Relation from Schedule ================= //
+    // ================= Relation from Reservation ================= //
 
-    @SchemaMapping(typeName = "Reservation")
-    Mono<StaffDTO> staff(ReservationDTO reservationDTO) {
-        return staffRetrievalClient.byId(reservationDTO.service().id());
+    @BatchMapping(typeName = "Reservation", field = "staff")
+    Mono<Map<ReservationDTO, StaffDTO>> staffByReservations(List<ReservationDTO> reservations, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+        return mapEntitiesToRelatedData(
+                reservations,
+                StaffDTO::id,
+                reservation -> reservation.staff().id(),
+                ids -> staffRetrievalClient.byIds(ids, requester)
+        );
     }
 
-    @SchemaMapping(typeName = "ReservationDetailed")
-    Mono<StaffDTO> staff(ReservationDetailedDTO reservationDTO) {
-        return staffRetrievalClient.byId(reservationDTO.service().id());
+    @BatchMapping(typeName = "ReservationDetailed", field = "staff")
+    Mono<Map<ReservationDetailedDTO, StaffDTO>> staffByReservationDetaileds(List<ReservationDetailedDTO> reservations, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+        return mapEntitiesToRelatedData(
+                reservations,
+                StaffDTO::id,
+                reservationDetailed -> reservationDetailed.staff().id(),
+                ids -> staffRetrievalClient.byIds(ids, requester)
+        );
     }
 
-    @SchemaMapping(typeName = "ScheduleOfStaff")
-    Mono<StaffDTO> staff(ScheduleOfStaffDTO schedule) {
-        return staffRetrievalClient.byId(schedule.staff().id());
-    }
-
-    // ================= Relation from Schedule ================= //
+    // ================= Relation from Reservation ================= //
 
 
 
@@ -110,4 +130,21 @@ class GraphQLStaffController {
     }
 
     // ================= Relation from Business ================= //
+
+
+
+
+    // ================= Relations from ReservationSlot ================= //
+
+    @BatchMapping(typeName = "ReservationSlot", field = "staff")
+    Mono<Map<ReservationSlotDTO, StaffDTO>> staffByReservationSlots(List<ReservationSlotDTO> slots, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+        return mapEntitiesToRelatedData(
+                slots,
+                StaffDTO::id,
+                slot -> slot.staff().id(),
+                ids -> staffRetrievalClient.byIds(ids, requester)
+        );
+    }
+
+    // ================= Relations from ReservationSlot ================= //
 }

@@ -1,4 +1,4 @@
-package net.kravuar.gateway.graphql.reservation;
+package net.kravuar.gateway.graphql.reservations;
 
 import net.kravuar.schedule.dto.ReservationDetailedDTO;
 import org.springframework.http.HttpHeaders;

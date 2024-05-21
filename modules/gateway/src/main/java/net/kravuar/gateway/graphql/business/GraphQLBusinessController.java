@@ -7,10 +7,19 @@ import net.kravuar.business.dto.BusinessDetailsDTO;
 import net.kravuar.pageable.Page;
 import net.kravuar.services.dto.ServiceDTO;
 import net.kravuar.staff.dto.StaffDTO;
-import org.springframework.graphql.data.method.annotation.*;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.BatchMapping;
+import org.springframework.graphql.data.method.annotation.ContextValue;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.Map;
+
+import static net.kravuar.gateway.graphql.BatchHelper.mapEntitiesToRelatedData;
 
 @Controller
 @RequiredArgsConstructor
@@ -63,25 +72,31 @@ class GraphQLBusinessController {
     // ================= Queries and Mutations ================= //
 
 
-
-
     // ================= Relation from Staff ================= //
 
-    @SchemaMapping(typeName = "Staff")
-    Mono<BusinessDTO> business(StaffDTO staff, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
-        return businessRetrievalClient.byId(staff.business().id(), requester);
+    @BatchMapping(typeName = "Staff", field = "business")
+    Mono<Map<StaffDTO, BusinessDTO>> businessesByStaff(List<StaffDTO> staffs, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+        return mapEntitiesToRelatedData(
+                staffs,
+                BusinessDTO::id,
+                staff -> staff.business().id(),
+                ids -> businessRetrievalClient.byIds(ids, requester)
+        );
     }
 
     // ================= Relation from Staff ================= //
 
 
-
-
     // ================= Relation from Service ================= //
 
-    @SchemaMapping(typeName = "Service")
-    Mono<BusinessDTO> business(ServiceDTO service, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
-        return businessRetrievalClient.byId(service.business().id(), requester);
+    @BatchMapping(typeName = "Service", field = "business")
+    Mono<Map<ServiceDTO, BusinessDTO>> businessesByService(List<ServiceDTO> services, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+        return mapEntitiesToRelatedData(
+                services,
+                BusinessDTO::id,
+                service -> service.business().id(),
+                ids -> businessRetrievalClient.byIds(ids, requester)
+        );
     }
 
     // ================= Relation from Service ================= //

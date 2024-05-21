@@ -4,6 +4,9 @@ import net.kravuar.business.domain.exceptions.BusinessNotFoundException;
 import net.kravuar.business.model.Business;
 import net.kravuar.pageable.Page;
 
+import java.util.List;
+import java.util.Set;
+
 public interface BusinessRetrievalUseCase {
 
     /**
@@ -46,4 +49,13 @@ public interface BusinessRetrievalUseCase {
      * @return page of existing active businesses
      */
     Page<Business> findActive(int page, int pageSize);
+
+    /**
+     * Find businesses by ids.
+     *
+     * @param businessIds         ids of the businesses to find
+     * @param activeOnly whether to search active only
+     * @return list of {@link Business} entities associated the with provided ids
+     */
+    List<Business> findByIds(Set<Long> businessIds, boolean activeOnly);
 }

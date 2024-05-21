@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 interface ScheduleRepository extends JpaRepository<Schedule, Long> {
@@ -28,6 +29,15 @@ interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             "AND s.staff.active = true " +
             "AND ((s.start <= :to AND :from <= s.end))")
     List<Schedule> findAllByService(@Param("serviceId") long serviceId, @Param("from") LocalDate from, @Param("to") LocalDate to);
+
+    @Query("SELECT s FROM Schedule s " +
+            "WHERE s.service.id IN :serviceIds " +
+            "AND s.active = true " +
+            "AND s.service.active = true " +
+            "AND s.service.business.active = true " +
+            "AND s.staff.active = true " +
+            "AND ((s.start <= :to AND :from <= s.end))")
+    List<Schedule> findAllByServices(@Param("serviceIds") Set<Long> serviceIds, @Param("from") LocalDate from, @Param("to") LocalDate to);
 
     @Query("SELECT s FROM Schedule s " +
             "WHERE s.staff.id = :staffId " +

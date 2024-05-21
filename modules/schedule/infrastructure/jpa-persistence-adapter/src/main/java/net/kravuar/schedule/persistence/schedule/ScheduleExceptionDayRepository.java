@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 interface ScheduleExceptionDayRepository extends JpaRepository<ScheduleExceptionDay, Long> {
@@ -37,4 +38,12 @@ interface ScheduleExceptionDayRepository extends JpaRepository<ScheduleException
             "AND s.service.business.active = true " +
             "AND s.staff.active = true")
     List<ScheduleExceptionDay> findAllFullyActiveByService(@Param("serviceId") long serviceId, @Param("from") LocalDate from, @Param("to") LocalDate to);
+
+    @Query("SELECT s FROM ScheduleExceptionDay s " +
+            "WHERE s.service.id IN :serviceIds " +
+            "AND s.date BETWEEN :from AND :to " +
+            "AND s.service.active = true " +
+            "AND s.service.business.active = true " +
+            "AND s.staff.active = true")
+    List<ScheduleExceptionDay> findAllFullyActiveByServices(@Param("serviceIds") Set<Long> serviceIds, @Param("from") LocalDate from, @Param("to") LocalDate to);
 }

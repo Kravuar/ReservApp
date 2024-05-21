@@ -8,7 +8,9 @@ import net.kravuar.staff.ports.out.StaffRetrievalPort;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -53,5 +55,10 @@ class JPAStaffRetrievalAdapter implements StaffRetrievalPort {
                 activeOnly,
                 activeBusinessOnly
         );
+    }
+
+    @Override
+    public List<Staff> findByIds(Set<Long> staffIds, boolean activeOnly) {
+        return staffRepository.findByIdsAndActive(staffIds, activeOnly);
     }
 }

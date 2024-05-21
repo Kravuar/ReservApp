@@ -4,6 +4,9 @@ import net.kravuar.pageable.Page;
 import net.kravuar.services.domain.exceptions.ServiceNotFoundException;
 import net.kravuar.services.model.Service;
 
+import java.util.List;
+import java.util.Set;
+
 public interface ServiceRetrievalPort {
     /**
      * Find active service by serviceId.
@@ -36,4 +39,13 @@ public interface ServiceRetrievalPort {
      * @return page of active services.
      */
     Page<Service> findActive(int page, int pageSize);
+
+    /**
+     * Find services by ids.
+     *
+     * @param serviceIds         ids of the services to find
+     * @param activeOnly whether to search active only
+     * @return list of {@link Service} entities associated the with provided ids
+     */
+    List<Service> findByIds(Set<Long> serviceIds, boolean activeOnly);
 }

@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 interface StaffRepository extends JpaRepository<Staff, Long> {
@@ -17,6 +19,12 @@ interface StaffRepository extends JpaRepository<Staff, Long> {
             "AND (:activeOnly = false OR s.active = true) " +
             "AND s.business.active = true")
     Optional<Staff> findById(@Param("staffId") long staffId, @Param("activeOnly") boolean activeOnly);
+
+    @Query("SELECT s FROM Staff s " +
+            "WHERE s.id IN :staffIds " +
+            "AND (:activeOnly = false OR s.active = true) " +
+            "AND s.business.active = true")
+    List<Staff> findByIdsAndActive(@Param("staffIds") Set<Long> staffIds, @Param("activeOnly") boolean activeOnly);
 
     @Query("SELECT s FROM Staff s " +
             "WHERE s.business.id = :businessId " +

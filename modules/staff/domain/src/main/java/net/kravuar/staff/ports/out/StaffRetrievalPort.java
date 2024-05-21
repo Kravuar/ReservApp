@@ -4,7 +4,9 @@ import net.kravuar.pageable.Page;
 import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
 import net.kravuar.staff.model.Staff;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface StaffRetrievalPort {
     /**
@@ -55,4 +57,13 @@ public interface StaffRetrievalPort {
      * @return {@code Optional<Staff>} object of staff associated with the provided {@code businessId} and {@code sub}
      */
     Optional<Staff> findByBusinessAndSub(long businessId, String sub, boolean activeOnly, boolean activeBusinessOnly);
+
+    /**
+     * Find staff by ids.
+     *
+     * @param staffIds   ids of the staff to find
+     * @param activeOnly whether to search active only
+     * @return list of {@link Staff} entities associated the with provided ids
+     */
+    List<Staff> findByIds(Set<Long> staffIds, boolean activeOnly);
 }
