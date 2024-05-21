@@ -7,8 +7,8 @@ import com.okta.sdk.resource.client.ApiException;
 import com.okta.sdk.resource.model.User;
 import com.okta.sdk.resource.model.UserProfile;
 import net.kravuar.context.AppComponent;
-import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
 import net.kravuar.staff.model.AccountDetails;
+import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
 import net.kravuar.staff.ports.out.AccountRetrievalPort;
 
 import java.net.HttpURLConnection;

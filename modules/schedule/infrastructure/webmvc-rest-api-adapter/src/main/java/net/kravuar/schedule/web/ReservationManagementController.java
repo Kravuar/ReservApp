@@ -2,8 +2,6 @@ package net.kravuar.schedule.web;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.schedule.domain.commands.CreateReservationCommand;
-import net.kravuar.schedule.dto.DTOReservationMapper;
-import net.kravuar.schedule.dto.ReservationDTO;
 import net.kravuar.schedule.ports.in.ReservationManagementUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

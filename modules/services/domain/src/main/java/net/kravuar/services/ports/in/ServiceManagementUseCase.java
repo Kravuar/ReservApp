@@ -2,12 +2,12 @@ package net.kravuar.services.ports.in;
 
 import jakarta.validation.Valid;
 import net.kravuar.context.AppValidated;
+import net.kravuar.services.model.Service;
 import net.kravuar.services.domain.commands.ServiceChangeActiveCommand;
 import net.kravuar.services.domain.commands.ServiceChangeDetailsCommand;
 import net.kravuar.services.domain.commands.ServiceCreationCommand;
 import net.kravuar.services.domain.exceptions.BusinessNotFoundException;
 import net.kravuar.services.domain.exceptions.ServiceNotFoundException;
-import net.kravuar.services.model.Service;
 
 @AppValidated
 public interface ServiceManagementUseCase {

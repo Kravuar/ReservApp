@@ -1,8 +1,8 @@
 package net.kravuar.schedule.persistence.local;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.staff.dto.StaffActivityChangeEventDTO;
-import net.kravuar.staff.dto.StaffCreationEventDTO;
+import net.kravuar.integration.staff.StaffActivityChangeDTO;
+import net.kravuar.integration.staff.StaffCreationDTO;
 import net.kravuar.staff.model.Business;
 import net.kravuar.staff.model.Staff;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -19,7 +19,7 @@ class LocalStaffUpdater {
     private final BusinessRepository businessRepository;
 
     @KafkaHandler
-    void onStaffCreated(StaffCreationEventDTO creationDTO) {
+    void onStaffCreated(StaffCreationDTO creationDTO) {
         Business business = businessRepository.getReferenceById(creationDTO.businessId());
         staffRepository.save(
                 new Staff(
@@ -32,7 +32,7 @@ class LocalStaffUpdater {
     }
 
     @KafkaHandler
-    void onStaffActivityChange(StaffActivityChangeEventDTO changeDTO) {
+    void onStaffActivityChange(StaffActivityChangeDTO changeDTO) {
         Staff staff = staffRepository.getReferenceById(changeDTO.staffId());
         staff.setActive(changeDTO.active());
         staffRepository.save(staff);

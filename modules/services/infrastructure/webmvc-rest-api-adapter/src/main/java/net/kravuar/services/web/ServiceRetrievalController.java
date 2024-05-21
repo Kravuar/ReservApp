@@ -2,8 +2,6 @@ package net.kravuar.services.web;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.pageable.Page;
-import net.kravuar.services.dto.DTOServiceMapper;
-import net.kravuar.services.dto.ServiceDTO;
 import net.kravuar.services.model.Service;
 import net.kravuar.services.ports.in.ServiceRetrievalUseCase;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -14,7 +14,7 @@ import java.util.Optional;
 interface InvitationRepository extends JpaRepository<StaffInvitation, Long> {
     @Query("SELECT s FROM StaffInvitation s " +
             "WHERE s.business.id = :businessId " +
-            "AND s.status = net.kravuar.staff.model.StaffInvitation$Status.WAITING " +
+            "AND s.status = net.kravuar.staff.domain.StaffInvitation$Status.WAITING " +
             "AND s.sub = :sub " +
             "AND s.business.active = true")
     Optional<StaffInvitation> findWaitingByBusinessAndSub(@Param("businessId") long businessId, @Param("sub") String sub);

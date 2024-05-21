@@ -1,11 +1,11 @@
 package net.kravuar.services;
 
+import net.kravuar.services.model.Business;
+import net.kravuar.services.model.Service;
 import net.kravuar.services.domain.commands.ServiceChangeActiveCommand;
 import net.kravuar.services.domain.commands.ServiceChangeDetailsCommand;
 import net.kravuar.services.domain.commands.ServiceCreationCommand;
 import net.kravuar.services.domain.exceptions.ServiceNotFoundException;
-import net.kravuar.services.model.Business;
-import net.kravuar.services.model.Service;
 import net.kravuar.services.ports.out.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

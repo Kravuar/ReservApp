@@ -1,8 +1,8 @@
 package net.kravuar.staff.ports.out;
 
 import net.kravuar.pageable.Page;
-import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
 import net.kravuar.staff.model.Staff;
+import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
 
 import java.util.Optional;
 

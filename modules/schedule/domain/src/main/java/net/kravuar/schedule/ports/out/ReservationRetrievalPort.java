@@ -1,7 +1,7 @@
 package net.kravuar.schedule.ports.out;
 
-import net.kravuar.schedule.domain.exceptions.ReservationNotFoundException;
 import net.kravuar.staff.model.Reservation;
+import net.kravuar.schedule.domain.exceptions.ReservationNotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;

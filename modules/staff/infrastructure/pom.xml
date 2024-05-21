@@ -23,7 +23,6 @@
         <module>webmvc-rest-api-adapter</module>
         <module>okta-account-retrieval-adapter</module>
         <module>fake-account-existence-check-adapter</module>
-        <module>dto</module>
     </modules>
 
     <dependencies>

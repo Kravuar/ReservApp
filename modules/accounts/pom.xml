@@ -17,6 +17,5 @@
         <module>domain</module>
         <module>infrastructure</module>
         <module>accounts-app</module>
-        <module>model</module>
     </modules>
 </project>

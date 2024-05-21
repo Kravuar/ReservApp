@@ -19,7 +19,6 @@
         <module>jpa-persistence-adapter</module>
         <module>webmvc-rest-api-adapter</module>
         <module>local-lock-adapter</module>
-        <module>dto</module>
     </modules>
 
     <dependencies>

@@ -3,8 +3,6 @@ package net.kravuar.schedule.web;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.schedule.domain.exceptions.ScheduleException;
-import net.kravuar.schedule.dto.*;
-import org.mapstruct.factory.Mappers;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -34,37 +32,7 @@ class WebConfig {
     private final AuthorizationHandler authorizationHandler;
 
     @Bean
-    DTOServiceMapper dtoServiceMapper() {
-        return Mappers.getMapper(DTOServiceMapper.class);
-    }
-
-    @Bean
-    DTOBusinessMapper dtoBusinessMapper() {
-        return Mappers.getMapper(DTOBusinessMapper.class);
-    }
-
-    @Bean
-    DTOStaffMapper dtoStaffMapper() {
-        return Mappers.getMapper(DTOStaffMapper.class);
-    }
-
-    @Bean
-    DTOScheduleMapper dtoScheduleMapper() {
-        return Mappers.getMapper(DTOScheduleMapper.class);
-    }
-
-    @Bean
-    DTOScheduleExceptionDayMapper dtoScheduleExceptionDayMapper() {
-        return Mappers.getMapper(DTOScheduleExceptionDayMapper.class);
-    }
-
-    @Bean
-    DTOReservationMapper dtoReservationMapper() {
-        return Mappers.getMapper(DTOReservationMapper.class);
-    }
-
-    @Bean
-    MethodSecurityExpressionHandler methodSecurityExpressionHandler() {
+    public MethodSecurityExpressionHandler methodSecurityExpressionHandler() {
         DefaultMethodSecurityExpressionHandler handler = new DefaultMethodSecurityExpressionHandler();
         handler.setPermissionEvaluator(authorizationHandler);
         handler.setParameterNameDiscoverer(new AnnotationParameterNameDiscoverer(PathVariable.class.getName()));
@@ -72,17 +40,17 @@ class WebConfig {
     }
 
     @ExceptionHandler(ScheduleException.class)
-    ResponseEntity<String> handleDomainException(ScheduleException exception) {
+    public ResponseEntity<String> handleDomainException(ScheduleException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
-    ResponseEntity<String> handleDomainException(Exception exception) {
+    public ResponseEntity<String> handleDomainException(Exception exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    ResponseEntity<List<String>> handleConstraintViolationException(ConstraintViolationException cve) {
+    public ResponseEntity<List<String>> handleConstraintViolationException(ConstraintViolationException cve) {
         List<String> errorMessages = cve.getConstraintViolations()
                 .stream()
                 .map(violation -> String.format("%s: %s", violation.getMessage(), violation.getInvalidValue()))

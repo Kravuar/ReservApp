@@ -1,8 +1,6 @@
 package net.kravuar.business.web;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.business.dto.BusinessDTO;
-import net.kravuar.business.dto.DTOMapper;
 import net.kravuar.business.model.Business;
 import net.kravuar.business.ports.in.BusinessRetrievalUseCase;
 import net.kravuar.pageable.Page;

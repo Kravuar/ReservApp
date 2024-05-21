@@ -1,8 +1,8 @@
 package net.kravuar.schedule.persistence.local;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.business.dto.BusinessActivityChangeEventDTO;
-import net.kravuar.business.dto.BusinessCreationEventDTO;
+import net.kravuar.integration.business.BusinessActivityChangeDTO;
+import net.kravuar.integration.business.BusinessCreationDTO;
 import net.kravuar.staff.model.Business;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaHandler;
@@ -17,7 +17,7 @@ class LocalBusinessUpdater {
     private final BusinessRepository businessRepository;
 
     @KafkaHandler
-    void onBusinessCreated(BusinessCreationEventDTO creationDTO) {
+    void onBusinessCreated(BusinessCreationDTO creationDTO) {
         businessRepository.save(
                 new Business(
                         creationDTO.businessId(),
@@ -28,7 +28,7 @@ class LocalBusinessUpdater {
     }
 
     @KafkaHandler
-    void onBusinessActivityChange(BusinessActivityChangeEventDTO changeDTO) {
+    void onBusinessActivityChange(BusinessActivityChangeDTO changeDTO) {
         Business business = businessRepository.getReferenceById(changeDTO.businessId());
         business.setActive(changeDTO.active());
         businessRepository.save(business);

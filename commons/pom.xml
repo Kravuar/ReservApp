@@ -16,6 +16,7 @@
 
     <modules>
         <module>context</module>
+        <module>integration-dto</module>
         <module>pagination</module>
     </modules>
 </project>

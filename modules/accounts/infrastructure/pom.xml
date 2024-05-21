@@ -18,7 +18,6 @@
     <modules>
         <module>webmvc-rest-api-adapter</module>
         <module>okta-client-adapter</module>
-        <module>dto</module>
     </modules>
 
     <dependencies>

@@ -3,8 +3,6 @@ package net.kravuar.business.web;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.business.domain.exceptions.BusinessException;
-import net.kravuar.business.dto.DTOMapper;
-import org.mapstruct.factory.Mappers;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -33,23 +31,18 @@ import java.util.List;
 class WebConfig {
     private final AuthorizationHandler authorizationHandler;
 
-    @Bean
-    DTOMapper dtoMapper() {
-        return Mappers.getMapper(DTOMapper.class);
-    }
-
     @ExceptionHandler(BusinessException.class)
-    ResponseEntity<String> handleDomainException(BusinessException exception) {
+    public ResponseEntity<String> handleDomainException(BusinessException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
-    ResponseEntity<String> handleDomainException(Exception exception) {
+    public ResponseEntity<String> handleDomainException(Exception exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @Bean
-    MethodSecurityExpressionHandler methodSecurityExpressionHandler() {
+    public MethodSecurityExpressionHandler methodSecurityExpressionHandler() {
         DefaultMethodSecurityExpressionHandler handler = new DefaultMethodSecurityExpressionHandler();
         handler.setPermissionEvaluator(authorizationHandler);
         handler.setParameterNameDiscoverer(new AnnotationParameterNameDiscoverer(PathVariable.class.getName()));
@@ -57,7 +50,7 @@ class WebConfig {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    ResponseEntity<List<String>> handleConstraintViolationException(ConstraintViolationException cve) {
+    public ResponseEntity<List<String>> handleConstraintViolationException(ConstraintViolationException cve) {
         List<String> errorMessages = cve.getConstraintViolations()
                 .stream()
                 .map(violation -> String.format("%s: %s", violation.getMessage(), violation.getInvalidValue()))

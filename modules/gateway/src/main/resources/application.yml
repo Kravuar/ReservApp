@@ -16,7 +16,3 @@ spring:
 
   mvc:
     log-request-details: true
-
-  graphql:
-    graphiql:
-      enabled: true

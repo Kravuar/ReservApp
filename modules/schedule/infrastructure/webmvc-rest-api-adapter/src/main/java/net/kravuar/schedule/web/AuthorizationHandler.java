@@ -1,13 +1,13 @@
 package net.kravuar.schedule.web;
 
 import lombok.RequiredArgsConstructor;
+import net.kravuar.staff.model.Reservation;
+import net.kravuar.staff.model.Schedule;
+import net.kravuar.staff.model.Service;
 import net.kravuar.schedule.ports.in.ReservationRetrievalUseCase;
 import net.kravuar.schedule.ports.in.ScheduleRetrievalUseCase;
 import net.kravuar.schedule.ports.in.ServiceRetrievalUseCase;
 import net.kravuar.schedule.ports.in.StaffRetrievalUseCase;
-import net.kravuar.staff.model.Reservation;
-import net.kravuar.staff.model.Schedule;
-import net.kravuar.staff.model.Service;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;

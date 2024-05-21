@@ -2,8 +2,8 @@ package net.kravuar.services.persistence.service;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.pageable.Page;
-import net.kravuar.services.domain.exceptions.ServiceNotFoundException;
 import net.kravuar.services.model.Service;
+import net.kravuar.services.domain.exceptions.ServiceNotFoundException;
 import net.kravuar.services.ports.out.ServiceRetrievalPort;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;

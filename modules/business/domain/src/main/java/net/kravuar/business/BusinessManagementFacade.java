@@ -1,12 +1,12 @@
 package net.kravuar.business;
 
 import lombok.RequiredArgsConstructor;
+import net.kravuar.business.model.Business;
 import net.kravuar.business.domain.commands.BusinessChangeActiveCommand;
 import net.kravuar.business.domain.commands.BusinessChangeDetailsCommand;
 import net.kravuar.business.domain.commands.BusinessChangeNameCommand;
 import net.kravuar.business.domain.commands.BusinessCreationCommand;
 import net.kravuar.business.domain.exceptions.BusinessNameAlreadyTaken;
-import net.kravuar.business.model.Business;
 import net.kravuar.business.ports.in.BusinessManagementUseCase;
 import net.kravuar.business.ports.out.BusinessLockPort;
 import net.kravuar.business.ports.out.BusinessNotificationPort;
