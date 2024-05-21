@@ -7,7 +7,7 @@
 
     <description>Mapping for domain Schedule</description>
 
-    <entity class="net.kravuar.staff.model.Reservation" access="FIELD">
+    <entity class="net.kravuar.schedule.domain.Reservation" access="FIELD">
         <table name="reservation"/>
         <attributes>
             <id name="id">
@@ -42,7 +42,7 @@
         </attributes>
     </entity>
 
-    <entity class="net.kravuar.staff.model.Schedule" access="FIELD">
+    <entity class="net.kravuar.schedule.domain.Schedule" access="FIELD">
         <table name="schedule"/>
         <attributes>
             <id name="id">
@@ -75,7 +75,7 @@
         </attributes>
     </entity>
 
-    <entity class="net.kravuar.staff.model.ScheduleExceptionDay" access="FIELD">
+    <entity class="net.kravuar.schedule.domain.ScheduleExceptionDay" access="FIELD">
         <table name="scheduleExceptionDay"/>
         <attributes>
             <id name="id">
@@ -91,7 +91,7 @@
             <many-to-one name="service" fetch="LAZY" optional="false">
                 <join-column name="serviceId"/>
             </many-to-one>
-            <element-collection target-class="net.kravuar.staff.model.weak.ReservationSlot" name="reservationSlots"
+            <element-collection target-class="net.kravuar.schedule.domain.weak.ReservationSlot" name="reservationSlots"
                                 fetch="EAGER">
                 <column nullable="false"/>
                 <collection-table name="exceptionDaysSlots"/>
@@ -99,7 +99,7 @@
         </attributes>
     </entity>
 
-    <entity class="net.kravuar.staff.model.SchedulePattern" access="FIELD">
+    <entity class="net.kravuar.schedule.domain.SchedulePattern" access="FIELD">
         <table name="schedulePattern"/>
         <attributes>
             <id name="id">
@@ -113,7 +113,7 @@
                 <column nullable="false"/>
             </basic>
 
-            <element-collection target-class="net.kravuar.staff.model.weak.ReservationSlot" name="reservationSlots"
+            <element-collection target-class="net.kravuar.schedule.domain.weak.ReservationSlot" name="reservationSlots"
                                 fetch="EAGER">
                 <column nullable="false"/>
                 <collection-table name="patternSlots"/>
@@ -121,7 +121,7 @@
         </attributes>
     </entity>
 
-    <entity class="net.kravuar.staff.model.Staff" access="FIELD">
+    <entity class="net.kravuar.schedule.domain.Staff" access="FIELD">
         <table name="staff"/>
         <attributes>
             <id name="id">
@@ -139,7 +139,7 @@
         </attributes>
     </entity>
 
-    <entity class="net.kravuar.staff.model.Service" access="FIELD">
+    <entity class="net.kravuar.schedule.domain.Service" access="FIELD">
         <table name="service"/>
         <attributes>
             <id name="id">
@@ -154,7 +154,7 @@
         </attributes>
     </entity>
 
-    <entity class="net.kravuar.staff.model.Business" access="FIELD">
+    <entity class="net.kravuar.schedule.domain.Business" access="FIELD">
         <table name="business"/>
         <attributes>
             <id name="id"/>
@@ -167,5 +167,5 @@
         </attributes>
     </entity>
 
-    <embeddable class="net.kravuar.staff.model.weak.ReservationSlot" access="FIELD"/>
+    <embeddable class="net.kravuar.schedule.domain.weak.ReservationSlot" access="FIELD"/>
 </entity-mappings>

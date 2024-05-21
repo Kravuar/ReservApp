@@ -1,6 +1,6 @@
 package net.kravuar.schedule.web;
 
-import net.kravuar.staff.model.Service;
+import net.kravuar.schedule.domain.Service;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = {DTOBusinessMapper.class})

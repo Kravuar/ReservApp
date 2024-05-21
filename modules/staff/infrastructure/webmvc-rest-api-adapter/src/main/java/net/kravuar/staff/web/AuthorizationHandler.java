@@ -1,8 +1,8 @@
 package net.kravuar.staff.web;
 
 import lombok.RequiredArgsConstructor;
-import net.kravuar.staff.model.Staff;
-import net.kravuar.staff.model.StaffInvitation;
+import net.kravuar.staff.domain.Staff;
+import net.kravuar.staff.domain.StaffInvitation;
 import net.kravuar.staff.ports.in.BusinessRetrievalUseCase;
 import net.kravuar.staff.ports.in.StaffRetrievalUseCase;
 import org.springframework.security.access.PermissionEvaluator;

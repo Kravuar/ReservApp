@@ -1,6 +1,6 @@
 package net.kravuar.services.ports.out;
 
-import net.kravuar.services.model.Service;
+import net.kravuar.services.domain.Service;
 
 public interface ServicePersistencePort {
     /**

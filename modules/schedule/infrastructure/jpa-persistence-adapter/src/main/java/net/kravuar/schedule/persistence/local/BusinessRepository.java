@@ -1,6 +1,6 @@
 package net.kravuar.schedule.persistence.local;
 
-import net.kravuar.staff.model.Business;
+import net.kravuar.schedule.domain.Business;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

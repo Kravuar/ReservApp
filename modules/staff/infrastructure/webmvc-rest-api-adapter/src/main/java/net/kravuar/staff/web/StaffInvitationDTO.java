@@ -1,6 +1,6 @@
 package net.kravuar.staff.web;
 
-import net.kravuar.staff.model.StaffInvitation;
+import net.kravuar.staff.domain.StaffInvitation;
 
 import java.time.LocalDateTime;
 

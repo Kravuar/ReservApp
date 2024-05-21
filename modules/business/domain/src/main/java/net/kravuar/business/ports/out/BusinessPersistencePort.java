@@ -1,6 +1,6 @@
 package net.kravuar.business.ports.out;
 
-import net.kravuar.business.model.Business;
+import net.kravuar.business.domain.Business;
 
 public interface BusinessPersistencePort {
     /**

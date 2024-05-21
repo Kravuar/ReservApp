@@ -1,6 +1,6 @@
 package net.kravuar.schedule.persistence.schedule;
 
-import net.kravuar.staff.model.ScheduleExceptionDay;
+import net.kravuar.schedule.domain.ScheduleExceptionDay;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

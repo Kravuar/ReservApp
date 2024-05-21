@@ -1,6 +1,6 @@
 package net.kravuar.staff.persistence.staff;
 
-import net.kravuar.staff.model.Staff;
+import net.kravuar.staff.domain.Staff;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

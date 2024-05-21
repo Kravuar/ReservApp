@@ -1,6 +1,6 @@
 package net.kravuar.staff.ports.out;
 
-import net.kravuar.staff.model.AccountDetails;
+import net.kravuar.staff.domain.AccountDetails;
 import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
 
 public interface AccountRetrievalPort {

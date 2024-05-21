@@ -3,7 +3,7 @@ package net.kravuar.services.notification;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.integration.services.ServiceActivityChangeDTO;
 import net.kravuar.integration.services.ServiceCreationDTO;
-import net.kravuar.services.model.Service;
+import net.kravuar.services.domain.Service;
 import net.kravuar.services.ports.out.ServiceNotificationPort;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;

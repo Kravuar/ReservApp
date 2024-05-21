@@ -1,9 +1,6 @@
 package net.kravuar.schedule.domain;
 
-import net.kravuar.staff.model.Schedule;
-import net.kravuar.staff.model.ScheduleExceptionDay;
-import net.kravuar.staff.model.SchedulePattern;
-import net.kravuar.staff.model.weak.ReservationSlot;
+import net.kravuar.schedule.domain.weak.ReservationSlot;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

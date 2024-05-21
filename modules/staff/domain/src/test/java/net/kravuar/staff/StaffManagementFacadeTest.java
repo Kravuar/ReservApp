@@ -1,21 +1,22 @@
 package net.kravuar.staff;
 
+import net.kravuar.staff.domain.Business;
+import net.kravuar.staff.domain.Staff;
+import net.kravuar.staff.domain.StaffInvitation;
+import net.kravuar.staff.domain.commands.StaffAnswerInvitationCommand;
 import net.kravuar.staff.domain.commands.StaffChangeDetailsCommand;
 import net.kravuar.staff.domain.commands.StaffInvitationCommand;
 import net.kravuar.staff.domain.exceptions.AccountNotFoundException;
 import net.kravuar.staff.domain.exceptions.InvitationInvalidStatusException;
 import net.kravuar.staff.domain.exceptions.InvitationNotFoundException;
 import net.kravuar.staff.domain.exceptions.StaffNotFoundException;
-import net.kravuar.staff.model.AccountDetails;
-import net.kravuar.staff.model.Business;
-import net.kravuar.staff.model.Staff;
-import net.kravuar.staff.model.StaffInvitation;
 import net.kravuar.staff.ports.out.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -47,10 +48,6 @@ class StaffManagementFacadeTest {
     InvitationRetrievalPort invitationRetrievalPort;
     @InjectMocks
     StaffManagementFacade staffManagement;
-
-    static AccountDetails someDetails() {
-        return new AccountDetails("beb");
-    }
 
     static Staff someStaff() {
         return new Staff(1L, "sub", someBusiness(), true, "");
@@ -155,77 +152,69 @@ class StaffManagementFacadeTest {
         verifyNoInteractions(invitationPersistencePort);
     }
 
-    @Test
-    void givenValidAcceptInvitationCommand_whenAcceptInvitation_thenInvitationAccepted() {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    void givenValidAnswerInvitationCommand_whenAnswerInvitation_thenInvitationAnswered(boolean accept) {
         // Given
-        long invitationId = 1;
+        StaffAnswerInvitationCommand command = new StaffAnswerInvitationCommand(
+                1,
+                accept
+        );
         StaffInvitation invitation = spy(someInvitation());
-        Staff staff = someStaff();
-
-        doReturn(someDetails())
-                .when(accountRetrievalPort)
-                .getBySub(anyString());
-        doReturn(invitation)
-                .when(invitationRetrievalPort)
-                .findById(eq(invitationId));
-        doReturn(Optional.of(staff))
-                .when(staffRetrievalPort)
-                .findByBusinessAndSub(
-                        anyLong(),
-                        anyString(),
-                        eq(false),
-                        eq(false)
-                );
-
-        // When
-        staffManagement.acceptInvitation(invitationId);
-
-        // Then
-        verify(invitation).getStatus();
-        verify(invitation).setStatus(eq(StaffInvitation.Status.ACCEPTED));
-        verify(staffLockPort).lock(anyLong(), anyString(), eq(false));
-        verify(invitationPersistencePort).save(same(invitation));
-        verify(staffPersistencePort).save(any(Staff.class));
-        verify(staffNotificationPort).notifyNewStaff(any(Staff.class));
-    }
-
-    @Test
-    void givenValidDeclineInvitationCommand_whenDeclineInvitation_thenInvitationDeclined() {
-        // Given
-        long invitationId = 1;
-        StaffInvitation invitation = spy(someInvitation());
+        Staff staff = someStaff(); // Existing staff (removed previously)
 
         doReturn(invitation)
                 .when(invitationRetrievalPort)
-                .findById(eq(invitationId));
+                .findById(eq(command.invitationId()));
+        if (command.accept())
+            doReturn(Optional.of(staff))
+                    .when(staffRetrievalPort)
+                    .findByBusinessAndSub(
+                            anyLong(),
+                            anyString(),
+                            eq(false),
+                            eq(false)
+                    );
 
         // When
-        staffManagement.declineInvitation(invitationId);
+        staffManagement.answerInvitation(command);
 
         // Then
         verify(invitation).getStatus();
-        verify(invitation).setStatus(eq(StaffInvitation.Status.DECLINED));
+        verify(invitation).setStatus(argThat(status ->
+                status == (command.accept()
+                        ? StaffInvitation.Status.ACCEPTED
+                        : StaffInvitation.Status.DECLINED)
+        ));
         verify(staffLockPort).lock(anyLong(), anyString(), eq(false));
         verify(invitationPersistencePort).save(same(invitation));
-        verify(staffPersistencePort, never()).save(any(Staff.class));
-        verify(staffNotificationPort, never()).notifyNewStaff(any(Staff.class));
+        if (command.accept()) {
+            verify(staffPersistencePort).save(any(Staff.class));
+            verify(staffNotificationPort).notifyNewStaff(any(Staff.class));
+        } else {
+            verify(staffPersistencePort, never()).save(any(Staff.class));
+            verify(staffNotificationPort, never()).notifyNewStaff(any(Staff.class));
+        }
     }
 
     @Test
     void givenNonWaitingInvitation_whenAnswerInvitation_thenInvitationInvalidStatusExceptionThrown() {
         // Given
-        long invitationId = 1;
+        StaffAnswerInvitationCommand command = new StaffAnswerInvitationCommand(
+                1,
+                true
+        );
         StaffInvitation invitation = someInvitation();
         invitation.setStatus(StaffInvitation.Status.ACCEPTED);
 
         doReturn(invitation)
                 .when(invitationRetrievalPort)
-                .findById(eq(invitationId));
+                .findById(eq(command.invitationId()));
 
         // When & Then
-        assertThatThrownBy(() -> staffManagement.acceptInvitation(invitationId))
+        assertThatThrownBy(() -> staffManagement.answerInvitation(command))
                 .isInstanceOf(InvitationInvalidStatusException.class);
-        verify(invitationRetrievalPort).findById(eq(invitationId));
+        verify(invitationRetrievalPort).findById(eq(command.invitationId()));
         verify(staffLockPort).lock(anyLong(), anyString(), eq(false));
         verifyNoInteractions(invitationPersistencePort, staffRetrievalPort, staffPersistencePort, staffNotificationPort);
     }
@@ -233,14 +222,17 @@ class StaffManagementFacadeTest {
     @Test
     void givenNonExistingInvitation_whenAnswerInvitation_thenInvitationNotFoundExceptionThrown() {
         // Given
-        long invitationId = 1;
+        StaffAnswerInvitationCommand command = new StaffAnswerInvitationCommand(
+                -1,
+                true
+        );
 
         doThrow(InvitationNotFoundException.class)
                 .when(invitationRetrievalPort)
-                .findById(eq(invitationId));
+                .findById(eq(command.invitationId()));
 
         // When & Then
-        assertThatThrownBy(() -> staffManagement.acceptInvitation(invitationId))
+        assertThatThrownBy(() -> staffManagement.answerInvitation(command))
                 .isInstanceOf(InvitationNotFoundException.class);
         verifyNoInteractions(staffLockPort, invitationPersistencePort, staffRetrievalPort, staffPersistencePort, staffNotificationPort);
     }
@@ -258,9 +250,6 @@ class StaffManagementFacadeTest {
         );
         Staff staff = spy(someStaff());
 
-        doReturn(someDetails())
-                .when(accountRetrievalPort)
-                .getBySub(anyString());
         doReturn(staff)
                 .when(staffRetrievalPort)
                 .findById(eq(command.staffId()), eq(true));
@@ -302,9 +291,6 @@ class StaffManagementFacadeTest {
         long staffId = 1;
         Staff staff = spy(someStaff());
 
-        doReturn(someDetails())
-                .when(accountRetrievalPort)
-                .getBySub(anyString());
         doReturn(staff)
                 .when(staffRetrievalPort)
                 .findById(eq(staffId), eq(true));

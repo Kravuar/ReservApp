@@ -2,15 +2,15 @@ package net.kravuar.schedule;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
-import net.kravuar.staff.model.Reservation;
-import net.kravuar.staff.model.Service;
-import net.kravuar.staff.model.Staff;
+import net.kravuar.schedule.domain.Reservation;
+import net.kravuar.schedule.domain.Service;
+import net.kravuar.schedule.domain.Staff;
 import net.kravuar.schedule.domain.commands.CreateReservationCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.exceptions.ReservationOutOfSlotsException;
 import net.kravuar.schedule.domain.exceptions.ReservationOverlappingException;
 import net.kravuar.schedule.domain.exceptions.ReservationSlotNotFoundException;
-import net.kravuar.staff.model.weak.ReservationSlot;
+import net.kravuar.schedule.domain.weak.ReservationSlot;
 import net.kravuar.schedule.ports.in.ReservationManagementUseCase;
 import net.kravuar.schedule.ports.in.ScheduleRetrievalUseCase;
 import net.kravuar.schedule.ports.out.*;
@@ -66,7 +66,7 @@ public class ReservationManagementFacade implements ReservationManagementUseCase
     }
 
     @Override
-    public Reservation cancelReservation(long reservationId) {
+    public void cancelReservation(long reservationId) {
         try {
             scheduleLockPort.lock(reservationId, true);
 
@@ -76,7 +76,6 @@ public class ReservationManagementFacade implements ReservationManagementUseCase
 
                 reservation.setActive(false);
                 reservationPersistencePort.save(reservation);
-                return reservation;
             } finally {
                 scheduleLockPort.lockByStaff(reservation.getStaff().getId(), false);
             }

@@ -1,6 +1,6 @@
 package net.kravuar.staff.ports.out;
 
-import net.kravuar.staff.model.StaffInvitation;
+import net.kravuar.staff.domain.StaffInvitation;
 
 public interface InvitationPersistencePort {
     /**

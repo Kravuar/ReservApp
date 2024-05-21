@@ -1,6 +1,6 @@
 package net.kravuar.business.persistence;
 
-import net.kravuar.business.model.Business;
+import net.kravuar.business.domain.Business;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

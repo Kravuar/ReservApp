@@ -7,7 +7,7 @@
 
     <description>Mapping for domain Staff</description>
 
-    <entity class="net.kravuar.staff.model.StaffInvitation" access="FIELD">
+    <entity class="net.kravuar.staff.domain.StaffInvitation" access="FIELD">
         <table name="staff_invitation"/>
         <attributes>
             <id name="id">
@@ -28,7 +28,7 @@
         </attributes>
     </entity>
 
-    <entity class="net.kravuar.staff.model.Staff" access="FIELD">
+    <entity class="net.kravuar.staff.domain.Staff" access="FIELD">
         <table name="staff"/>
         <attributes>
             <id name="id">
@@ -46,7 +46,7 @@
         </attributes>
     </entity>
 
-    <entity class="net.kravuar.staff.model.Business" access="FIELD">
+    <entity class="net.kravuar.staff.domain.Business" access="FIELD">
         <table name="business"/>
         <attributes>
             <id name="id"/>

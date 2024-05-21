@@ -2,13 +2,13 @@ package net.kravuar.schedule;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
-import net.kravuar.staff.model.Schedule;
-import net.kravuar.staff.model.ScheduleExceptionDay;
-import net.kravuar.staff.model.Staff;
+import net.kravuar.schedule.domain.Schedule;
+import net.kravuar.schedule.domain.ScheduleExceptionDay;
+import net.kravuar.schedule.domain.Staff;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleByStaffAndServiceCommand;
 import net.kravuar.schedule.domain.commands.RetrieveScheduleExceptionDaysByStaffAndServiceCommand;
-import net.kravuar.staff.model.weak.ReservationSlot;
+import net.kravuar.schedule.domain.weak.ReservationSlot;
 import net.kravuar.schedule.ports.in.ScheduleRetrievalUseCase;
 import net.kravuar.schedule.ports.out.ScheduleRetrievalPort;
 

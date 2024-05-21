@@ -1,6 +1,6 @@
 package net.kravuar.business.web;
 
-import net.kravuar.business.model.Business;
+import net.kravuar.business.domain.Business;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

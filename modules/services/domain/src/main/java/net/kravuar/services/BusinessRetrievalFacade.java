@@ -2,7 +2,7 @@ package net.kravuar.services;
 
 import lombok.RequiredArgsConstructor;
 import net.kravuar.context.AppComponent;
-import net.kravuar.services.model.Business;
+import net.kravuar.services.domain.Business;
 import net.kravuar.services.ports.in.BusinessRetrievalUseCase;
 import net.kravuar.services.ports.out.BusinessRetrievalPort;
 
