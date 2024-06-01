@@ -11,6 +11,7 @@ type Query {
     myInvitations(page: Int!, pageSize: Int!): StaffInvitationsPage!
 
     schedule(scheduleId: ID!): ManageableSchedule!
+    reservationSlots(serviceIds: [ID!]!, from: LocalDate!, to: LocalDate!): [ReservationSlot!]!
     myReservations(from: LocalDate!, to: LocalDate!): [ReservationDetailed!]!
     reservationsToMe(from: LocalDate!, to: LocalDate!): [ReservationDetailed!]!
 }

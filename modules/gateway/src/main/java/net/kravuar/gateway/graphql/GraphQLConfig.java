@@ -10,6 +10,7 @@ import reactivefeign.spring.config.EnableReactiveFeignClients;
 @Configuration
 @EnableReactiveFeignClients
 class GraphQLConfig {
+
     @Bean
     WebGraphQlInterceptor intercept() {
         return (webInput, chain) -> {

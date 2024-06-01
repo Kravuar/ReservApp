@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -83,8 +84,17 @@ class ReservationRetrievalController {
                 ).toList();
     }
 
-//    @GetMapping("/by-slots")
-//    List<ReservationDTO> bySlots() {
-//
-//    }
+    @GetMapping("/by-slot/{date}/{start}/{serviceId}/{staffId}")
+    List<ReservationDTO> bySlot(@PathVariable("date") LocalDate date, @PathVariable("start") LocalTime start, @PathVariable("staffId") long staffId, @PathVariable("serviceId") long serviceId) {
+        return reservationRetrievalUseCase.findAllReservationsBySlot(date, start, serviceId, staffId).stream()
+                .map(dtoReservationMapper::reservationToAnonymousDTO)
+                .toList();
+    }
+
+    @GetMapping("/by-slot/detailed/{date}/{start}/{serviceId}/{staffId}")
+    List<ReservationDetailedDTO> bySlotDetailed(@PathVariable("date") LocalDate date, @PathVariable("start") LocalTime start, @PathVariable("staffId") long staffId, @PathVariable("serviceId") long serviceId) {
+        return reservationRetrievalUseCase.findAllReservationsBySlot(date, start, serviceId, staffId).stream()
+                .map(dtoReservationMapper::reservationToDTO)
+                .toList();
+    }
 }

@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.kravuar.schedule.dto.ReservationDTO;
 import net.kravuar.schedule.dto.ReservationDetailedDTO;
 import net.kravuar.schedule.dto.ReservationSlotDTO;
-import net.kravuar.schedule.dto.StaffDTO;
 import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.BatchMapping;
 import org.springframework.graphql.data.method.annotation.ContextValue;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -14,16 +12,10 @@ import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.GroupedFlux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -60,49 +52,44 @@ class GraphQLReservationController {
 
     // ================= Queries and Mutations ================= //
 
+
+
+
     // ================= Relations from ReservationSlot ================= //
 
-//    @BatchMapping(typeName = "ReservationSlot")
-//    Mono<Map<ReservationSlotDTO, Integer>> reservationsLeft(List<ReservationSlotDTO> reservationSlots, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
-//        if (reservationSlots.isEmpty()) {
-//            return Mono.just(Collections.emptyMap());
-//        }
-//        LocalDate min = reservationSlots.stream().min(Comparator.comparing(ReservationSlotDTO::date)).get().date();
-//        LocalDate max = reservationSlots.stream().min(Comparator.comparing(ReservationSlotDTO::date)).get().date();
-//
-//        return reservationSlots.
-//    }
-//
-//    @BatchMapping(typeName = "ReservationSlot")
-//    Flux<Flux<ReservationDetailedDTO>> reservations(List<ReservationSlotDTO> reservationSlots) {
-//
-//    }
-//
-//    @BatchMapping(typeName = "ReservationSlot")
-//    Flux<Flux<ReservationDetailedDTO>> reservationsDetailed(List<ReservationSlotDTO> reservationSlots, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
-//
-//    }
-//
-//    // ================= Relations from ReservationSlot ================= //
-//
-//    Flux<Flux<ReservationDetailedDTO>> fetchReservationsDetailed(List<ReservationSlotDTO> reservationSlots, String requester) {
-//        if (reservationSlots.isEmpty()) {
-//            return Flux.empty();
-//        }
-//        Map<Long, List<ReservationSlotDTO>> slotsByService = reservationSlots.stream()
-//                .collect(Collectors.groupingBy(reservationSlot -> reservationSlot.service().id()));
-//
-//        Flux<GroupedFlux<Long, Flux<ReservationDetailedDTO>>> reservationsByService =  Flux.fromIterable(slotsByService.entrySet())
-//                .groupBy(
-//                        Map.Entry::getKey,
-//                        byServiceEntry -> {
-//                    assert !byServiceEntry.getValue().isEmpty();
-//                    LocalDate minByService = byServiceEntry.getValue().stream().min(Comparator.comparing(ReservationSlotDTO::date)).get().date();
-//                    LocalDate maxByService = byServiceEntry.getValue().stream().min(Comparator.comparing(ReservationSlotDTO::date)).get().date();
-//
-//                    long serviceId = byServiceEntry.getKey();
-//                    return reservationRetrievalClient.byServiceDetailed(serviceId, minByService, maxByService, requester);
-//                });
-//
-//    }
+    @SchemaMapping(typeName = "ReservationSlot")
+    Mono<Long> reservationsLeft(ReservationSlotDTO reservationSlot) {
+        return reservationRetrievalClient.bySlot(
+                reservationSlot.date(),
+                reservationSlot.start(),
+                reservationSlot.service().id(),
+                reservationSlot.staff().id()
+        ).count().map(reservationsCount ->
+                reservationSlot.maxReservations() - reservationsCount
+        );
+    }
+
+    @SchemaMapping(typeName = "ReservationSlot")
+    Flux<ReservationDTO> reservations(ReservationSlotDTO reservationSlot) {
+        return reservationRetrievalClient.bySlot(
+                reservationSlot.date(),
+                reservationSlot.start(),
+                reservationSlot.service().id(),
+                reservationSlot.staff().id()
+        );
+    }
+
+    @SchemaMapping(typeName = "ReservationSlot")
+    Flux<ReservationDetailedDTO> reservationDetailed(ReservationSlotDTO reservationSlot, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
+        return reservationRetrievalClient.bySlotDetailed(
+                reservationSlot.date(),
+                reservationSlot.start(),
+                reservationSlot.service().id(),
+                reservationSlot.staff().id(),
+                requester
+        );
+    }
+
+    // ================= Relations from ReservationSlot ================= //
+
 }

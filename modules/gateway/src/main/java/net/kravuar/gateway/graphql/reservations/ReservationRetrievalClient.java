@@ -11,6 +11,8 @@ import reactivefeign.spring.config.ReactiveFeignClient;
 import reactor.core.publisher.Flux;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 
 @Component
 @ReactiveFeignClient(
@@ -36,4 +38,10 @@ interface ReservationRetrievalClient {
 
     @GetMapping("/to-me/{from}/{to}")
     Flux<ReservationDetailedDTO> toMeReservations(@PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to, @RequestHeader(HttpHeaders.AUTHORIZATION) String requester);
+
+    @GetMapping("/by-slot/{date}/{start}/{serviceId}/{staffId}")
+    Flux<ReservationDTO> bySlot(@PathVariable("date") LocalDate date, @PathVariable("start") LocalTime start, @PathVariable("staffId") long staffId, @PathVariable("serviceId") long serviceId);
+
+    @GetMapping("/by-slot/detailed/{date}/{start}/{serviceId}/{staffId}")
+    Flux<ReservationDetailedDTO> bySlotDetailed(@PathVariable("date") LocalDate date, @PathVariable("start") LocalTime start, @PathVariable("staffId") long staffId, @PathVariable("serviceId") long serviceId, @RequestHeader(HttpHeaders.AUTHORIZATION) String requester);
 }

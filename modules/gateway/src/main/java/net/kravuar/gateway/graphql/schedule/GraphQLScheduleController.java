@@ -6,21 +6,16 @@ import net.kravuar.schedule.dto.ScheduleDTO;
 import net.kravuar.services.dto.ServiceDTO;
 import net.kravuar.staff.dto.StaffDTO;
 import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.BatchMapping;
 import org.springframework.graphql.data.method.annotation.ContextValue;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.GroupedFlux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -40,6 +35,11 @@ class GraphQLScheduleController {
     @QueryMapping
     Mono<ScheduleDTO> schedule(@Argument long scheduleId, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
         return scheduleRetrievalClient.byId(scheduleId, requester);
+    }
+
+    @QueryMapping
+    Flux<ReservationSlotDTO> reservationSlots(@Argument Set<Long> serviceIds, @Argument LocalDate from, @Argument LocalDate to) {
+        return scheduleRetrievalClient.byServicesFlat(serviceIds, from, to);
     }
 
     // ================= Queries and Mutations ================= //
@@ -66,16 +66,9 @@ class GraphQLScheduleController {
 
     // ================= Relation from Service ================= //
 
-    @BatchMapping(typeName = "Service")
-    Flux<GroupedFlux<ServiceDTO, ReservationSlotDTO>> schedule(List<ServiceDTO> services, @Argument LocalDate from, @Argument LocalDate to) {
-        Map<Long, ServiceDTO> idToService = services.stream()
-                .collect(Collectors.toMap(
-                        ServiceDTO::id,
-                        Function.identity()
-                ));
-
-        return scheduleRetrievalClient.byServicesFlat(idToService.keySet(), from, to)
-                .groupBy(reservationSlotDTO -> idToService.get(reservationSlotDTO.service().id()));
+    @SchemaMapping(typeName = "Service")
+    Flux<ReservationSlotDTO> schedule(ServiceDTO service, @Argument LocalDate from, @Argument LocalDate to) {
+        return scheduleRetrievalClient.byServiceFlat(service.id(), from, to);
     }
 
     @SchemaMapping(typeName = "Service")

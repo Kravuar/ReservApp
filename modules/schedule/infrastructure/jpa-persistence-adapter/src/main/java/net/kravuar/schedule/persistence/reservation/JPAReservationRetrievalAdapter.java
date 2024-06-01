@@ -7,6 +7,7 @@ import net.kravuar.schedule.ports.out.ReservationRetrievalPort;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.NavigableMap;
 import java.util.SortedMap;
@@ -68,5 +69,10 @@ public class JPAReservationRetrievalAdapter implements ReservationRetrievalPort 
                         TreeMap::new,
                         Collectors.toList()
                 ));
+    }
+
+    @Override
+    public List<Reservation> findAllReservationsBySlot(LocalDate date, LocalTime start, long serviceId, long staffId) {
+        return reservationRepository.findAllByDateAndStartAndServiceIdAndStaffId(date, start, serviceId, staffId);
     }
 }

@@ -103,7 +103,7 @@ class GraphQLStaffController {
     }
 
     @BatchMapping(typeName = "ReservationDetailed", field = "staff")
-    Mono<Map<ReservationDetailedDTO, StaffDTO>> staffByReservationDetaileds(List<ReservationDetailedDTO> reservations, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+    Mono<Map<ReservationDetailedDTO, StaffDTO>> staffByReservationsDetailed(List<ReservationDetailedDTO> reservations, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
         return mapEntitiesToRelatedData(
                 reservations,
                 StaffDTO::id,

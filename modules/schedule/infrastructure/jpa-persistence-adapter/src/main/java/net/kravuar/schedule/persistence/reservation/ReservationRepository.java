@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Repository
@@ -58,4 +59,6 @@ interface ReservationRepository extends JpaRepository<Reservation, Long> {
             "AND r.date BETWEEN :from AND :to " +
             "AND r.active = true")
     List<Reservation> findAllActiveByStaff(@Param("sub") String sub, @Param("from") LocalDate from, @Param("to") LocalDate to);
+
+    List<Reservation> findAllByDateAndStartAndServiceIdAndStaffId(@Param("date") LocalDate date, @Param("start") LocalTime start, @Param("staffId") long staffId, @Param("serviceId") long serviceId);
 }

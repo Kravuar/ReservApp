@@ -4,6 +4,7 @@ import net.kravuar.schedule.domain.exceptions.ReservationNotFoundException;
 import net.kravuar.schedule.model.Reservation;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.SortedMap;
 
@@ -60,4 +61,15 @@ public interface ReservationRetrievalUseCase {
      * within the specified date range
      */
     SortedMap<LocalDate, List<Reservation>> findAllByService(long serviceId, LocalDate from, LocalDate to);
+
+    /**
+     * Find all active reservations by specified slot.
+     *
+     * @param date date of the slot
+     * @param start start time of the slot
+     * @param serviceId corresponding service
+     * @param staffId corresponding staff
+     * @return {@code List<Reservation} of found reservations
+     */
+    List<Reservation> findAllReservationsBySlot(LocalDate date, LocalTime start, long serviceId, long staffId);
 }
