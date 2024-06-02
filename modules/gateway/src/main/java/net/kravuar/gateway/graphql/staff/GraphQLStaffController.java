@@ -76,7 +76,7 @@ class GraphQLStaffController {
     // ================= Relation from Schedule ================= //
 
     @BatchMapping(typeName = "ManageableSchedule", field = "staff")
-    Mono<Map<ScheduleDTO, StaffDTO>> staffBySchedules(List<ScheduleDTO> schedules, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+    Mono<Map<ScheduleDTO, StaffDTO>> staffBySchedules(List<ScheduleDTO> schedules, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
         return mapEntitiesToRelatedData(
                 schedules,
                 StaffDTO::id,
@@ -93,7 +93,7 @@ class GraphQLStaffController {
     // ================= Relation from Reservation ================= //
 
     @BatchMapping(typeName = "Reservation", field = "staff")
-    Mono<Map<ReservationDTO, StaffDTO>> staffByReservations(List<ReservationDTO> reservations, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+    Mono<Map<ReservationDTO, StaffDTO>> staffByReservations(List<ReservationDTO> reservations, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
         return mapEntitiesToRelatedData(
                 reservations,
                 StaffDTO::id,
@@ -103,7 +103,7 @@ class GraphQLStaffController {
     }
 
     @BatchMapping(typeName = "ReservationDetailed", field = "staff")
-    Mono<Map<ReservationDetailedDTO, StaffDTO>> staffByReservationsDetailed(List<ReservationDetailedDTO> reservations, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+    Mono<Map<ReservationDetailedDTO, StaffDTO>> staffByReservationsDetailed(List<ReservationDetailedDTO> reservations, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
         return mapEntitiesToRelatedData(
                 reservations,
                 StaffDTO::id,
@@ -137,7 +137,7 @@ class GraphQLStaffController {
     // ================= Relations from ReservationSlot ================= //
 
     @BatchMapping(typeName = "ReservationSlot", field = "staff")
-    Mono<Map<ReservationSlotDTO, StaffDTO>> staffByReservationSlots(List<ReservationSlotDTO> slots, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+    Mono<Map<ReservationSlotDTO, StaffDTO>> staffByReservationSlots(List<ReservationSlotDTO> slots, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
         return mapEntitiesToRelatedData(
                 slots,
                 StaffDTO::id,

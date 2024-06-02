@@ -14,13 +14,13 @@ class GraphQLConfig {
     @Bean
     WebGraphQlInterceptor intercept() {
         return (webInput, chain) -> {
-            String authorization = webInput.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-            if (authorization != null) {
-                webInput.configureExecutionInput((input, inputBuilder) -> inputBuilder
-                        .graphQLContext(contextBuilder -> contextBuilder.put(HttpHeaders.AUTHORIZATION, authorization))
-                        .build()
-                );
-            }
+            String authorization = webInput.getHeaders().getFirst(HttpHeaders.AUTHORIZATION) != null
+                    ? webInput.getHeaders().getFirst(HttpHeaders.AUTHORIZATION)
+                    : "";
+            webInput.configureExecutionInput((input, inputBuilder) -> inputBuilder
+                    .graphQLContext(contextBuilder -> contextBuilder.put(HttpHeaders.AUTHORIZATION, authorization))
+                    .build()
+            );
             return chain.next(webInput);
         };
     }

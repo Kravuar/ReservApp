@@ -24,7 +24,7 @@ public class BusinessRetrievalFacade implements BusinessRetrievalUseCase {
     @Override
     public Business findByIdAndSub(long businessId, String sub) {
         Business business = businessRetrievalPort.findById(businessId, false);
-        if (business.getOwnerSub().equals(sub)) {
+        if (!business.isActive() && business.getOwnerSub().equals(sub)) {
             return business;
         }
         else {

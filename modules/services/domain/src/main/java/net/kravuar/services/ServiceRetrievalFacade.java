@@ -34,7 +34,7 @@ public class ServiceRetrievalFacade implements ServiceRetrievalUseCase {
     @Override
     public Service findByIdAndSub(long serviceId, String sub) {
         Service service = serviceRetrievalPort.findById(serviceId, false);
-        if (service.getBusiness().getOwnerSub().equals(sub)) {
+        if (!service.isActive() && service.getBusiness().getOwnerSub().equals(sub)) {
             return service;
         }
         else {

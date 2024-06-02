@@ -66,7 +66,7 @@ class GraphQLServiceController {
     // ================= Relation from Schedule ================= //
 
     @BatchMapping(typeName = "ManageableSchedule", field = "service")
-    Mono<Map<ScheduleDTO, ServiceDTO>> servicesBySchedules(List<ScheduleDTO> schedules, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+    Mono<Map<ScheduleDTO, ServiceDTO>> servicesBySchedules(List<ScheduleDTO> schedules, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
         return mapEntitiesToRelatedData(
                 schedules,
                 ServiceDTO::id,
@@ -83,7 +83,7 @@ class GraphQLServiceController {
     // ================= Relation from Reservation ================= //
 
     @BatchMapping(typeName = "Reservation", field = "service")
-    Mono<Map<ReservationDTO, ServiceDTO>> servicesByReservations(List<ReservationDTO> reservations, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+    Mono<Map<ReservationDTO, ServiceDTO>> servicesByReservations(List<ReservationDTO> reservations, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
         return mapEntitiesToRelatedData(
                 reservations,
                 ServiceDTO::id,
@@ -93,7 +93,7 @@ class GraphQLServiceController {
     }
 
     @BatchMapping(typeName = "ReservationDetailed", field = "service")
-    Mono<Map<ReservationDetailedDTO, ServiceDTO>> servicesByReservationsDetailed(List<ReservationDetailedDTO> reservations, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+    Mono<Map<ReservationDetailedDTO, ServiceDTO>> servicesByReservationsDetailed(List<ReservationDetailedDTO> reservations, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
         return mapEntitiesToRelatedData(
                 reservations,
                 ServiceDTO::id,
@@ -127,7 +127,7 @@ class GraphQLServiceController {
     // ================= Relations from ReservationSlot ================= //
 
     @BatchMapping(typeName = "ReservationSlot", field = "service")
-    Mono<Map<ReservationSlotDTO, ServiceDTO>> servicesByIds(List<ReservationSlotDTO> slots, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+    Mono<Map<ReservationSlotDTO, ServiceDTO>> servicesByIds(List<ReservationSlotDTO> slots, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
         return mapEntitiesToRelatedData(
                 slots,
                 ServiceDTO::id,

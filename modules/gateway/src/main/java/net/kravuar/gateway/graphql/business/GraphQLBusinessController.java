@@ -40,7 +40,7 @@ class GraphQLBusinessController {
     }
 
     @QueryMapping
-    Mono<BusinessDTO> business(@Argument long businessId, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+    Mono<BusinessDTO> business(@Argument long businessId, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
         return businessRetrievalClient.byId(businessId, requester);
     }
 
@@ -75,7 +75,7 @@ class GraphQLBusinessController {
     // ================= Relation from Staff ================= //
 
     @BatchMapping(typeName = "Staff", field = "business")
-    Mono<Map<StaffDTO, BusinessDTO>> businessesByStaff(List<StaffDTO> staffs, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+    Mono<Map<StaffDTO, BusinessDTO>> businessesByStaff(List<StaffDTO> staffs, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
         return mapEntitiesToRelatedData(
                 staffs,
                 BusinessDTO::id,
@@ -90,7 +90,7 @@ class GraphQLBusinessController {
     // ================= Relation from Service ================= //
 
     @BatchMapping(typeName = "Service", field = "business")
-    Mono<Map<ServiceDTO, BusinessDTO>> businessesByService(List<ServiceDTO> services, @ContextValue(value = HttpHeaders.AUTHORIZATION, required = false) String requester) {
+    Mono<Map<ServiceDTO, BusinessDTO>> businessesByService(List<ServiceDTO> services, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
         return mapEntitiesToRelatedData(
                 services,
                 BusinessDTO::id,

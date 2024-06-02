@@ -5,10 +5,18 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.config.CorsRegistry;
+import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 @Configuration
 @RequiredArgsConstructor
-class GatewayConfig {
+class GatewayConfig implements WebFluxConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/graphql")
+                .allowedOrigins("*");
+    }
 
     @Bean
     RouteLocator gateway(RouteLocatorBuilder rlb) {

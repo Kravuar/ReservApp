@@ -72,6 +72,7 @@ type Business {
     id: ID!
     name: String!
     ownerSub: String!
+    active: Boolean!
     description: String
     services(page: Int!, pageSize: Int!): ServicesPage!
     myServices(page: Int!, pageSize: Int!): ServicesPage!

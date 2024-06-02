@@ -20,9 +20,10 @@ class ExceptionResolver extends DataFetcherExceptionResolverAdapter {
 
     private GraphQLError handleFeign(@NonNull Throwable e, @NonNull DataFetchingEnvironment env) {
         FeignException feignException = (FeignException) e;
-
+        String message = feignException.getMessage();
+        String errorMessage = message.substring(message.lastIndexOf(":"));
         return GraphqlErrorBuilder.newError(env)
-                .message("Feign client error: " + feignException.getMessage())
+                .message(errorMessage)
                 .errorType(getErrorType(feignException.status()))
                 .build();
     }
