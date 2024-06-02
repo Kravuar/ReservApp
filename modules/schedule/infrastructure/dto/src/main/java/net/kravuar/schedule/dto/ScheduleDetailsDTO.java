@@ -8,6 +8,6 @@ import java.util.List;
 public record ScheduleDetailsDTO(
         LocalDate start,
         LocalDate end,
-        List<SchedulePattern>patterns
+        List<SchedulePattern> patterns
 ) {
 }

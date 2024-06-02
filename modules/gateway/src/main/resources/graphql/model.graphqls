@@ -35,6 +35,8 @@ type Mutation {
     reserveSlot(dateTime: LocalDateTime!, staffId: ID!, serviceId: ID!): ReservationDetailed!
     cancelReservation(reservationId: ID!): ReservationDetailed!
     restoreReservation(reservationId: ID!): ReservationDetailed!
+
+    createSchedule(serviceId: ID!, staffId: ID!, input: ScheduleInput!): ManageableSchedule!
 }
 
 interface Page {
@@ -69,6 +71,7 @@ type StaffInvitationsPage implements Page {
 type Business {
     id: ID!
     name: String!
+    ownerSub: String!
     description: String
     services(page: Int!, pageSize: Int!): ServicesPage!
     myServices(page: Int!, pageSize: Int!): ServicesPage!
@@ -89,6 +92,7 @@ type Service {
     id: ID!
     name: String!
     description: String
+    active: Boolean!
     business: Business!
     schedule(from: LocalDate!, to: LocalDate!): [ReservationSlot!]!
     scheduleOfStaff(staffId: ID!, from: LocalDate!, to: LocalDate!): [ReservationSlot!]!
@@ -111,6 +115,7 @@ type Staff {
     name: String!
     description: String
     business: Business!
+    active: Boolean!
     invitations: [StaffInvitation!]!
     schedule(serviceId: ID!, from: LocalDate!, to: LocalDate!): [ReservationSlot!]!
     activeSchedules(serviceId: ID!): [ManageableSchedule!]!
@@ -118,6 +123,12 @@ type Staff {
 
 input StaffDetailsInput {
     description: String
+}
+
+input ScheduleInput {
+    start: LocalDate
+    end: LocalDate
+    patterns: [PatternInput!]!
 }
 
 type StaffInvitation {
@@ -136,6 +147,13 @@ type ManageableSchedule {
     service: Service!
     patterns: [SchedulePattern!]!
     createdAt: LocalDateTime!
+}
+
+input ReservationSlotInput {
+    start: LocalTime!
+    end: LocalTime!
+    cost: Float!
+    maxReservations: Int!
 }
 
 type ReservationSlot {
@@ -157,8 +175,11 @@ type ReservationDetailed {
     staff: Staff!
     start: LocalTime!
     end: LocalTime!
+    date: LocalDate!
+    active: Boolean!
     cost: Float!
     clientSub: String!
+    createdAt: LocalDateTime!
 }
 
 type Reservation {
@@ -167,7 +188,16 @@ type Reservation {
     staff: Staff!
     start: LocalTime!
     end: LocalTime!
+    date: LocalDate!
     cost: Float!
+    active: Boolean!
+    createdAt: LocalDateTime!
+}
+
+input PatternInput {
+    repeatDays: Int!
+    pauseDays: Int!
+    slots: [ReservationSlotInput!]!
 }
 
 type SchedulePattern {

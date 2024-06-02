@@ -3,10 +3,12 @@ package net.kravuar.gateway.graphql.schedule;
 import lombok.RequiredArgsConstructor;
 import net.kravuar.schedule.dto.ReservationSlotDTO;
 import net.kravuar.schedule.dto.ScheduleDTO;
+import net.kravuar.schedule.dto.ScheduleDetailsDTO;
 import net.kravuar.services.dto.ServiceDTO;
 import net.kravuar.staff.dto.StaffDTO;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.ContextValue;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.http.HttpHeaders;
@@ -40,6 +42,11 @@ class GraphQLScheduleController {
     @QueryMapping
     Flux<ReservationSlotDTO> reservationSlots(@Argument Set<Long> serviceIds, @Argument LocalDate from, @Argument LocalDate to) {
         return scheduleRetrievalClient.byServicesFlat(serviceIds, from, to);
+    }
+
+    @MutationMapping
+    Mono<ScheduleDTO> createSchedule(@Argument long serviceId, @Argument long staffId, @Argument ScheduleDetailsDTO input, @ContextValue(HttpHeaders.AUTHORIZATION) String requester) {
+        return scheduleManagementClient.createSchedule(serviceId, staffId, input, requester);
     }
 
     // ================= Queries and Mutations ================= //
