@@ -21,7 +21,8 @@ class ServiceManagementController {
         return dtoServiceMapper.toDTO(serviceManagement.create(new ServiceCreationCommand(
                 businessId,
                 command.name(),
-                command.description()
+                command.description(),
+                command.pictureUrl()
         )));
     }
 
@@ -40,7 +41,8 @@ class ServiceManagementController {
         serviceManagement.changeDetails(new ServiceChangeDetailsCommand(
                 serviceId,
                 details.name(),
-                details.description()
+                details.description(),
+                details.pictureUrl()
         ));
     }
 }

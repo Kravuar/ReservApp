@@ -16,4 +16,5 @@ public class Business {
     private boolean active;
 
     private String description;
+    private String pictureUrl;
 }

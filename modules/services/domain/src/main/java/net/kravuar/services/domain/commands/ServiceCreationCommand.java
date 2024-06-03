@@ -9,6 +9,7 @@ public record ServiceCreationCommand(
         @NotNull
         @Size(min = 3, max = 30)
         String name,
-        String description
+        String description,
+        String pictureUrl
 ) {
 }

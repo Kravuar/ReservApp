@@ -28,7 +28,8 @@ public class ServiceManagementFacade implements ServiceManagementUseCase {
                         business,
                         true,
                         command.name(),
-                        command.description()
+                        command.description(),
+                        command.pictureUrl()
                 )
         );
         serviceNotificationPort.notifyNewService(service);
@@ -59,6 +60,8 @@ public class ServiceManagementFacade implements ServiceManagementUseCase {
                 service.setName(command.name());
             if (command.description() != null)
                 service.setDescription(command.description());
+            if (command.pictureUrl() != null)
+                service.setPictureUrl(command.pictureUrl());
 
             servicePersistencePort.save(service);
         } finally {

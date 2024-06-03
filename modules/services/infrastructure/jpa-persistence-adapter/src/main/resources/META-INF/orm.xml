@@ -35,7 +35,10 @@
             <basic name="description">
                 <column length="1024"/>
             </basic>
-            <many-to-one name="business" fetch="LAZY" optional="false">
+            <basic name="pictureUrl">
+                <column length="512"/>
+            </basic>
+            <many-to-one name="business" fetch="EAGER" optional="false">
                 <join-column name="businessId"/>
             </many-to-one>
         </attributes>

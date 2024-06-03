@@ -24,7 +24,8 @@ class BusinessManagementController {
         var command = new BusinessCreationCommand(
                 user.getSubject(),
                 businessCreation.name(),
-                businessCreation.description()
+                businessCreation.description(),
+                businessCreation.pictureUrl()
         );
         return dtoMapper.toDTO(businessManagement.create(command));
     }
@@ -52,7 +53,8 @@ class BusinessManagementController {
     public void updateDetails(@PathVariable("businessId") long businessId, @RequestBody BusinessDetailsDTO details) {
         businessManagement.changeDetails(new BusinessChangeDetailsCommand(
                 businessId,
-                details.description()
+                details.description(),
+                details.pictureUrl()
         ));
     }
 }

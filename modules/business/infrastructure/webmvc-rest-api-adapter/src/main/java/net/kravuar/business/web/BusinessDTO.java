@@ -5,6 +5,7 @@ public record BusinessDTO(
         String ownerSub,
         String name,
         boolean active,
-        String description
+        String description,
+        String pictureUrl
 ) {
 }

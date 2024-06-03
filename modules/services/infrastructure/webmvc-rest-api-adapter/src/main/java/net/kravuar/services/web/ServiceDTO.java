@@ -5,6 +5,7 @@ record ServiceDTO(
         BusinessDTO business,
         boolean active,
         String name,
-        String description
+        String description,
+        String pictureUrl
 ) {
 }

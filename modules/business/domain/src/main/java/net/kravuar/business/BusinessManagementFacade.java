@@ -34,7 +34,8 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
                     command.ownerSub(),
                     command.name(),
                     true,
-                    command.description()
+                    command.description(),
+                    command.pictureUrl()
             );
             newBusiness = businessPersistencePort.save(newBusiness);
             businessNotificationPort.notifyNewBusiness(newBusiness);
@@ -88,7 +89,10 @@ public class BusinessManagementFacade implements BusinessManagementUseCase {
     @Override
     public void changeDetails(BusinessChangeDetailsCommand command) {
         Business business = businessRetrievalPort.findById(command.businessId(), false);
-        business.setDescription(command.description());
+        if (command.description() != null)
+            business.setDescription(command.description());
+        if (command.pictureUrl() != null)
+            business.setPictureUrl(command.pictureUrl());
         businessPersistencePort.save(business);
     }
 }

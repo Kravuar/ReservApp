@@ -2,6 +2,7 @@ package net.kravuar.business.web;
 
 record BusinessCreationDTO(
         String name,
-        String description
+        String description,
+        String pictureUrl
 ) {
 }

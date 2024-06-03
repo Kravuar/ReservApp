@@ -25,6 +25,9 @@
             <basic name="description">
                 <column length="1024"/>
             </basic>
+            <basic name="pictureUrl">
+                <column length="512"/>
+            </basic>
         </attributes>
     </entity>
 
